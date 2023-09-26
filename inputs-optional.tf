@@ -11,6 +11,7 @@ variable "location" {
 }
 
 variable "name" {
-  default     = ""
-  description = "The default name will be product+component+env, you can override the product+component part by setting this"
+  description = "The default name will be data-landing+env, you can override the data-landing part by setting this"
+  type        = string
+  default     = null
 }
