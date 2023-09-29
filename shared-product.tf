@@ -15,9 +15,9 @@ resource "azurerm_databricks_workspace" "example" {
   infrastructure_encryption_enabled = false
   custom_parameters {
     virtual_network_id                                   = module.networking.vnet_ids["data-landing"]
-    public_subnet_name                                   = "data-landing-data-bricks-product-public"
+    public_subnet_name                                   = "data-landing-data-bricks-product-public-test"
     public_subnet_network_security_group_association_id  = module.networking.network_security_groups_ids["data-landing"]
-    private_subnet_name                                  = "data-landing-data-bricks-product-private"
+    private_subnet_name                                  = "data-landing-data-bricks-product-private-test"
     private_subnet_network_security_group_association_id = module.networking.network_security_groups_ids["data-landing"]
     no_public_ip                                         = true
 
@@ -26,7 +26,7 @@ resource "azurerm_databricks_workspace" "example" {
 }
 
 
-resource "azurerm_synapse_workspace" "example" {
+/* resource "azurerm_synapse_workspace" "example" {
   name                                 = "example"
   resource_group_name                  = azurerm_resource_group.example.name
   location                             = var.location
@@ -45,7 +45,7 @@ resource "azurerm_synapse_workspace" "example" {
   }
 
   tags = var.common_tags
-}
+} */
 // Resources
 /* resource synapse 'Microsoft.Synapse/workspaces@2021-03-01' = {
   name: synapseName
