@@ -15,9 +15,9 @@ resource "azurerm_databricks_workspace" "example" {
   infrastructure_encryption_enabled = false
   custom_parameters {
     virtual_network_id                                   = module.networking.vnet_ids["data-landing"]
-    public_subnet_name                                   = "data-landing-data-bricks-product-public-test"
+    public_subnet_name                                   = module.networking.subnet_names["data-landing-data-bricks-public"]
     public_subnet_network_security_group_association_id  = module.networking.network_security_groups_ids["data-landing"]
-    private_subnet_name                                  = "data-landing-data-bricks-product-private-test"
+    private_subnet_name                                  = module.networking.subnet_names["data-landing-data-bricks-private"]
     private_subnet_network_security_group_association_id = module.networking.network_security_groups_ids["data-landing"]
     no_public_ip                                         = true
 
