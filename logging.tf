@@ -1,12 +1,12 @@
 module "logging_vault" {
   source              = "github.com/hmcts/cnp-module-key-vault?ref=master"
-  name                = substr(replace("${local.name}-keyVault001-${var.env}", "-", ""), 0, 23)
+  name                = "${local.name}-logging-${var.env}"
   product             = "data-landing"
   env                 = var.env
   object_id           = data.azurerm_client_config.current.object_id
   location            = var.location
   resource_group_name = azurerm_resource_group.this["logging"].name
-  product_group_name  = local.is_prod ? "DTS Platform Operations" : "DTS Platform Operations SC" # TODO: update this to a data landing zone product group
+  product_group_name  = local.admin_group
   common_tags         = var.common_tags
 }
 
