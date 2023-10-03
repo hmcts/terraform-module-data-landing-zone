@@ -4,7 +4,7 @@ module "storage" {
   for_each                 = local.storage_accounts
   env                      = var.env
   storage_account_name     = lower(replace("${local.name}${each.key}${var.env}", "-", ""))
-  resource_group_name      = azurerm_resource_group.this["storage"].name
+  resource_group_name      = azurerm_resource_group.this[each.value.resource_group_key].name
   location                 = var.location
   account_kind             = var.storage_account_kind
   account_tier             = var.storage_account_tier
@@ -28,7 +28,7 @@ module "storage" {
 resource "azurerm_private_endpoint" "storage_pe" {
   for_each            = { for value in local.flattened_storage_accounts_private_endpoints : "${value.storage_account}-${value.private_endpoint}" => value }
   name                = "${local.name}-${each.key}-pe-${var.env}"
-  resource_group_name = azurerm_resource_group.this["storage"].name
+  resource_group_name = azurerm_resource_group.this[each.value.resource_group_key].name
   location            = var.location
   subnet_id           = module.networking.subnet_ids["vnet-services"]
   tags                = var.common_tags

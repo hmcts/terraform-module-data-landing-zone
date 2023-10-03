@@ -9,16 +9,24 @@ locals {
 
   storage_accounts = {
     raw = {
-      containers        = local.domain_file_system_names
-      private_endpoints = local.default_storage_private_endpoints
+      resource_group_key = "storage"
+      containers         = local.domain_file_system_names
+      private_endpoints  = local.default_storage_private_endpoints
     }
     curated = {
-      containers        = local.domain_file_system_names
-      private_endpoints = local.default_storage_private_endpoints
+      resource_group_key = "storage"
+      containers         = local.domain_file_system_names
+      private_endpoints  = local.default_storage_private_endpoints
     }
     workspace = {
-      containers        = local.data_product_file_system_names
-      private_endpoints = local.default_storage_private_endpoints
+      resource_group_key = "storage"
+      containers         = local.data_product_file_system_names
+      private_endpoints  = local.default_storage_private_endpoints
+    }
+    external = {
+      resource_group_key = "external-storage"
+      containers         = [{ name = "data", access_type = "private" }]
+      private_endpoints  = local.default_storage_private_endpoints
     }
   }
   default_storage_private_endpoints = {
@@ -38,9 +46,10 @@ locals {
   flattened_storage_accounts_private_endpoints = flatten([
     for key, value in local.storage_accounts : [
       for private_endpoint, dns_zone_id in value.private_endpoints : {
-        private_endpoint = private_endpoint
-        dns_zone_id      = dns_zone_id
-        storage_account  = key
+        private_endpoint   = private_endpoint
+        dns_zone_id        = dns_zone_id
+        storage_account    = key
+        resource_group_key = value.resource_group_key
       }
     ]
   ])
