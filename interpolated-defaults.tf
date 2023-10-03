@@ -4,6 +4,7 @@ data "azurerm_client_config" "current" {}
 locals {
   is_prod              = length(regexall(".*(prod).*", var.env)) > 0
   is_sbox              = length(regexall(".*(s?box).*", var.env)) > 0
+  admin_group          = local.is_prod ? "DTS Platform Operations SC" : "DTS Platform Operations"
   name                 = var.name != null ? var.name : "dlrm-ingest"
   resource_group_names = ["network", "management", "logging", "storage", "external-storage", "metadata", "shared-integration", "shared-product", "di001", "di002", "dp001", "dp002"]
 
@@ -54,8 +55,15 @@ locals {
     ]
   ])
 
+  metadata_vaults = ["meta001", "meta002"]
+
   ssptl_vnet_name           = "ss-ptl-vnet"
   ssptl_vnet_resource_group = "ss-ptl-network-rg"
+}
+
+data "azuread_group" "admin_group" {
+  display_name     = local.admin_group
+  security_enabled = true
 }
 
 data "azurerm_subnet" "ssptl-00" {
