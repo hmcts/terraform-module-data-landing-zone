@@ -3,6 +3,7 @@
 resource "azurerm_resource_group" "example" {
   name     = "${local.name}-product-databricks001-rg"
   location = var.location
+  tags     = var.common_tags
 }
 
 
@@ -11,6 +12,7 @@ resource "azurerm_databricks_workspace" "example" {
   resource_group_name               = azurerm_resource_group.example.name
   location                          = var.location
   sku                               = "premium"
+  managed_resource_group_name       = "${var.prefix}-product-databricks001"
   tags                              = var.common_tags
   infrastructure_encryption_enabled = false
   custom_parameters {
@@ -25,12 +27,11 @@ resource "azurerm_databricks_workspace" "example" {
   }
 }
 
-
 /* resource "azurerm_synapse_workspace" "example" {
   name                                 = "example"
   resource_group_name                  = azurerm_resource_group.example.name
   location                             = var.location
-  storage_data_lake_gen2_filesystem_id = azurerm_databricks_workspace.example.workspace_id
+  storage_data_lake_gen2_filesystem_id = azurerm_databricks_workspace.example.
   sql_administrator_login              = "sqladminuser"
   sql_administrator_login_password     = "H@Sh1CoR3!"
 
@@ -46,6 +47,15 @@ resource "azurerm_databricks_workspace" "example" {
 
   tags = var.common_tags
 } */
+
+/* resource "azurerm_synapse_sql_pool" "default" {
+  name                 = "sqlPool001"
+  synapse_workspace_id = azurerm_databricks_workspace.example.id
+  sku_name             = "DW100c"
+  create_mode          = "Default"
+  
+} */
+
 // Resources
 /* resource synapse 'Microsoft.Synapse/workspaces@2021-03-01' = {
   name: synapseName

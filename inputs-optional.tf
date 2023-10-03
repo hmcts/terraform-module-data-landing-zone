@@ -38,4 +38,9 @@ variable "storage_account_replication_type" {
   description = "The replication type of the storage account, will default to LRS."
   type        = string
   default     = "LRS"
+
+variable "prefix" {
+  description = "Specifies the prefix for all resources created in this deployment"
+  type        = string
+  default     = "prefix"
 }
