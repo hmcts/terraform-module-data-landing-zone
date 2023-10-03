@@ -15,3 +15,9 @@ variable "name" {
   type        = string
   default     = null
 }
+
+variable "prefix" {
+  description = "Specifies the prefix for all resources created in this deployment"
+  type        = string
+  default     = "prefix"
+}
