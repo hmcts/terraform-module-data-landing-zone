@@ -101,7 +101,7 @@ module "networking" {
         "vnet-data-product-002"
       ]
       rules = {
-        "Microsoft-Databricks-workspaces-UseOnly-databricks-worker-to-worker-inbound" = {
+        "Dbricks-workspaces-UseOnly-databricks-worker-to-worker-inbound" = {
           priority                   = 100
           direction                  = "Inbound"
           access                     = "Allow"
@@ -112,7 +112,7 @@ module "networking" {
           destination_address_prefix = "VirtualNetwork"
           description                = "Required for worker nodes communication within a cluster."
         }
-        "Microsoft-Databricks-workspaces-UseOnly-databricks-worker-to-worker-outbound" = {
+        "Dbricks-workspaces-UseOnly-databricks-worker-to-worker-outbound" = {
           priority                   = 101
           direction                  = "Outbound"
           access                     = "Allow"
@@ -123,7 +123,7 @@ module "networking" {
           destination_address_prefix = "VirtualNetwork"
           description                = "Required for worker nodes communication within a cluster."
         }
-        "Microsoft-Databricks-workspaces-UseOnly-databricks-worker-to-sql" = {
+        "Dbricks-workspaces-UseOnly-databricks-worker-to-sql" = {
           priority                   = 102
           direction                  = "Outbound"
           access                     = "Allow"
@@ -134,7 +134,7 @@ module "networking" {
           destination_address_prefix = "Sql"
           description                = "Required for workers communication with Azure SQL services."
         }
-        "Microsoft-Databricks-workspaces-UseOnly-databricks-worker-to-storage" = {
+        "Dbricks-workspaces-UseOnly-databricks-worker-to-storage" = {
           priority                   = 103
           direction                  = "Outbound"
           access                     = "Allow"
@@ -145,7 +145,7 @@ module "networking" {
           destination_address_prefix = "Storage"
           description                = "Required for workers communication with Azure Storage services."
         }
-        "Microsoft-Databricks-workspaces-UseOnly-databricks-worker-to-eventhub" = {
+        "Dbricks-workspaces-UseOnly-databricks-worker-to-eventhub" = {
           priority                   = 104
           direction                  = "Outbound"
           access                     = "Allow"
@@ -156,7 +156,7 @@ module "networking" {
           destination_address_prefix = "EventHub"
           description                = "Required for workers communication with Azure EventHub services."
         }
-        "Microsoft-Databricks-workspaces-UseOnly-databricks-worker-to-webapp" = {
+        "Dbricks-workspaces-UseOnly-databricks-worker-to-webapp" = {
           priority                   = 100
           direction                  = "Outbound"
           access                     = "Allow"

@@ -59,7 +59,7 @@ variable "data_product_002_subnet_address_space" {
 }
 
 variable "default_route_next_hop_ip" {
-  type = string
+  type        = string
   description = "The IP address of the private ip configuration of the Hub Palo load balancer."
 }
 
