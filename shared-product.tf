@@ -16,11 +16,11 @@ resource "azurerm_databricks_workspace" "example" {
   tags                              = var.common_tags
   infrastructure_encryption_enabled = false
   custom_parameters {
-    virtual_network_id                                   = module.networking.vnet_ids["data-landing"]
-    public_subnet_name                                   = module.networking.subnet_names["data-landing-data-bricks-public"]
-    public_subnet_network_security_group_association_id  = module.networking.network_security_groups_ids["data-landing"]
-    private_subnet_name                                  = module.networking.subnet_names["data-landing-data-bricks-private"]
-    private_subnet_network_security_group_association_id = module.networking.network_security_groups_ids["data-landing"]
+    virtual_network_id                                   = module.networking.vnet_ids["vnet"]
+    public_subnet_name                                   = module.networking.subnet_names["vnet-data-bricks-public"]
+    public_subnet_network_security_group_association_id  = module.networking.network_security_groups_ids["nsg"]
+    private_subnet_name                                  = module.networking.subnet_names["vnet-data-bricks-private"]
+    private_subnet_network_security_group_association_id = module.networking.network_security_groups_ids["nsg"]
     no_public_ip                                         = true
 
     # Add encryption (Think it wants KV details) 
