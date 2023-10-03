@@ -1,14 +1,16 @@
 module "networking" {
   source = "github.com/hmcts/terraform-module-azure-virtual-networking?ref=main"
 
-  env         = var.env
-  product     = "data-landing"
-  common_tags = var.common_tags
-  component   = "networking"
-  name        = local.name
+  env                          = var.env
+  product                      = "data-landing"
+  common_tags                  = var.common_tags
+  component                    = "networking"
+  name                         = local.name
+  location                     = var.location
+  existing_resource_group_name = azurerm_resource_group.this["network"].name
 
   vnets = {
-    data-landing = {
+    vnet = {
       address_space = var.vnet_address_space
       subnets = {
         services = {
@@ -63,17 +65,17 @@ module "networking" {
   }
 
   route_tables = {
-    data-landing = {
+    rt = {
       subnets = [
-        "data-landing-services",
-        "data-landing-data-bricks-public",
-        "data-landing-data-bricks-private",
-        "data-landing-data-bricks-product-public",
-        "data-landing-data-bricks-product-private",
-        "data-landing-data-integration-001",
-        "data-landing-data-integration-002",
-        "data-landing-data-product-001",
-        "data-landing-data-product-002"
+        "vnet-services",
+        "vnet-data-bricks-public",
+        "vnet-data-bricks-private",
+        "vnet-data-bricks-product-public",
+        "vnet-data-bricks-product-private",
+        "vnet-data-integration-001",
+        "vnet-data-integration-002",
+        "vnet-data-product-001",
+        "vnet-data-product-002"
       ]
       routes = {
         default = {
@@ -86,17 +88,17 @@ module "networking" {
   }
 
   network_security_groups = {
-    data-landing = {
+    nsg = {
       subnets = [
-        "data-landing-services",
-        "data-landing-data-bricks-public",
-        "data-landing-data-bricks-private",
-        "data-landing-data-bricks-product-public",
-        "data-landing-data-bricks-product-private",
-        "data-landing-data-integration-001",
-        "data-landing-data-integration-002",
-        "data-landing-data-product-001",
-        "data-landing-data-product-002"
+        "vnet-services",
+        "vnet-data-bricks-public",
+        "vnet-data-bricks-private",
+        "vnet-data-bricks-product-public",
+        "vnet-data-bricks-product-private",
+        "vnet-data-integration-001",
+        "vnet-data-integration-002",
+        "vnet-data-product-001",
+        "vnet-data-product-002"
       ]
       rules = {
         "Microsoft-Databricks-workspaces-UseOnly-databricks-worker-to-worker-inbound" = {
