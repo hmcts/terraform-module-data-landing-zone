@@ -17,15 +17,34 @@ resource "azurerm_databricks_workspace" "example" {
   infrastructure_encryption_enabled = false
   custom_parameters {
     virtual_network_id                                   = module.networking.vnet_ids["data-landing"]
-    public_subnet_name                                   = module.networking.subnet_names["data-landing-data-bricks-public"]
+    public_subnet_name                                   = module.networking.subnet_names["vnet-data-bricks-public"]
     public_subnet_network_security_group_association_id  = module.networking.network_security_groups_ids["data-landing"]
-    private_subnet_name                                  = module.networking.subnet_names["data-landing-data-bricks-private"]
+    private_subnet_name                                  = module.networking.subnet_names["vnet-data-bricks-private"]
     private_subnet_network_security_group_association_id = module.networking.network_security_groups_ids["data-landing"]
     no_public_ip                                         = true
 
     # Add encryption (Think it wants KV details) 
   }
 }
+
+resource "azurerm_synapse_workspace" "example" {
+  name                                 = "example"
+  resource_group_name                  = azurerm_resource_group.example.name
+  location                             = var.location
+  storage_data_lake_gen2_filesystem_id = module.storage.storage_account_id["workspace"]
+  sql_administrator_login              = "sqladminuser"
+  sql_administrator_login_password     = "H@Sh1CoR3!"
+
+
+  identity {
+    type = "SystemAssigned"
+  }
+
+  tags = var.common_tags
+}
+
+
+
 
 /* resource "azurerm_synapse_workspace" "example" {
   name                             = "example"
