@@ -16,11 +16,11 @@ resource "azurerm_databricks_workspace" "example" {
   tags                              = var.common_tags
   infrastructure_encryption_enabled = false
   custom_parameters {
-    virtual_network_id                                   = module.networking.vnet_ids["data-landing"]
+    virtual_network_id                                   = module.networking.vnet_ids["vnet"]
     public_subnet_name                                   = module.networking.subnet_names["vnet-data-bricks-public"]
-    public_subnet_network_security_group_association_id  = module.networking.network_security_groups_ids["data-landing"]
+    public_subnet_network_security_group_association_id  = module.networking.network_security_groups_ids["nsg"]
     private_subnet_name                                  = module.networking.subnet_names["vnet-data-bricks-private"]
-    private_subnet_network_security_group_association_id = module.networking.network_security_groups_ids["data-landing"]
+    private_subnet_network_security_group_association_id = module.networking.network_security_groups_ids["nsg"]
     no_public_ip                                         = true
 
     # Add encryption (Think it wants KV details) 
@@ -31,11 +31,13 @@ resource "azurerm_synapse_workspace" "example" {
   name                                 = "example"
   resource_group_name                  = azurerm_resource_group.example.name
   location                             = var.location
-  storage_data_lake_gen2_filesystem_id = module.storage.storage_account_id["workspace"]
+  storage_data_lake_gen2_filesystem_id = module.storage["workspace"].storageaccount_id
   sql_administrator_login              = "sqladminuser"
   sql_administrator_login_password     = "H@Sh1CoR3!"
-
-
+  data_exfiltration_protection_enabled = true
+  managed_virtual_network_enabled      = true
+  managed_resource_group_name          = "${var.prefix}-product-synapse001"
+  purview_id                           = var.purview_id
   identity {
     type = "SystemAssigned"
   }
@@ -43,16 +45,6 @@ resource "azurerm_synapse_workspace" "example" {
   tags = var.common_tags
 }
 
-
-
-
-/* resource "azurerm_synapse_workspace" "example" {
-  name                             = "example"
-  sql_administrator_login          = "sqladminuser"
-  sql_administrator_login_password = "H@Sh1CoR3!"
-  managed_virtual_network_enable   = true
-  tags                             = var.common_tags
-} */
 
 /* resource "azurerm_synapse_sql_pool" "default" {
   name                 = "sqlPool001"

@@ -45,3 +45,9 @@ variable "prefix" {
   type        = string
   default     = "prefix"
 }
+
+variable "purview_id" {
+  description = "The ID of Azure purview account"
+  type        = string
+  default     = "/subscriptions/a8140a9e-f1b0-481f-a4de-09e2ee23f7ab/resourceGroups/mi-sbox-rg/providers/Microsoft.Purview/accounts/mi-purview-sbox"
+}
