@@ -32,90 +32,42 @@ resource "azurerm_private_endpoint" "metadata_vault_pe" {
   }
 }
 
-resource "random_string" "mssql_username" {
-  length  = 4
-  special = false
-}
+module "metadata_mssql" {
+  source                          = "github.com/hmcts/terraform-module-mssql?ref=main"
+  name                            = "${local.name}-metadata-mssql"
+  env                             = var.env
+  product                         = "data-landing"
+  component                       = "metadata"
+  enable_system_assigned_identity = true
+  enable_private_endpoint         = true
+  private_endpoint_subnet_id      = module.networking.subnet_ids["vnet-services"]
+  common_tags                     = var.common_tags
 
-resource "random_password" "mssql_password" {
-  length           = 32
-  special          = true
-  override_special = "#$%&@()_[]{}<>:?"
-  min_upper        = 4
-  min_lower        = 4
-  min_numeric      = 4
+  mssql_databases = {
+    "${local.name}-metadata-db-${var.env}" = {
+      collation                   = "SQL_Latin1_General_CP1_CI_AS"
+      license_type                = "LicenseIncluded"
+      max_size_gb                 = 1
+      sku_name                    = "Basic"
+      zone_redundant              = false
+      create_mode                 = "Default"
+      min_capacity                = 1
+      geo_backup_enabled          = true
+      auto_pause_delay_in_minutes = -1
+    }
+  }
 }
 
 resource "azurerm_key_vault_secret" "mssql_username" {
   name         = "${local.name}-metadata-mssql-username-${var.env}"
-  value        = "mssqladmin_${random_string.mssql_username.result}"
+  value        = module.metadata_mssql.mssql_admin_username
   key_vault_id = module.metadata_vault["meta002"].key_vault_id
 }
 
 resource "azurerm_key_vault_secret" "mssql_password" {
   name         = "${local.name}-metadata-mssql-password-${var.env}"
-  value        = random_password.mssql_password.result
+  value        = module.metadata_mssql.mssql_admin_password
   key_vault_id = module.metadata_vault["meta002"].key_vault_id
-}
-
-resource "azurerm_mssql_server" "this" {
-  name                          = "${local.name}-metadata-mssql-server-${var.env}"
-  resource_group_name           = azurerm_resource_group.this["metadata"].name
-  location                      = var.location
-  version                       = "12.0"
-  administrator_login           = "mssqladmin_${random_string.mssql_username.result}"
-  administrator_login_password  = random_password.mssql_password.result
-  minimum_tls_version           = "1.2"
-  public_network_access_enabled = false
-
-  identity {
-    type = "SystemAssigned"
-  }
-
-  azuread_administrator {
-    login_username = local.admin_group
-    object_id      = data.azuread_group.admin_group.object_id
-    tenant_id      = data.azurerm_client_config.current.tenant_id
-  }
-
-  tags = var.common_tags
-}
-
-resource "azurerm_mssql_database" "this" {
-  name                        = "${local.name}-metadata-db-${var.env}"
-  server_id                   = azurerm_mssql_server.this.id
-  collation                   = "SQL_Latin1_General_CP1_CI_AS"
-  license_type                = "LicenseIncluded"
-  max_size_gb                 = 1
-  read_scale                  = false
-  sku_name                    = "Basic"
-  zone_redundant              = false
-  create_mode                 = "Default"
-  min_capacity                = 1
-  geo_backup_enabled          = true
-  auto_pause_delay_in_minutes = -1
-
-  tags = var.common_tags
-}
-
-resource "azurerm_private_endpoint" "metadata_mssql_pe" {
-  name                = "${local.name}-metadata-mssql-pe-${var.env}"
-  resource_group_name = azurerm_resource_group.this["metadata"].name
-  location            = var.location
-  subnet_id           = module.networking.subnet_ids["vnet-services"]
-  tags                = var.common_tags
-
-  private_service_connection {
-    name                           = azurerm_mssql_server.this.name
-    is_manual_connection           = false
-    private_connection_resource_id = azurerm_mssql_server.this.id
-    subresource_names              = ["sqlServer"]
-  }
-
-  private_dns_zone_group {
-    name                 = "endpoint-dnszonegroup"
-    private_dns_zone_ids = ["/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/privatelink.database.windows.net"]
-  }
 }
 
 resource "random_string" "mysql_username" {
