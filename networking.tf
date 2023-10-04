@@ -16,6 +16,14 @@ module "networking" {
         services = {
           address_prefixes = var.services_subnet_address_space
         }
+        services-mysql = {
+          address_prefixes = var.services_mysql_subnet_address_space
+          delegations = {
+            mysql-flexible-delegation = {
+              service_name = "Microsoft.DBforMySQL/flexibleServers"
+            }
+          }
+        }
         data-bricks-public = {
           address_prefixes = var.data_bricks_public_subnet_address_space
           delegations = {
