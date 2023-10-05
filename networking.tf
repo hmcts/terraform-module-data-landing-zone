@@ -21,6 +21,9 @@ module "networking" {
           delegations = {
             mysql-flexible-delegation = {
               service_name = "Microsoft.DBforMySQL/flexibleServers"
+              actions = [
+                "Microsoft.Network/virtualNetworks/subnets/join/action"
+              ]
             }
           }
         }
@@ -178,4 +181,13 @@ module "networking" {
       }
     }
   }
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "mysql_data_landing_link" {
+  provider              = azurerm.cftptl
+  name                  = "${local.name}-mysql-data-landing-link"
+  private_dns_zone_name = data.azurerm_private_dns_zone.mysql.name
+  virtual_network_id    = module.networking.vnet_ids["vnet"]
+  resource_group_name   = data.azurerm_private_dns_zone.mysql.resource_group_name
+  tags                  = var.common_tags
 }

@@ -57,8 +57,9 @@ locals {
 
   metadata_vaults = ["meta001", "meta002"]
 
-  ssptl_vnet_name           = "ss-ptl-vnet"
-  ssptl_vnet_resource_group = "ss-ptl-network-rg"
+  ssptl_vnet_name                  = "ss-ptl-vnet"
+  ssptl_vnet_resource_group        = "ss-ptl-network-rg"
+  cftptl_core_infra_resource_group = "core-infra-intsvc-rg"
 }
 
 data "azuread_group" "admin_group" {
@@ -78,4 +79,10 @@ data "azurerm_subnet" "ssptl-01" {
   name                 = "aks-01"
   virtual_network_name = local.ssptl_vnet_name
   resource_group_name  = local.ssptl_vnet_resource_group
+}
+
+data "azurerm_private_dns_zone" "mysql" {
+  provider            = azurerm.cftptl
+  name                = "privatelink.mysql.database.azure.com"
+  resource_group_name = local.cftptl_core_infra_resource_group
 }
