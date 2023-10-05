@@ -1,5 +1,5 @@
 module "storage" {
-  source = "github.com/hmcts/cnp-module-storage-account?ref=master"
+  source = "github.com/hmcts/cnp-module-storage-account?ref=feat%2Fallow-setting-versioning-enabled"
 
   for_each                 = local.storage_accounts
   env                      = var.env
@@ -14,6 +14,7 @@ module "storage" {
   enable_nfs               = false
   containers               = each.value.containers
   enable_data_protection   = true
+  enable_versioning        = false
 
   sa_subnets = [
     data.azurerm_subnet.ssptl-00.id,

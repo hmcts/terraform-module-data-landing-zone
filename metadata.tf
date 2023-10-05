@@ -85,9 +85,6 @@ module "metadata_mysql" {
   storage_size_gb              = 20
 
   mysql_version = "5.7"
-  mysql_server_configuration = {
-    lower_case_table_names = "2"
-  }
   mysql_databases = {
     "${local.name}-HiveMetastoreDb-${var.env}" = {}
   }
