@@ -1,5 +1,5 @@
 module "storage" {
-  source = "github.com/hmcts/cnp-module-storage-account?ref=feat%2Fallow-setting-versioning-enabled"
+  source = "github.com/hmcts/cnp-module-storage-account?ref=master"
 
   for_each                 = local.storage_accounts
   env                      = var.env
