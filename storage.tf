@@ -71,3 +71,9 @@ resource "azurerm_storage_management_policy" "this" {
     }
   }
 }
+
+resource "azurerm_storage_data_lake_gen2_filesystem" "this" {
+  for_each           = local.storage_accounts
+  name               = "${local.name}-${each.key}-${var.env}"
+  storage_account_id = module.storage[each.key].storageaccount_id
+}

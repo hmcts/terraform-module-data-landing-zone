@@ -31,7 +31,7 @@ resource "azurerm_synapse_workspace" "example" {
   name                                 = "example"
   resource_group_name                  = azurerm_resource_group.example.name
   location                             = var.location
-  storage_data_lake_gen2_filesystem_id = module.storage["workspace"].storageaccount_id
+  storage_data_lake_gen2_filesystem_id = azurerm_storage_data_lake_gen2_filesystem.this["workspace"].id
   sql_administrator_login              = "sqladminuser"
   sql_administrator_login_password     = "H@Sh1CoR3!"
   data_exfiltration_protection_enabled = true
