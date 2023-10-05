@@ -57,6 +57,8 @@ module "metadata_mssql" {
       auto_pause_delay_in_minutes = -1
     }
   }
+
+  depends_on = [azurerm_private_dns_zone_virtual_network_link.data_landing_link]
 }
 
 resource "azurerm_key_vault_secret" "mssql_username" {
@@ -90,7 +92,7 @@ module "metadata_mysql" {
     "${local.name}-HiveMetastoreDb-${var.env}" = {}
   }
 
-  depends_on = [azurerm_private_dns_zone_virtual_network_link.mysql_data_landing_link]
+  depends_on = [azurerm_private_dns_zone_virtual_network_link.data_landing_link]
 }
 
 resource "azurerm_key_vault_secret" "mysql_username" {

@@ -183,11 +183,12 @@ module "networking" {
   }
 }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "mysql_data_landing_link" {
+resource "azurerm_private_dns_zone_virtual_network_link" "data_landing_link" {
+  for_each              = toset(local.privatelink_dns_zone_names)
   provider              = azurerm.cftptl
-  name                  = "${local.name}-mysql-data-landing-link"
-  private_dns_zone_name = data.azurerm_private_dns_zone.mysql.name
+  name                  = "${local.name}-${split(".", each.key)[1]}-data-landing-link-${var.env}"
+  private_dns_zone_name = data.azurerm_private_dns_zone.cftptl[each.key].name
   virtual_network_id    = module.networking.vnet_ids["vnet"]
-  resource_group_name   = data.azurerm_private_dns_zone.mysql.resource_group_name
+  resource_group_name   = data.azurerm_private_dns_zone.cftptl[each.key].resource_group_name
   tags                  = var.common_tags
 }

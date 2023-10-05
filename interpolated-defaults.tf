@@ -60,6 +60,13 @@ locals {
   ssptl_vnet_name                  = "ss-ptl-vnet"
   ssptl_vnet_resource_group        = "ss-ptl-network-rg"
   cftptl_core_infra_resource_group = "core-infra-intsvc-rg"
+
+  privatelink_dns_zone_names = [
+    "privatelink.mysql.database.azure.com",
+    "privatelink.blob.core.windows.net",
+    "privatelink.dfs.core.windows.net",
+    "privatelink.vaultcore.azure.net",
+  ]
 }
 
 data "azuread_group" "admin_group" {
@@ -81,8 +88,9 @@ data "azurerm_subnet" "ssptl-01" {
   resource_group_name  = local.ssptl_vnet_resource_group
 }
 
-data "azurerm_private_dns_zone" "mysql" {
+data "azurerm_private_dns_zone" "cftptl" {
+  for_each            = toset(local.privatelink_dns_zone_names)
   provider            = azurerm.cftptl
-  name                = "privatelink.mysql.database.azure.com"
+  name                = each.key
   resource_group_name = local.cftptl_core_infra_resource_group
 }
