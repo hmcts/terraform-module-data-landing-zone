@@ -1,14 +1,18 @@
 module "shared_product_databricks" {
-  source                = "./modules/azure-databricks"
-  name                  = "${local.name}-product-databricks001"
-  resource_group        = azurerm_resource_group.this["shared-product"].name
-  location              = var.location
-  common_tags           = var.common_tags
-  vnet_id               = module.networking.vnet_ids["vnet"]
-  public_subnet_name    = module.networking.subnet_names["vnet-data-bricks-product-public"]
-  public_subnet_nsg_id  = module.networking.network_security_groups_ids["nsg"]
-  private_subnet_name   = module.networking.subnet_names["vnet-data-bricks-product-private"]
-  private_subnet_nsg_id = module.networking.network_security_groups_ids["nsg"]
+  source = "github.com/hmcts/terraform-module-databricks?ref=main"
+
+  env                          = var.env
+  product                      = "data-landing"
+  component                    = "shared-integration"
+  name                         = "${local.name}-product-databricks001"
+  existing_resource_group_name = azurerm_resource_group.this["shared-product"].name
+  location                     = var.location
+  common_tags                  = var.common_tags
+  vnet_id                      = module.networking.vnet_ids["vnet"]
+  public_subnet_name           = module.networking.subnet_names["vnet-data-bricks-public"]
+  public_subnet_nsg_id         = module.networking.network_security_groups_ids["nsg"]
+  private_subnet_name          = module.networking.subnet_names["vnet-data-bricks-private"]
+  private_subnet_nsg_id        = module.networking.network_security_groups_ids["nsg"]
 }
 
 resource "azurerm_synapse_workspace" "example" {
