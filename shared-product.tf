@@ -1,35 +1,19 @@
-# Creates shared data landing zone product resources
-
-resource "azurerm_resource_group" "example" {
-  name     = "${local.name}-product-databricks001-rg"
-  location = var.location
-  tags     = var.common_tags
-}
-
-
-resource "azurerm_databricks_workspace" "example" {
-  name                              = "${local.name}-product-databricks001"
-  resource_group_name               = azurerm_resource_group.example.name
-  location                          = var.location
-  sku                               = "premium"
-  managed_resource_group_name       = "${var.prefix}-product-databricks001"
-  tags                              = var.common_tags
-  infrastructure_encryption_enabled = false
-  custom_parameters {
-    virtual_network_id                                   = module.networking.vnet_ids["vnet"]
-    public_subnet_name                                   = module.networking.subnet_names["vnet-data-bricks-public"]
-    public_subnet_network_security_group_association_id  = module.networking.network_security_groups_ids["nsg"]
-    private_subnet_name                                  = module.networking.subnet_names["vnet-data-bricks-private"]
-    private_subnet_network_security_group_association_id = module.networking.network_security_groups_ids["nsg"]
-    no_public_ip                                         = true
-
-    # Add encryption (Think it wants KV details) 
-  }
+module "shared_product_databricks" {
+  source                = "./modules/azure-databricks"
+  name                  = "${local.name}-product-databricks001"
+  resource_group        = azurerm_resource_group.this["shared-product"].name
+  location              = var.location
+  common_tags           = var.common_tags
+  vnet_id               = module.networking.vnet_ids["vnet"]
+  public_subnet_name    = module.networking.subnet_names["vnet-data-bricks-product-public"]
+  public_subnet_nsg_id  = module.networking.network_security_groups_ids["nsg"]
+  private_subnet_name   = module.networking.subnet_names["vnet-data-bricks-product-private"]
+  private_subnet_nsg_id = module.networking.network_security_groups_ids["nsg"]
 }
 
 resource "azurerm_synapse_workspace" "example" {
   name                                 = "${var.prefix}-product-synapse001"
-  resource_group_name                  = azurerm_resource_group.example.name
+  resource_group_name                  = azurerm_resource_group.this["shared-product"].name
   location                             = var.location
   storage_data_lake_gen2_filesystem_id = azurerm_storage_data_lake_gen2_filesystem.this["workspace"].id
   sql_administrator_login              = "sqladminuser"

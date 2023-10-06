@@ -27,25 +27,18 @@ module "storage" {
   common_tags  = var.common_tags
 }
 
-resource "azurerm_private_endpoint" "storage_pe" {
-  for_each            = { for value in local.flattened_storage_accounts_private_endpoints : "${value.storage_account}-${value.private_endpoint}" => value }
-  name                = "${local.name}-${each.key}-pe-${var.env}"
-  resource_group_name = azurerm_resource_group.this[each.value.resource_group_key].name
-  location            = var.location
-  subnet_id           = module.networking.subnet_ids["vnet-services"]
-  tags                = var.common_tags
+module "storage_pe" {
+  for_each = { for value in local.flattened_storage_accounts_private_endpoints : "${value.storage_account}-${value.private_endpoint}" => value }
+  source   = "./modules/azure-private-endpoint"
 
-  private_service_connection {
-    name                           = module.storage[each.value.storage_account].storageaccount_name
-    is_manual_connection           = false
-    private_connection_resource_id = module.storage[each.value.storage_account].storageaccount_id
-    subresource_names              = [each.value.private_endpoint]
-  }
-
-  private_dns_zone_group {
-    name                 = "endpoint-dnszonegroup"
-    private_dns_zone_ids = [each.value.dns_zone_id]
-  }
+  name             = "${local.name}-${each.key}-pe-${var.env}"
+  resource_group   = azurerm_resource_group.this[each.value.resource_group_key].name
+  location         = var.location
+  subnet_id        = module.networking.subnet_ids["vnet-services"]
+  common_tags      = var.common_tags
+  resource_name    = module.storage[each.value.storage_account].storageaccount_name
+  resource_id      = module.storage[each.value.storage_account].storageaccount_id
+  subresource_name = each.value.private_endpoint
 }
 
 resource "azurerm_storage_management_policy" "this" {
