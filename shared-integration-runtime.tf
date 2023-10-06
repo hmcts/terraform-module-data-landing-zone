@@ -59,6 +59,7 @@ module "shared_integration_datafactory" {
   private_endpoint_enabled         = true
   private_endpoint_subnet_id       = module.networking.subnet_ids["vnet-services"]
   common_tags                      = var.common_tags
+  existing_resource_group_name     = azurerm_resource_group.this["shared-integration"].name
 
   managed_private_endpoints = {
     purview = {
