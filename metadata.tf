@@ -11,25 +11,18 @@ module "metadata_vault" {
   common_tags         = var.common_tags
 }
 
-resource "azurerm_private_endpoint" "metadata_vault_pe" {
-  for_each            = toset(local.metadata_vaults)
-  name                = "${local.name}-${each.key}-pe-${var.env}"
-  resource_group_name = azurerm_resource_group.this["metadata"].name
-  location            = var.location
-  subnet_id           = module.networking.subnet_ids["vnet-services"]
-  tags                = var.common_tags
+module "metadata_vault_pe" {
+  for_each = toset(local.metadata_vaults)
+  source   = "./modules/azure-private-endpoint"
 
-  private_service_connection {
-    name                           = module.metadata_vault[each.key].key_vault_name
-    is_manual_connection           = false
-    private_connection_resource_id = module.metadata_vault[each.key].key_vault_id
-    subresource_names              = ["vault"]
-  }
-
-  private_dns_zone_group {
-    name                 = "endpoint-dnszonegroup"
-    private_dns_zone_ids = ["/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"]
-  }
+  name             = "${local.name}-${each.key}-pe-${var.env}"
+  resource_group   = azurerm_resource_group.this["metadata"].name
+  location         = var.location
+  subnet_id        = module.networking.subnet_ids["vnet-services"]
+  common_tags      = var.common_tags
+  resource_name    = module.metadata_vault[each.key].key_vault_name
+  resource_id      = module.metadata_vault[each.key].key_vault_id
+  subresource_name = "vault"
 }
 
 module "metadata_mssql" {

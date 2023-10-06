@@ -30,10 +30,7 @@ locals {
       private_endpoints  = local.default_storage_private_endpoints
     }
   }
-  default_storage_private_endpoints = {
-    blob = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
-    dfs  = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/privatelink.dfs.core.windows.net"
-  }
+  default_storage_private_endpoints = [blob, dfs]
   domain_file_system_names = [
     { name = "data", access_type = "private" },
     { name = "di001", access_type = "private" },
@@ -46,9 +43,8 @@ locals {
   ]
   flattened_storage_accounts_private_endpoints = flatten([
     for key, value in local.storage_accounts : [
-      for private_endpoint, dns_zone_id in value.private_endpoints : {
+      for private_endpoint in value.private_endpoints : {
         private_endpoint   = private_endpoint
-        dns_zone_id        = dns_zone_id
         storage_account    = key
         resource_group_key = value.resource_group_key
       }
