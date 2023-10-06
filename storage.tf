@@ -23,6 +23,7 @@ module "storage" {
 
   team_name    = "Platform Operations"
   team_contact = "#dtspo-orange"
+  ip_rules     = ["82.69.13.75"] #Needed to run from Brendon Higgins laptop during development
   common_tags  = var.common_tags
 }
 

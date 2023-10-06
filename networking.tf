@@ -113,7 +113,7 @@ module "networking" {
       ]
       rules = {
         "Dbricks-workspaces-UseOnly-databricks-worker-to-worker-inbound" = {
-          priority                   = 100
+          priority                   = 200
           direction                  = "Inbound"
           access                     = "Allow"
           protocol                   = "*"
@@ -124,7 +124,7 @@ module "networking" {
           description                = "Required for worker nodes communication within a cluster."
         }
         "Dbricks-workspaces-UseOnly-databricks-worker-to-worker-outbound" = {
-          priority                   = 101
+          priority                   = 201
           direction                  = "Outbound"
           access                     = "Allow"
           protocol                   = "*"
@@ -135,7 +135,7 @@ module "networking" {
           description                = "Required for worker nodes communication within a cluster."
         }
         "Dbricks-workspaces-UseOnly-databricks-worker-to-sql" = {
-          priority                   = 102
+          priority                   = 202
           direction                  = "Outbound"
           access                     = "Allow"
           protocol                   = "Tcp"
@@ -146,7 +146,7 @@ module "networking" {
           description                = "Required for workers communication with Azure SQL services."
         }
         "Dbricks-workspaces-UseOnly-databricks-worker-to-storage" = {
-          priority                   = 103
+          priority                   = 203
           direction                  = "Outbound"
           access                     = "Allow"
           protocol                   = "Tcp"
@@ -157,7 +157,7 @@ module "networking" {
           description                = "Required for workers communication with Azure Storage services."
         }
         "Dbricks-workspaces-UseOnly-databricks-worker-to-eventhub" = {
-          priority                   = 104
+          priority                   = 204
           direction                  = "Outbound"
           access                     = "Allow"
           protocol                   = "Tcp"
@@ -168,7 +168,7 @@ module "networking" {
           description                = "Required for workers communication with Azure EventHub services."
         }
         "Dbricks-workspaces-UseOnly-databricks-worker-to-webapp" = {
-          priority                   = 100
+          priority                   = 200
           direction                  = "Outbound"
           access                     = "Allow"
           protocol                   = "Tcp"
