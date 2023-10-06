@@ -38,7 +38,7 @@ module "metadata_mssql" {
   existing_resource_group_name    = azurerm_resource_group.this["metadata"].name
 
   mssql_databases = {
-    "${local.name}-metadata-db-${var.env}" = {
+    "${local.metadata_mssql_db_name}" = {
       collation                   = "SQL_Latin1_General_CP1_CI_AS"
       license_type                = "LicenseIncluded"
       max_size_gb                 = 1

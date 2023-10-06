@@ -51,3 +51,15 @@ variable "purview_id" {
   type        = string
   default     = "/subscriptions/a8140a9e-f1b0-481f-a4de-09e2ee23f7ab/resourceGroups/mi-sbox-rg/providers/Microsoft.Purview/accounts/mi-purview-sbox"
 }
+
+variable "purview_managed_storage_id" {
+  description = "The ID of the managed storage account for Azure purview account."
+  type        = string
+  default     = null
+}
+
+variable "purview_managed_event_hub_id" {
+  description = "The ID of the managed event hub id for Azure purview account."
+  type        = string
+  default     = null
+}

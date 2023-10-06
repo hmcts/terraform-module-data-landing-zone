@@ -2,11 +2,12 @@ data "azurerm_subscription" "current" {}
 data "azurerm_client_config" "current" {}
 
 locals {
-  is_prod              = length(regexall(".*(prod).*", var.env)) > 0
-  is_sbox              = length(regexall(".*(s?box).*", var.env)) > 0
-  admin_group          = local.is_prod ? "DTS Platform Operations SC" : "DTS Platform Operations"
-  name                 = var.name != null ? var.name : "dlrm-ingest"
-  resource_group_names = ["network", "management", "logging", "storage", "external-storage", "metadata", "shared-integration", "shared-product", "di001", "di002", "dp001", "dp002"]
+  is_prod                = length(regexall(".*(prod).*", var.env)) > 0
+  is_sbox                = length(regexall(".*(s?box).*", var.env)) > 0
+  admin_group            = local.is_prod ? "DTS Platform Operations SC" : "DTS Platform Operations"
+  name                   = var.name != null ? var.name : "dlrm-ingest"
+  resource_group_names   = ["network", "management", "logging", "storage", "external-storage", "metadata", "shared-integration", "shared-product", "di001", "di002", "dp001", "dp002"]
+  metadata_mssql_db_name = "${local.name}-metadata-db-${var.env}"
 
   storage_accounts = {
     raw = {
