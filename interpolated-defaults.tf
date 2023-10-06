@@ -31,7 +31,7 @@ locals {
       private_endpoints  = local.default_storage_private_endpoints
     }
   }
-  default_storage_private_endpoints = [blob, dfs]
+  default_storage_private_endpoints = ["blob", "dfs"]
   domain_file_system_names = [
     { name = "data", access_type = "private" },
     { name = "di001", access_type = "private" },

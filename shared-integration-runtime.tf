@@ -138,13 +138,13 @@ resource "azurerm_data_factory_managed_private_endpoint" "storage" {
 resource "azurerm_data_factory_linked_service_azure_blob_storage" "this" {
   for_each          = toset(["raw", "curated"])
   name              = module.storage[each.key].storageaccount_name
-  data_factory_id   = azurerm_data_factory.example.id
+  data_factory_id   = azurerm_data_factory.this.id
   connection_string = module.storage[each.key].storageaccount_primary_dfs_endpoint
 }
 
 resource "azurerm_data_factory_linked_service_azure_databricks" "this" {
   name            = module.shared_integration_databricks.workspace_name
-  data_factory_id = azurerm_data_factory.this.is
+  data_factory_id = azurerm_data_factory.this.id
   description     = "Azure Databricks Compute for Data Engineering"
   adb_domain      = "https://${module.shared_integration_databricks.workspace_url}"
 
