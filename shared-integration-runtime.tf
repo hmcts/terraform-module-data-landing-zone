@@ -61,23 +61,7 @@ module "shared_integration_datafactory" {
   common_tags                      = var.common_tags
   existing_resource_group_name     = azurerm_resource_group.this["shared-integration"].name
 
-  managed_private_endpoints = {
-    purview = {
-      resource_id      = var.purview_id
-      subresource_name = "account"
-    }
-    //purview-storage-blob = {
-    //  resource_id      = var.purview_managed_storage_id
-    //  subresource_name = "blob"
-    //}
-    //purview-storage-queue = {
-    //  resource_id      = var.purview_managed_storage_id
-    //  subresource_name = "queue"
-    //}
-    //purview_eventhub = {
-    //  resource_id      = var.purview_managed_event_hub_id
-    //  subresource_name = "namespace"
-    //}
+  managed_private_endpoints = merge({
     keyvault = {
       resource_id      = module.metadata_vault["meta001"].key_vault_id
       subresource_name = "vault"
@@ -94,7 +78,7 @@ module "shared_integration_datafactory" {
       resource_id      = module.storage["curated"].storageaccount_id
       subresource_name = "dfs"
     }
-  }
+  }, local.adf_managed_purview_endpoints)
 
   linked_key_vaults = {
     "${module.metadata_vault["meta001"].key_vault_name}" = {

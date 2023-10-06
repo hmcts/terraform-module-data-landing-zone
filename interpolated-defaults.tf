@@ -68,6 +68,31 @@ locals {
     "privatelink.dfs.core.windows.net",
     "privatelink.vaultcore.azure.net",
   ]
+
+  adf_managed_purview_endpoints = merge(
+    var.purview_id == null ? {} : {
+      purview = {
+        resource_id      = var.purview_id
+        subresource_name = "account"
+      }
+    },
+    var.purview_managed_storage_id == null ? {} : {
+      purview-storage-blob = {
+        resource_id      = var.purview_managed_storage_id
+        subresource_name = "blob"
+      }
+      purview-storage-queue = {
+        resource_id      = var.purview_managed_storage_id
+        subresource_name = "queue"
+      }
+    },
+    var.purview_managed_event_hub_id == null ? {} : {
+      purview_eventhub = {
+        resource_id      = var.purview_managed_event_hub_id
+        subresource_name = "namespace"
+      }
+    }
+  )
 }
 
 data "azuread_group" "admin_group" {
