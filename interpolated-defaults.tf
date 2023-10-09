@@ -93,6 +93,10 @@ locals {
       }
     }
   )
+
+  shir_name                    = "${local.name}-${local.shir_name_short}"
+  shir_name_short              = "shir001"
+  shir_frontend_ip_config_name = "${local.shir_name}-lb-frontend-${var.env}"
 }
 
 data "azuread_group" "admin_group" {

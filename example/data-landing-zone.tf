@@ -1,6 +1,10 @@
 module "data_landing_zone" {
   source = "../."
 
+  providers = {
+    azurerm = azurerm
+  }
+
   env                                              = var.env
   common_tags                                      = var.common_tags
   default_route_next_hop_ip                        = var.default_route_next_hop_ip
