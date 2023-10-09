@@ -54,7 +54,7 @@ module "shared_integration_datafactory" {
   name                             = "${local.name}-integration-dataFactory001"
   public_network_enabled           = false
   managed_virtual_network_enabled  = true
-  purview_id                       = var.purview_id
+  purview_id                       = var.existing_purview_account != null ? var.existing_purview_account.resource_id : null
   system_assigned_identity_enabled = true
   private_endpoint_enabled         = true
   private_endpoint_subnet_id       = module.networking.subnet_ids["vnet-services"]

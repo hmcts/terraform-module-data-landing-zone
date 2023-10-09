@@ -5,7 +5,7 @@ locals {
   is_prod              = length(regexall(".*(prod).*", var.env)) > 0
   is_sbox              = length(regexall(".*(s?box).*", var.env)) > 0
   admin_group          = local.is_prod ? "DTS Platform Operations SC" : "DTS Platform Operations"
-  name                 = var.name != null ? var.name : "data-landing"
+  name                 = var.name != null ? var.name : "datalanding"
   resource_group_names = ["network", "management", "logging", "runtimes", "storage", "external-storage", "metadata", "shared-integration", "shared-product", "di001", "di002", "dp001", "dp002"]
 
   storage_accounts = {
@@ -70,28 +70,28 @@ locals {
   ]
 
   adf_managed_purview_endpoints = merge(
-    var.purview_id == null ? {} : {
+    var.existing_purview_account == null ? {} : {
       purview = {
-        resource_id      = var.purview_id
+        resource_id      = var.existing_purview_account.resource_id
         subresource_name = "account"
       }
     },
-    var.purview_managed_storage_id == null ? {} : {
+    var.existing_purview_account == null ? {} : var.existing_purview_account.managed_storage_account_id != null ? {
       purview-storage-blob = {
-        resource_id      = var.purview_managed_storage_id
+        resource_id      = var.existing_purview_account.managed_storage_account_id
         subresource_name = "blob"
       }
       purview-storage-queue = {
-        resource_id      = var.purview_managed_storage_id
+        resource_id      = var.existing_purview_account.managed_storage_account_id
         subresource_name = "queue"
       }
-    },
-    var.purview_managed_event_hub_id == null ? {} : {
+    } : {},
+    var.existing_purview_account == null ? {} : var.existing_purview_account.managed_event_hub_namespace_id != null ? {
       purview_eventhub = {
-        resource_id      = var.purview_managed_event_hub_id
+        resource_id      = var.existing_purview_account.managed_event_hub_namespace_id
         subresource_name = "namespace"
       }
-    }
+    } : {}
   )
 }
 

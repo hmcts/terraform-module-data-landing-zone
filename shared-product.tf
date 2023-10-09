@@ -25,7 +25,7 @@ resource "azurerm_synapse_workspace" "example" {
   data_exfiltration_protection_enabled = true
   managed_virtual_network_enabled      = true
   managed_resource_group_name          = "${var.prefix}-product-synapse001"
-  purview_id                           = var.purview_id
+  purview_id                           = var.existing_purview_account == null ? null : var.existing_purview_account.resource_id
   identity {
     type = "SystemAssigned"
   }

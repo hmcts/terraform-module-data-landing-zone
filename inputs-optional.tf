@@ -46,26 +46,17 @@ variable "prefix" {
   default     = "prefix"
 }
 
-variable "purview_id" {
-  description = "The ID of Azure purview account"
-  type        = string
-  default     = "/subscriptions/a8140a9e-f1b0-481f-a4de-09e2ee23f7ab/resourceGroups/mi-sbox-rg/providers/Microsoft.Purview/accounts/mi-purview-sbox"
-}
-
-variable "purview_managed_storage_id" {
-  description = "The ID of the managed storage account for Azure purview account."
-  type        = string
-  default     = null
-}
-
-variable "purview_managed_event_hub_id" {
-  description = "The ID of the managed event hub id for Azure purview account."
-  type        = string
-  default     = null
-}
-
-variable "purview_self_hosted_integration_runtime_auth_key" {
-  description = "The auth key for the purview self hosted integration runtime."
-  type        = string
-  default     = null
+variable "existing_purview_account" {
+  description = "Details of an existing purview account to use, if not specified a new one will be created."
+  type = object({
+    resource_id                              = string
+    managed_storage_account_id               = optional(string)
+    managed_event_hub_namespace_id           = optional(string)
+    self_hosted_integration_runtime_auth_key = optional(string)
+    identity = object({
+      principal_id = string
+      tenant_id    = string
+    })
+  })
+  default = null
 }
