@@ -1,7 +1,7 @@
 module "metadata_vault" {
   for_each            = toset(local.metadata_vaults)
   source              = "github.com/hmcts/cnp-module-key-vault?ref=master"
-  name                = length("${local.name}-${each.key}-${var.env}") > 24 ? "${substr(replace(local.name, "-", ""), 0, 3)}${substr(replace(local.name, "-", ""), -3, -1)}-${each.key}-${var.env}" : "${local.name}-${each.key}-${var.env}"
+  name                = length("${local.name}-${each.key}-${var.env}") > 24 ? "${local.short_name}-${each.key}-${var.env}" : "${local.name}-${each.key}-${var.env}"
   product             = "data-landing"
   env                 = var.env
   object_id           = data.azurerm_client_config.current.object_id

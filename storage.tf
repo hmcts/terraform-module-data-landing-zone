@@ -3,7 +3,7 @@ module "storage" {
 
   for_each                 = local.storage_accounts
   env                      = var.env
-  storage_account_name     = lower(replace("${local.name}${each.key}${var.env}", "-", ""))
+  storage_account_name     = length(replace("${local.name}${each.key}${var.env}", "-", "")) > 24 ? lower(replace("${local.short_name}${each.key}${var.env}", "-", "")) : lower(replace("${local.name}${each.key}${var.env}", "-", ""))
   resource_group_name      = azurerm_resource_group.this[each.value.resource_group_key].name
   location                 = var.location
   account_kind             = var.storage_account_kind

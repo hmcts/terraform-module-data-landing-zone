@@ -16,7 +16,7 @@ module "shared_integration_databricks" {
 }
 
 resource "azurerm_eventhub_namespace" "this" {
-  name                     = "${local.name}-integration-eventHubNamespace001-${var.env}"
+  name                     = length("${local.name}-integration-eventHubNamespace001-${var.env}") > 50 ? "${local.short_name}-integration-eventHubNamespace001-${var.env}" : "${local.name}-integration-eventHubNamespace001-${var.env}"
   location                 = var.location
   resource_group_name      = azurerm_resource_group.this["shared-integration"].name
   sku                      = "Standard"
