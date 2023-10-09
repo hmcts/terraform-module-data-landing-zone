@@ -5,7 +5,7 @@ locals {
   is_prod              = length(regexall(".*(prod).*", var.env)) > 0
   is_sbox              = length(regexall(".*(s?box).*", var.env)) > 0
   admin_group          = local.is_prod ? "DTS Platform Operations SC" : "DTS Platform Operations"
-  name                 = var.name != null ? var.name : "dlrm-ingest"
+  name                 = var.name != null ? var.name : "data-landing"
   resource_group_names = ["network", "management", "logging", "runtimes", "storage", "external-storage", "metadata", "shared-integration", "shared-product", "di001", "di002", "dp001", "dp002"]
 
   storage_accounts = {
