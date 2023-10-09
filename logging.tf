@@ -1,6 +1,6 @@
 module "logging_vault" {
   source              = "github.com/hmcts/cnp-module-key-vault?ref=master"
-  names               = length("${local.name}-logging-${var.env}") > 24 ? "${substr(replace(local.name, "-", ""), 0, 3)}${substr(replace(local.name, "-", ""), -3, -1)}-logging-${var.env}" : "${local.name}-logging-${var.env}"
+  name                = length("${local.name}-logging-${var.env}") > 24 ? "${substr(replace(local.name, "-", ""), 0, 3)}${substr(replace(local.name, "-", ""), -3, -1)}-logging-${var.env}" : "${local.name}-logging-${var.env}"
   product             = "data-landing"
   env                 = var.env
   object_id           = data.azurerm_client_config.current.object_id
