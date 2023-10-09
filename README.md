@@ -5,8 +5,48 @@ Terraform module for deploying a data landing zone to Azure. Based off of [Micro
 
 <!-- todo update module name -->
 ```hcl
+provider "azurerm" {
+  features {}
+}
+
+provider "azurerm" {
+  alias                      = "ssptl"
+  skip_provider_registration = true
+  features {}
+  subscription_id = "6c4d2513-a873-41b4-afdd-b05a33206631"
+}
+
+provider "azurerm" {
+  alias                      = "cftptl"
+  skip_provider_registration = true
+  features {}
+  subscription_id = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
+}
+
+provider "azurerm" {
+  alias                      = "soc"
+  skip_provider_registration = true
+  features {}
+  subscription_id = "8ae5b3b6-0b12-4888-b894-4cec33c92292"
+}
+
+provider "azurerm" {
+  alias                      = "cnp"
+  skip_provider_registration = true
+  features {}
+  subscription_id = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
+}
+
 module "data_landing_zone" {
-  source = "github.com/hmcts/terraform-module-data-landing-zone?ref=main"
+  source = "../."
+
+  providers = {
+    azurerm        = azurerm
+    azurerm.ssptl  = azurerm.ssptl
+    azurerm.cftptl = azurerm.cftptl
+    azurerm.soc    = azurerm.soc
+    azurerm.cnp    = azurerm.cnp
+  }
 
   env                                              = var.env
   common_tags                                      = var.common_tags
@@ -33,6 +73,7 @@ module "data_landing_zone" {
 |------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >= 2.43.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.7.0 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.1.0 |
 
 ## Providers
 
@@ -48,16 +89,17 @@ module "data_landing_zone" {
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_logging_vault"></a> [logging\_vault](#module\_logging\_vault) | github.com/hmcts/cnp-module-key-vault | master |
-| <a name="module_logging_vault_pe"></a> [logging\_vault\_pe](#module\_logging\_vault\_pe) | ./modules/azure-private-endpoint | n/a |
 | <a name="module_metadata_mssql"></a> [metadata\_mssql](#module\_metadata\_mssql) | github.com/hmcts/terraform-module-mssql | main |
 | <a name="module_metadata_mysql"></a> [metadata\_mysql](#module\_metadata\_mysql) | github.com/hmcts/terraform-module-mysql-flexible | main |
 | <a name="module_metadata_vault"></a> [metadata\_vault](#module\_metadata\_vault) | github.com/hmcts/cnp-module-key-vault | master |
-| <a name="module_metadata_vault_pe"></a> [metadata\_vault\_pe](#module\_metadata\_vault\_pe) | ./modules/azure-private-endpoint | n/a |
 | <a name="module_networking"></a> [networking](#module\_networking) | github.com/hmcts/terraform-module-azure-virtual-networking | main |
-| <a name="module_shared_integration_databricks"></a> [shared\_integration\_databricks](#module\_shared\_integration\_databricks) | ./modules/azure-databricks | n/a |
-| <a name="module_shared_integration_datafactory_pe"></a> [shared\_integration\_datafactory\_pe](#module\_shared\_integration\_datafactory\_pe) | ./modules/azure-private-endpoint | n/a |
+| <a name="module_runtimes_datafactory"></a> [runtimes\_datafactory](#module\_runtimes\_datafactory) | github.com/hmcts/terraform-module-azure-datafactory | main |
+| <a name="module_shared_integration_databricks"></a> [shared\_integration\_databricks](#module\_shared\_integration\_databricks) | github.com/hmcts/terraform-module-databricks | main |
+| <a name="module_shared_integration_datafactory"></a> [shared\_integration\_datafactory](#module\_shared\_integration\_datafactory) | github.com/hmcts/terraform-module-azure-datafactory | main |
 | <a name="module_shared_integration_eventhub_pe"></a> [shared\_integration\_eventhub\_pe](#module\_shared\_integration\_eventhub\_pe) | ./modules/azure-private-endpoint | n/a |
-| <a name="module_shared_product_databricks"></a> [shared\_product\_databricks](#module\_shared\_product\_databricks) | ./modules/azure-databricks | n/a |
+| <a name="module_shared_product_databricks"></a> [shared\_product\_databricks](#module\_shared\_product\_databricks) | github.com/hmcts/terraform-module-databricks | main |
+| <a name="module_shir001"></a> [shir001](#module\_shir001) | ./modules/self-hosted-integration-runtime | n/a |
+| <a name="module_shir002"></a> [shir002](#module\_shir002) | ./modules/self-hosted-integration-runtime | n/a |
 | <a name="module_storage"></a> [storage](#module\_storage) | github.com/hmcts/cnp-module-storage-account | master |
 | <a name="module_storage_pe"></a> [storage\_pe](#module\_storage\_pe) | ./modules/azure-private-endpoint | n/a |
 
@@ -65,18 +107,7 @@ module "data_landing_zone" {
 
 | Name | Type |
 |------|------|
-| [azurerm_data_factory.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory) | resource |
-| [azurerm_data_factory_integration_runtime_azure.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_integration_runtime_azure) | resource |
-| [azurerm_data_factory_linked_service_azure_blob_storage.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_linked_service_azure_blob_storage) | resource |
-| [azurerm_data_factory_linked_service_azure_databricks.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_linked_service_azure_databricks) | resource |
-| [azurerm_data_factory_linked_service_key_vault.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_linked_service_key_vault) | resource |
-| [azurerm_data_factory_linked_service_sql_server.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_linked_service_sql_server) | resource |
-| [azurerm_data_factory_managed_private_endpoint.key_vault](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_managed_private_endpoint) | resource |
-| [azurerm_data_factory_managed_private_endpoint.mssql](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_managed_private_endpoint) | resource |
-| [azurerm_data_factory_managed_private_endpoint.purview](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_managed_private_endpoint) | resource |
-| [azurerm_data_factory_managed_private_endpoint.purview_eventhub](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_managed_private_endpoint) | resource |
-| [azurerm_data_factory_managed_private_endpoint.purview_storage](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_managed_private_endpoint) | resource |
-| [azurerm_data_factory_managed_private_endpoint.storage](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_managed_private_endpoint) | resource |
+| [azurerm_data_factory_integration_runtime_self_hosted.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_integration_runtime_self_hosted) | resource |
 | [azurerm_eventhub_namespace.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/eventhub_namespace) | resource |
 | [azurerm_key_vault_secret.log_analytics_workspace_id](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.log_analytics_workspace_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
@@ -87,6 +118,8 @@ module "data_landing_zone" {
 | [azurerm_key_vault_secret.mysql_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_log_analytics_workspace.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) | resource |
 | [azurerm_private_dns_zone_virtual_network_link.data_landing_link](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone_virtual_network_link) | resource |
+| [azurerm_private_endpoint.logging_vault_pe](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
+| [azurerm_private_endpoint.metadata_vault_pe](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_resource_group.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_role_assignment.datafactory_databricks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.datafactory_storage](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
@@ -123,6 +156,7 @@ module "data_landing_zone" {
 | <a name="input_purview_id"></a> [purview\_id](#input\_purview\_id) | The ID of Azure purview account | `string` | `"/subscriptions/a8140a9e-f1b0-481f-a4de-09e2ee23f7ab/resourceGroups/mi-sbox-rg/providers/Microsoft.Purview/accounts/mi-purview-sbox"` | no |
 | <a name="input_purview_managed_event_hub_id"></a> [purview\_managed\_event\_hub\_id](#input\_purview\_managed\_event\_hub\_id) | The ID of the managed event hub id for Azure purview account. | `string` | `null` | no |
 | <a name="input_purview_managed_storage_id"></a> [purview\_managed\_storage\_id](#input\_purview\_managed\_storage\_id) | The ID of the managed storage account for Azure purview account. | `string` | `null` | no |
+| <a name="input_purview_self_hosted_integration_runtime_auth_key"></a> [purview\_self\_hosted\_integration\_runtime\_auth\_key](#input\_purview\_self\_hosted\_integration\_runtime\_auth\_key) | The auth key for the purview self hosted integration runtime. | `string` | `null` | no |
 | <a name="input_services_mysql_subnet_address_space"></a> [services\_mysql\_subnet\_address\_space](#input\_services\_mysql\_subnet\_address\_space) | The address space covered by the services-mysql subnet, must be included in vnet\_address\_space. This is delegated to MySQL Flexible Server. | `list(string)` | n/a | yes |
 | <a name="input_services_subnet_address_space"></a> [services\_subnet\_address\_space](#input\_services\_subnet\_address\_space) | The address space covered by the services subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
 | <a name="input_storage_account_kind"></a> [storage\_account\_kind](#input\_storage\_account\_kind) | The storage account kind, will default to StorageV2. | `string` | `"StorageV2"` | no |
