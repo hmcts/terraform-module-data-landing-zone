@@ -2,7 +2,11 @@ module "data_landing_zone" {
   source = "../."
 
   providers = {
-    azurerm = azurerm
+    azurerm        = azurerm
+    azurerm.ssptl  = azurerm.ssptl
+    azurerm.cftptl = azurerm.cftptl
+    azurerm.soc    = azurerm.soc
+    azurerm.cnp    = azurerm.cnp
   }
 
   env                                              = var.env

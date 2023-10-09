@@ -63,3 +63,9 @@ variable "purview_managed_event_hub_id" {
   type        = string
   default     = null
 }
+
+variable "purview_self_hosted_integration_runtime_auth_key" {
+  description = "The auth key for the purview self hosted integration runtime."
+  type        = string
+  default     = null
+}
