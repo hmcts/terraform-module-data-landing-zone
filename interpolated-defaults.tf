@@ -68,6 +68,13 @@ locals {
     "privatelink.blob.core.windows.net",
     "privatelink.dfs.core.windows.net",
     "privatelink.vaultcore.azure.net",
+    "privatelink.vaultcore.azure.net",
+    "privatelink.servicebus.windows.net",
+    "privatelink.datafactory.azure.net",
+    "privatelink.adf.azure.com",
+    "privatelink.sql.azuresynapse.net",
+    "privatelink.sql.azuresynapse.net",
+    "privatelink.dev.azuresynapse.net",
   ]
 
   adf_managed_purview_endpoints = merge(
