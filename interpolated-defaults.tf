@@ -32,8 +32,8 @@ locals {
     }
   }
   default_storage_private_endpoints = {
-    blob = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
-    dfs  = "/subscriptions/1baf5470-1c3e-40d3-a6f7-74bfbce4b348/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/privatelink.dfs.core.windows.net"
+    blob = data.azurerm_private_dns_zone.cftptl["privatelink.blob.core.windows.net"].id
+    dfs  = data.azurerm_private_dns_zone.cftptl["privatelink.dfs.core.windows.net"].id
   }
   domain_file_system_names = [
     { name = "data", access_type = "private" },

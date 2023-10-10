@@ -15,17 +15,40 @@ module "shared_product_databricks" {
   private_subnet_nsg_id        = module.networking.network_security_groups_ids["nsg"]
 }
 
-resource "azurerm_synapse_workspace" "example" {
-  name                                 = "${var.prefix}-product-synapse001"
+resource "random_password" "synapse_sql_password" {
+  length           = 32
+  special          = true
+  override_special = "#$%&@()_[]{}<>:?"
+  min_upper        = 4
+  min_lower        = 4
+  min_numeric      = 4
+}
+
+resource "azurerm_key_vault_secret" "synapse_sql_password" {
+  name         = "${local.name}-product-synapse001-sql-password-${var.env}"
+  value        = random_password.synapse_sql_password.result
+  key_vault_id = module.metadata_vault["meta001"].key_vault_id
+}
+
+resource "azurerm_key_vault_secret" "synapse_sql_username" {
+  name         = "${local.name}-product-synapse001-sql-username-${var.env}"
+  value        = azurerm_synapse_workspace.this.sql_administrator_login
+  key_vault_id = module.metadata_vault["meta001"].key_vault_id
+}
+
+resource "azurerm_synapse_workspace" "this" {
+  name                                 = "${local.name}-product-synapse001"
   resource_group_name                  = azurerm_resource_group.this["shared-product"].name
   location                             = var.location
   storage_data_lake_gen2_filesystem_id = azurerm_storage_data_lake_gen2_filesystem.this["workspace"].id
   sql_administrator_login              = "sqladminuser"
-  sql_administrator_login_password     = "H@Sh1CoR3!"
+  sql_administrator_login_password     = random_password.synapse_sql_password.result
+  sql_identity_control_enabled         = true
   data_exfiltration_protection_enabled = true
   managed_virtual_network_enabled      = true
-  managed_resource_group_name          = "${var.prefix}-product-synapse001"
+  managed_resource_group_name          = "${local.name}-product-synapse001"
   purview_id                           = var.existing_purview_account == null ? null : var.existing_purview_account.resource_id
+
   identity {
     type = "SystemAssigned"
   }
@@ -33,43 +56,54 @@ resource "azurerm_synapse_workspace" "example" {
   tags = var.common_tags
 }
 
+resource "azurerm_synapse_workspace_aad_admin" "this" {
+  synapse_workspace_id = azurerm_synapse_workspace.this.id
+  login                = local.admin_group
+  object_id            = data.azuread_group.admin_group.object_id
+  tenant_id            = data.azurerm_client_config.current.tenant_id
+}
 
-/* resource "azurerm_synapse_sql_pool" "default" {
-  name                 = "sqlPool001"
-  synapse_workspace_id = azurerm_databricks_workspace.example.id
+resource "azurerm_synapse_sql_pool" "this" {
+  count                = var.enable_synapse_sql_pool ? 1 : 0
+  name                 = "${local.name}-product-synapse001-sql001-${var.env}"
+  synapse_workspace_id = azurerm_synapse_workspace.this.id
   sku_name             = "DW100c"
   create_mode          = "Default"
-  
-} */
+  storage_account_type = "GRS"
 
-// Resources
-/* resource synapse 'Microsoft.Synapse/workspaces@2021-03-01' = {
-  name: synapseName
-  location: location
-  tags: tags
-  identity: {
-    type: 'SystemAssigned'
+  tags = var.common_tags
+}
+
+resource "azurerm_synapse_spark_pool" "this" {
+  count                = var.enable_synapse_spark_pool ? 1 : 0
+  name                 = "${local.name}-product-synapse001-spark001-${var.env}"
+  synapse_workspace_id = azurerm_synapse_workspace.this.id
+  node_size_family     = "MemoryOptimized"
+  node_size            = "Small"
+  cache_size           = 100
+
+  auto_scale {
+    max_node_count = 10
+    min_node_count = 3
   }
-  properties: {
-    defaultDataLakeStorage: {
-      accountUrl: 'https://${synapseDefaultStorageAccountName}.dfs.${environment().suffixes.storage}' 
-      filesystem: synapseDefaultStorageAccountFileSystemName
-    }
-    managedResourceGroupName: synapseName
-    managedVirtualNetwork: 'default'
-    managedVirtualNetworkSettings: {
-      allowedAadTenantIdsForLinking: []
-      linkedAccessCheckOnTargetResource: true
-      preventDataExfiltration: true
-    }
-    publicNetworkAccess: 'Disabled'
-    purviewConfiguration: {
-      purviewResourceId: purviewId
-    }
-    sqlAdministratorLogin: administratorUsername
-    sqlAdministratorLoginPassword: administratorPassword
-    virtualNetworkProfile: {
-      computeSubnetId: synapseComputeSubnetId
-    }
+
+  auto_pause {
+    delay_in_minutes = 15
   }
-} */
+
+  tags = var.common_tags
+}
+
+module "synapse_pe" {
+  for_each = toset(["sql", "sqlOnDemand", "dev"])
+  source   = "./modules/azure-private-endpoint"
+
+  name             = "${local.name}-product-synapse001-${each.key}-pe-${var.env}"
+  resource_group   = azurerm_resource_group.this["shared-product"].name
+  location         = var.location
+  subnet_id        = module.networking.subnet_ids["vnet-services"]
+  common_tags      = var.common_tags
+  resource_name    = azurerm_synapse_workspace.this.name
+  resource_id      = azurerm_synapse_workspace.this.id
+  subresource_name = each.value
+}

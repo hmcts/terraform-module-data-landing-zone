@@ -40,12 +40,6 @@ variable "storage_account_replication_type" {
   default     = "LRS"
 }
 
-variable "prefix" {
-  description = "Specifies the prefix for all resources created in this deployment"
-  type        = string
-  default     = "prefix"
-}
-
 variable "existing_purview_account" {
   description = "Details of an existing purview account to use, if not specified a new one will be created."
   type = object({
@@ -59,4 +53,16 @@ variable "existing_purview_account" {
     })
   })
   default = null
+}
+
+variable "enable_synapse_sql_pool" {
+  description = "Whether to deploy a Synapse SQL pool. Defaults to false."
+  type        = bool
+  default     = false
+}
+
+variable "enable_synapse_spark_pool" {
+  description = "Whether to deploy a Synapse Spark pool. Defaults to false."
+  type        = bool
+  default     = false
 }
