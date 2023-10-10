@@ -185,7 +185,7 @@ module "networking" {
           protocol                   = "*"
           source_port_range          = "*"
           destination_port_range     = "*"
-          source_address_prefixes    = merge(data.azurerm_subnet.ssptl-00.address_prefixes, data.azurerm_subnet.ssptl-01.address_prefixes)
+          source_address_prefixes    = concat(data.azurerm_subnet.ssptl-00.address_prefixes, data.azurerm_subnet.ssptl-01.address_prefixes)
           destination_address_prefix = "VirtualNetwork"
           description                = "Allow ADO agents to communicate with DLRM data ingest landing zone resources."
         }
