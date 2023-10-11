@@ -3,6 +3,12 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
+  features {}
+  alias           = "hub"
+  subscription_id = "fb084706-583f-4c9a-bdab-949aac66ba5c"
+}
+
+provider "azurerm" {
   alias                      = "ssptl"
   skip_provider_registration = true
   features {}

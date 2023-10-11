@@ -54,6 +54,8 @@ resource "azurerm_synapse_workspace" "this" {
   }
 
   tags = var.common_tags
+
+  depends_on = [module.vnet_peer_hub]
 }
 
 resource "azurerm_synapse_workspace_aad_admin" "this" {

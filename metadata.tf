@@ -15,6 +15,8 @@ module "metadata_vault_pe" {
   for_each = toset(local.metadata_vaults)
   source   = "./modules/azure-private-endpoint"
 
+  depends_on = [module.vnet_peer_hub]
+
   name             = "${local.name}-${each.key}-pe-${var.env}"
   resource_group   = azurerm_resource_group.this["metadata"].name
   location         = var.location
@@ -26,7 +28,8 @@ module "metadata_vault_pe" {
 }
 
 module "metadata_mssql" {
-  source                          = "github.com/hmcts/terraform-module-mssql?ref=main"
+  source = "github.com/hmcts/terraform-module-mssql?ref=main"
+
   name                            = "${local.name}-metadata-mssql"
   env                             = var.env
   product                         = "data-landing"
@@ -51,7 +54,7 @@ module "metadata_mssql" {
     }
   }
 
-  depends_on = [azurerm_private_dns_zone_virtual_network_link.data_landing_link]
+  depends_on = [azurerm_private_dns_zone_virtual_network_link.data_landing_link, module.vnet_peer_hub]
 }
 
 resource "azurerm_key_vault_secret" "mssql_username" {
@@ -82,7 +85,7 @@ module "metadata_mysql" {
     "${local.name}-HiveMetastoreDb-${var.env}" = {}
   }
 
-  depends_on = [azurerm_private_dns_zone_virtual_network_link.data_landing_link]
+  depends_on = [azurerm_private_dns_zone_virtual_network_link.data_landing_link, module.vnet_peer_hub]
 }
 
 resource "azurerm_key_vault_secret" "mysql_username" {

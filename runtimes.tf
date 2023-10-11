@@ -1,6 +1,8 @@
 module "runtimes_datafactory" {
   source = "github.com/hmcts/terraform-module-azure-datafactory?ref=main"
 
+  depends_on = [module.vnet_peer_hub]
+
   env                              = var.env
   product                          = "data-landing"
   component                        = "runtimes"
@@ -25,6 +27,8 @@ resource "azurerm_data_factory_integration_runtime_self_hosted" "this" {
 module "shir001" {
   source = "./modules/self-hosted-integration-runtime"
 
+  depends_on = [module.vnet_peer_hub]
+
   providers = {
     azurerm     = azurerm
     azurerm.soc = azurerm.soc
@@ -43,6 +47,8 @@ module "shir001" {
 module "shir002" {
   count  = var.existing_purview_account == null ? 0 : var.existing_purview_account.self_hosted_integration_runtime_auth_key != null ? 1 : 0
   source = "./modules/self-hosted-integration-runtime"
+
+  depends_on = [module.vnet_peer_hub]
 
   providers = {
     azurerm     = azurerm

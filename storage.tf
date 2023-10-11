@@ -1,6 +1,8 @@
 module "storage" {
   source = "github.com/hmcts/cnp-module-storage-account?ref=master"
 
+  depends_on = [module.vnet_peer_hub]
+
   for_each                 = local.storage_accounts
   env                      = var.env
   storage_account_name     = length(replace("${local.name}${each.key}${var.env}", "-", "")) > 24 ? lower(replace("${local.short_name}${each.key}${var.env}", "-", "")) : lower(replace("${local.name}${each.key}${var.env}", "-", ""))
@@ -23,13 +25,14 @@ module "storage" {
 
   team_name    = "Platform Operations"
   team_contact = "#dtspo-orange"
-  ip_rules     = ["82.69.13.75"] #Needed to run from Brendon Higgins laptop during development
   common_tags  = var.common_tags
 }
 
 module "storage_pe" {
   for_each = { for value in local.flattened_storage_accounts_private_endpoints : "${value.storage_account}-${value.private_endpoint}" => value }
   source   = "./modules/azure-private-endpoint"
+
+  depends_on = [module.vnet_peer_hub]
 
   name             = "${local.name}-${each.key}-pe-${var.env}"
   resource_group   = azurerm_resource_group.this[each.value.resource_group_key].name

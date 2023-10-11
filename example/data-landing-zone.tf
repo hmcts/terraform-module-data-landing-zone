@@ -3,6 +3,7 @@ module "data_landing_zone" {
 
   providers = {
     azurerm        = azurerm
+    azurerm.hub    = azurerm.hub
     azurerm.ssptl  = azurerm.ssptl
     azurerm.cftptl = azurerm.cftptl
     azurerm.soc    = azurerm.soc
@@ -23,4 +24,6 @@ module "data_landing_zone" {
   data_integration_002_subnet_address_space        = ["10.10.8.0/24"]
   data_product_001_subnet_address_space            = ["10.10.9.0/24"]
   data_product_002_subnet_address_space            = ["10.10.10.0/24"]
+  hub_vnet_name                                    = "hmcts-hub-sbox-int"
+  hub_resource_group_name                          = "hmcts-hub-sbox-int"
 }

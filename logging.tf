@@ -13,6 +13,8 @@ module "logging_vault" {
 module "logging_vault_pe" {
   source = "./modules/azure-private-endpoint"
 
+  depends_on = [module.vnet_peer_hub]
+
   name             = "${local.name}-keyVault001-pe-${var.env}"
   resource_group   = azurerm_resource_group.this["logging"].name
   location         = var.location

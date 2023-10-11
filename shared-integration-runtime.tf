@@ -1,6 +1,8 @@
 module "shared_integration_databricks" {
   source = "github.com/hmcts/terraform-module-databricks?ref=main"
 
+  depends_on = [module.vnet_peer_hub]
+
   env                          = var.env
   product                      = "data-landing"
   component                    = "shared-integration"
@@ -35,6 +37,8 @@ resource "azurerm_eventhub_namespace" "this" {
 module "shared_integration_eventhub_pe" {
   source = "./modules/azure-private-endpoint"
 
+  depends_on = [module.vnet_peer_hub]
+
   name             = "${local.name}-integration-eventHubNamespace001-pe-${var.env}"
   resource_group   = azurerm_resource_group.this["shared-integration"].name
   location         = var.location
@@ -47,6 +51,8 @@ module "shared_integration_eventhub_pe" {
 
 module "shared_integration_datafactory" {
   source = "github.com/hmcts/terraform-module-azure-datafactory?ref=main"
+
+  depends_on = [module.vnet_peer_hub]
 
   env                              = var.env
   product                          = "data-landing"
