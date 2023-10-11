@@ -78,11 +78,11 @@ module "shared_integration_datafactory" {
     }
     storage-raw = {
       resource_id      = module.storage["raw"].storageaccount_id
-      subresource_name = "dfs"
+      subresource_name = "blob"
     }
     storage-curated = {
       resource_id      = module.storage["curated"].storageaccount_id
-      subresource_name = "dfs"
+      subresource_name = "blob"
     }
   }, local.adf_managed_purview_endpoints)
 
