@@ -101,6 +101,14 @@ module "shared_integration_datafactory" {
     }
   }
 
+  linked_mssql_databases = {
+    "${local.metadata_mssql_db_name}" = {
+      server_fqdn              = module.metadata_mssql.fqdn
+      database_name            = local.metadata_mssql_db_name
+      integration_runtime_name = "AutoResolveIntegrationRuntime"
+    }
+  }
+
   linked_blob_storage = {
     "${module.storage["raw"].storageaccount_name}" = {
       service_endpoint         = module.storage["raw"].storageaccount_primary_blob_endpoint
