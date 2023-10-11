@@ -68,3 +68,12 @@ variable "default_route_next_hop_ip" {
   description = "The IP address of the private ip configuration of the Hub Palo load balancer."
 }
 
+variable "hub_vnet_name" {
+  description = "The name of the HUB virtual network."
+  type        = string
+}
+
+variable "hub_resource_group_name" {
+  description = "The name of the resource group containing the HUB virtual network."
+  type        = string
+}

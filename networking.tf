@@ -203,3 +203,25 @@ resource "azurerm_private_dns_zone_virtual_network_link" "data_landing_link" {
   resource_group_name   = data.azurerm_private_dns_zone.cftptl[each.key].resource_group_name
   tags                  = var.common_tags
 }
+
+module "vnet_peer_hub" {
+  source = "github.com/hmcts/terraform-module-vnet-peering?ref=feat%2Ftweak-to-enable-planning-in-a-clean-env"
+  peerings = {
+    source = {
+      name           = "${local.name}-vnet-${var.env}-to-hub"
+      vnet_id        = "/subscriptions/${data.azurerm_subscription.current.subscription_id}/resourceGroups/${module.networking.resource_group_name}/providers/Microsoft.Network/virtualNetworks/${module.networking.vnet_names["vnet"]}"
+      vnet           = module.networking.vnet_names["vnet"]
+      resource_group = module.networking.resource_group_name
+    }
+    target = {
+      name           = "hub-to-${local.name}-vnet-${var.env}"
+      vnet           = var.hub_vnet_name
+      resource_group = var.hub_resource_group_name
+    }
+  }
+
+  providers = {
+    azurerm.initiator = azurerm
+    azurerm.target    = azurerm.hub
+  }
+}
