@@ -103,12 +103,12 @@ module "shared_integration_datafactory" {
 
   linked_blob_storage = {
     "${module.storage["raw"].storageaccount_name}" = {
-      connection_string        = module.storage["raw"].storageaccount_primary_dfs_endpoint
+      connection_string        = module.storage["raw"].storageaccount_primary_blob_endpoint
       use_managed_identity     = true
       integration_runtime_name = "AutoResolveIntegrationRuntime"
     }
     "${module.storage["curated"].storageaccount_name}" = {
-      connection_string        = module.storage["curated"].storageaccount_primary_dfs_endpoint
+      connection_string        = module.storage["curated"].storageaccount_primary_blob_endpoint
       use_managed_identity     = true
       integration_runtime_name = "AutoResolveIntegrationRuntime"
     }
