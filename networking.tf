@@ -179,15 +179,15 @@ module "networking" {
           description                = "Required for workers communication with Databricks webapp."
         }
         "Allow_SDS_PTL_ADO_Agents" = {
-          priority                   = 4000
-          direction                  = "Inbound"
-          access                     = "Allow"
-          protocol                   = "*"
-          source_port_range          = "*"
-          destination_port_range     = "*"
-          source_address_prefixes    = concat(data.azurerm_subnet.ssptl-00.address_prefixes, data.azurerm_subnet.ssptl-01.address_prefixes)
-          destination_address_prefix = "VirtualNetwork"
-          description                = "Allow ADO agents to communicate with DLRM data ingest landing zone resources."
+          priority                     = 4000
+          direction                    = "Inbound"
+          access                       = "Allow"
+          protocol                     = "*"
+          source_port_range            = "*"
+          destination_port_range       = "*"
+          source_address_prefixes      = concat(data.azurerm_subnet.ssptl-00.address_prefixes, data.azurerm_subnet.ssptl-01.address_prefixes)
+          destination_address_prefixes = var.vnet_address_space
+          description                  = "Allow ADO agents to communicate with DLRM data ingest landing zone resources."
         }
       }
     }
