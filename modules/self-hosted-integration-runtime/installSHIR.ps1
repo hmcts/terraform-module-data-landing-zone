@@ -23,7 +23,7 @@ function New-Error([string] $msg) {
 function Trace-Log([string] $msg) {
   $now = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
   try {
-    "${now} $msg`n" | Out-File $logPath -Append
+    "$now $msg`n" | Out-File $logPath -Append
   }
   catch {
     Write-Error "Error when writing trace log"
@@ -73,7 +73,7 @@ function Get-Gateway([string] $url, [string] $gatewayPath) {
     $ErrorActionPreference = "Stop";
     $client = New-Object System.Net.WebClient
     $client.DownloadFile($url, $gatewayPath)
-    Trace-Log "Download gateway successfully. Gateway loc: ${gatewayPath}"
+    Trace-Log "Download gateway successfully. Gateway loc: $gatewayPath"
   }
   catch {
     Trace-Log "Fail to download gateway msi"
@@ -87,7 +87,7 @@ function Install-Gateway([string] $gatewayPath) {
     New-Error "Gateway path is not specified"
   }
   if (!(Test-Path -Path $gatewayPath)) {
-    New-Error "Invalid gateway path: ${gatewayPath}"
+    New-Error "Invalid gateway path: $gatewayPath"
   }
   Trace-Log "Start Gateway installation"
   Invoke-Process "msiexec.exe" "/i gateway.msi INSTALLTYPE=AzureTemplate /quiet /norestart"
@@ -132,8 +132,8 @@ if (!(Test-Path($logLoc))) {
 }
 "Start to excute gatewayInstall.ps1. `n" | Out-File $logPath
 Trace-Log "Log file: $logLoc"
-Trace-Log "Gateway download fw link: ${gatewayUri}"
-Trace-Log "Gateway download location: ${gatewayPath}"
+Trace-Log "Gateway download fw link: $gatewayUri"
+Trace-Log "Gateway download location: $gatewayPath"
 
 Get-Gateway $gatewayUri $gatewayPath
 Install-Gateway $gatewayPath
