@@ -35,13 +35,14 @@ module "shir001" {
     azurerm.cnp = azurerm.cnp
   }
 
-  env            = var.env
-  name           = "${local.name}-shir001"
-  short_name     = "shir001"
-  resource_group = azurerm_resource_group.this["runtimes"].name
-  subnet_id      = module.networking.subnet_ids["vnet-services"]
-  key_vault_id   = module.metadata_vault["meta001"].key_vault_id
-  common_tags    = var.common_tags
+  env                          = var.env
+  name                         = "${local.name}-shir001"
+  short_name                   = "shir001"
+  resource_group               = azurerm_resource_group.this["runtimes"].name
+  subnet_id                    = module.networking.subnet_ids["vnet-services"]
+  key_vault_id                 = module.metadata_vault["meta001"].key_vault_id
+  integration_runtime_auth_key = azurerm_data_factory_integration_runtime_self_hosted.this.primary_authorization_key
+  common_tags                  = var.common_tags
 }
 
 module "shir002" {
@@ -56,11 +57,12 @@ module "shir002" {
     azurerm.cnp = azurerm.cnp
   }
 
-  env            = var.env
-  name           = "${local.name}-shir002"
-  short_name     = "shir002"
-  resource_group = azurerm_resource_group.this["runtimes"].name
-  subnet_id      = module.networking.subnet_ids["vnet-services"]
-  key_vault_id   = module.metadata_vault["meta001"].key_vault_id
-  common_tags    = var.common_tags
+  env                          = var.env
+  name                         = "${local.name}-shir002"
+  short_name                   = "shir002"
+  resource_group               = azurerm_resource_group.this["runtimes"].name
+  subnet_id                    = module.networking.subnet_ids["vnet-services"]
+  key_vault_id                 = module.metadata_vault["meta001"].key_vault_id
+  integration_runtime_auth_key = var.existing_purview_account.self_hosted_integration_runtime_auth_key
+  common_tags                  = var.common_tags
 }

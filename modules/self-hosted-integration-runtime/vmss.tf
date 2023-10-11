@@ -48,3 +48,17 @@ module "shir_vmss" {
   }
   tags = var.common_tags
 }
+
+resource "azurerm_virtual_machine_scale_set_extension" "shir_install" {
+  name                         = "${var.name}-shir-install"
+  virtual_machine_scale_set_id = module.shir_vmss.vm_id
+  publisher                    = "Microsoft.CPlat.Core"
+  type                         = "RunCommandWindows"
+  type_handler_version         = "1.1"
+  auto_upgrade_minor_version   = true
+  settings = jsonencode({
+    script = templatefile("${path.module}/installSHIR.ps1", {
+      gatewayKey = var.integration_runtime_auth_key
+    })
+  })
+}

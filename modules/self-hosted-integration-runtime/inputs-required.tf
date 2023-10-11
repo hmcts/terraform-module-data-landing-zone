@@ -27,3 +27,9 @@ variable "key_vault_id" {
   description = "The ID of the KeyVault to store the integration runtime credentials in."
   type        = string
 }
+
+variable "integration_runtime_auth_key" {
+  description = "The auth key used to connect to the integration runtime."
+  type        = string
+  sensitive   = true
+}
