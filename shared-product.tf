@@ -37,7 +37,7 @@ resource "azurerm_key_vault_secret" "synapse_sql_username" {
 }
 
 resource "azurerm_synapse_workspace" "this" {
-  name                                 = "${local.name}-product-synapse001"
+  name                                 = "${local.name}-product-synapse001-${var.env}"
   resource_group_name                  = azurerm_resource_group.this["shared-product"].name
   location                             = var.location
   storage_data_lake_gen2_filesystem_id = azurerm_storage_data_lake_gen2_filesystem.this["workspace"].id
