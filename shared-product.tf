@@ -53,6 +53,11 @@ resource "azurerm_synapse_workspace" "this" {
     type = "SystemAssigned"
   }
 
+  timeouts {
+    create = "2h"
+    delete = "2h"
+  }
+
   tags = var.common_tags
 
   depends_on = [module.vnet_peer_hub]
