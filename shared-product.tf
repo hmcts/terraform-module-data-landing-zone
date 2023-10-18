@@ -32,7 +32,7 @@ resource "azurerm_key_vault_secret" "synapse_sql_password" {
 
 resource "azurerm_key_vault_secret" "synapse_sql_username" {
   name         = "${local.name}-product-synapse001-sql-username-${var.env}"
-  value        = azurerm_synapse_workspace.this.sql_administrator_login
+  value        = "sqladminuser"
   key_vault_id = module.metadata_vault["meta001"].key_vault_id
 }
 
