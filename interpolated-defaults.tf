@@ -86,18 +86,21 @@ locals {
     },
     var.existing_purview_account == null ? {} : var.existing_purview_account.managed_storage_account_id != null ? {
       purview-storage-blob = {
-        resource_id      = var.existing_purview_account.managed_storage_account_id
-        subresource_name = "blob"
+        resource_id         = var.existing_purview_account.managed_storage_account_id
+        subresource_name    = "blob"
+        is_managed_resource = true
       }
       purview-storage-queue = {
-        resource_id      = var.existing_purview_account.managed_storage_account_id
-        subresource_name = "queue"
+        resource_id         = var.existing_purview_account.managed_storage_account_id
+        subresource_name    = "queue"
+        is_managed_resource = true
       }
     } : {},
     var.existing_purview_account == null ? {} : var.existing_purview_account.managed_event_hub_namespace_id != null ? {
       purview_eventhub = {
-        resource_id      = var.existing_purview_account.managed_event_hub_namespace_id
-        subresource_name = "namespace"
+        resource_id         = var.existing_purview_account.managed_event_hub_namespace_id
+        subresource_name    = "namespace"
+        is_managed_resource = true
       }
     } : {}
   )
