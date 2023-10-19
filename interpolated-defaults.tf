@@ -97,7 +97,7 @@ locals {
       }
     } : {},
     var.existing_purview_account == null ? {} : var.existing_purview_account.managed_event_hub_namespace_id != null ? {
-      purview_eventhub = {
+      purview-eventhub = {
         resource_id         = var.existing_purview_account.managed_event_hub_namespace_id
         subresource_name    = "namespace"
         is_managed_resource = true
