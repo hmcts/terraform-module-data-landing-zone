@@ -57,8 +57,8 @@ resource "azurerm_virtual_machine_scale_set_extension" "shir_install" {
   type_handler_version         = "1.1"
   auto_upgrade_minor_version   = true
   settings = jsonencode({
-    script = templatefile("${path.module}/installSHIR.ps1", {
+    script = compact(tolist([templatefile("${path.module}/installSHIR.ps1", {
       gatewayKey = var.integration_runtime_auth_key
-    })
+    })]))
   })
 }
