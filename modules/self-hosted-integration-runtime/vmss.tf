@@ -35,6 +35,7 @@ module "shir_vmss" {
   vm_image_sku            = "2022-datacenter-azure-edition"
   vm_version              = "latest"
   vm_instances            = var.instances
+  upgrade_mode            = "Automatic"
   systemassigned_identity = true
   network_interfaces = {
     nic0 = {
