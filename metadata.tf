@@ -48,9 +48,9 @@ module "metadata_mssql" {
       sku_name                    = "Basic"
       zone_redundant              = false
       create_mode                 = "Default"
-      min_capacity                = 1
+      min_capacity                = 0
       geo_backup_enabled          = true
-      auto_pause_delay_in_minutes = -1
+      auto_pause_delay_in_minutes = 0
     }
   }
 
