@@ -45,8 +45,8 @@ resource "azurerm_synapse_workspace" "this" {
   #sql_administrator_login_password     = random_password.synapse_sql_password.result
   #sql_identity_control_enabled         = true
   #data_exfiltration_protection_enabled = true
-  #managed_virtual_network_enabled      = true
-  #managed_resource_group_name          = "${local.name}-product-synapse001"
+  managed_virtual_network_enabled      = true
+  managed_resource_group_name          = "${local.name}-product-synapse001"
   #purview_id                           = var.existing_purview_account == null ? null : var.existing_purview_account.resource_id
 
   identity {
@@ -58,16 +58,15 @@ resource "azurerm_synapse_workspace" "this" {
     delete = "2h"
   }
 
+  aad_admin {
+    login     = local.admin_group
+    object_id = data.azuread_group.admin_group.object_id
+    tenant_id = data.azurerm_client_config.current.tenant_id
+  }
+
   tags = var.common_tags
 
   depends_on = [module.vnet_peer_hub]
-}
-
-resource "azurerm_synapse_workspace_aad_admin" "this" {
-  synapse_workspace_id = azurerm_synapse_workspace.this.id
-  login                = local.admin_group
-  object_id            = data.azuread_group.admin_group.object_id
-  tenant_id            = data.azurerm_client_config.current.tenant_id
 }
 
 resource "azurerm_synapse_sql_pool" "this" {
