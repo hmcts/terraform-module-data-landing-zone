@@ -31,7 +31,8 @@ module "networking" {
           address_prefixes = var.data_bricks_public_subnet_address_space
           delegations = {
             data-bricks-delegation = {
-              service_name = "Microsoft.Databricks/workspaces"
+              service_name = local.databricks_service_name
+              actions = local.databricks_subnet_deleated_actions
             }
           }
         }
@@ -39,7 +40,8 @@ module "networking" {
           address_prefixes = var.data_bricks_private_subnet_address_space
           delegations = {
             data-bricks-delegation = {
-              service_name = "Microsoft.Databricks/workspaces"
+              service_name = local.databricks_service_name
+              actions = local.databricks_subnet_deleated_actions
             }
           }
         }
@@ -47,7 +49,8 @@ module "networking" {
           address_prefixes = var.data_bricks_product_public_subnet_address_space
           delegations = {
             data-bricks-delegation = {
-              service_name = "Microsoft.Databricks/workspaces"
+              service_name = local.databricks_service_name
+              actions = local.databricks_subnet_deleated_actions
             }
           }
         }
@@ -55,7 +58,8 @@ module "networking" {
           address_prefixes = var.data_bricks_product_private_subnet_address_space
           delegations = {
             data-bricks-delegation = {
-              service_name = "Microsoft.Databricks/workspaces"
+              service_name = local.databricks_service_name
+              actions = local.databricks_subnet_deleated_actions
             }
           }
         }

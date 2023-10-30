@@ -9,6 +9,13 @@ locals {
   short_name           = substr(local.name, 0, 11)
   resource_group_names = ["network", "management", "logging", "runtimes", "storage", "external-storage", "metadata", "shared-integration", "shared-product", "di001", "di002", "dp001", "dp002"]
 
+  databricks_service_name = "Microsoft.Databricks/workspaces"
+  databricks_subnet_deleated_actions = [
+    "Microsoft.Network/virtualNetworks/subnets/join/action",
+    "Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action",
+    "Microsoft.Network/virtualNetworks/subnets/unprepareNetworkPolicies/action"
+  ]
+
   storage_accounts = {
     raw = {
       resource_group_key = "storage"
