@@ -24,7 +24,7 @@ module "shir_vmss" {
 
   env                     = var.env
   vm_type                 = "windows-scale-set"
-  vm_name                 = "${var.name}-vmss"
+  vm_name                 = "${var.name}-vmss-${var.env}"
   computer_name_prefix    = local.short_name
   vm_resource_group       = var.resource_group
   vm_sku                  = var.sku
