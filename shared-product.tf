@@ -64,6 +64,12 @@ resource "azurerm_synapse_workspace" "this" {
     tenant_id = data.azurerm_client_config.current.tenant_id
   }
 
+  sql_aad_admin {
+    login     = local.admin_group
+    object_id = data.azuread_group.admin_group.object_id
+    tenant_id = data.azurerm_client_config.current.tenant_id
+  }
+
   tags = var.common_tags
 
   depends_on = [module.vnet_peer_hub]
