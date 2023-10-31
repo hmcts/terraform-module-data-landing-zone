@@ -28,12 +28,14 @@ resource "azurerm_key_vault_secret" "synapse_sql_password" {
   name         = "${local.name}-product-synapse001-sql-password-${var.env}"
   value        = random_password.synapse_sql_password.result
   key_vault_id = module.metadata_vault["meta001"].key_vault_id
+  depends_on   = [module.metadata_vault]
 }
 
 resource "azurerm_key_vault_secret" "synapse_sql_username" {
   name         = "${local.name}-product-synapse001-sql-username-${var.env}"
   value        = "sqladminuser"
   key_vault_id = module.metadata_vault["meta001"].key_vault_id
+  depends_on   = [module.metadata_vault]
 }
 
 resource "azurerm_synapse_workspace" "this" {
