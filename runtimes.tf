@@ -27,7 +27,7 @@ resource "azurerm_data_factory_integration_runtime_self_hosted" "this" {
 module "shir001" {
   source = "./modules/self-hosted-integration-runtime"
 
-  depends_on = [module.vnet_peer_hub]
+  depends_on = [module.vnet_peer_hub, module.metadata_vault]
 
   providers = {
     azurerm     = azurerm
@@ -49,7 +49,7 @@ module "shir002" {
   count  = var.existing_purview_account == null ? 0 : var.existing_purview_account.self_hosted_integration_runtime_auth_key != null ? 1 : 0
   source = "./modules/self-hosted-integration-runtime"
 
-  depends_on = [module.vnet_peer_hub]
+  depends_on = [module.vnet_peer_hub, module.metadata_vault]
 
   providers = {
     azurerm     = azurerm

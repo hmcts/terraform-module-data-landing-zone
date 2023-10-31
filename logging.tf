@@ -39,10 +39,12 @@ resource "azurerm_key_vault_secret" "log_analytics_workspace_id" {
   name         = "${azurerm_log_analytics_workspace.this.name}-id"
   value        = azurerm_log_analytics_workspace.this.workspace_id
   key_vault_id = module.logging_vault.key_vault_id
+  depends_on   = [module.module.logging_vault]
 }
 
 resource "azurerm_key_vault_secret" "log_analytics_workspace_secret" {
   name         = "${azurerm_log_analytics_workspace.this.name}-key"
   value        = azurerm_log_analytics_workspace.this.primary_shared_key
   key_vault_id = module.logging_vault.key_vault_id
+  depends_on   = [module.module.logging_vault]
 }
