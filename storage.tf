@@ -17,6 +17,7 @@ module "storage" {
   containers               = each.value.containers
   enable_data_protection   = true
   enable_versioning        = false
+  pim_roles                = {}
 
   sa_subnets = [
     data.azurerm_subnet.ssptl-00.id,
