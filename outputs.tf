@@ -1,7 +1,7 @@
-output "resource_group_name" {
-  value = "resource_group_name"
-}
-
-output "resource_group_location" {
-  value = "resource_group_location"
+output "resource_groups" {
+  value = [for rg in azurerm_resource_group.this : {
+    name     = rg.name
+    location = rg.location
+    tags     = rg.tags
+  }]
 }
