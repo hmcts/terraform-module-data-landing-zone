@@ -83,6 +83,7 @@ module "networking" {
     rt = {
       subnets = [
         "vnet-services",
+        "vnet-services-mysql",
         "vnet-data-bricks-public",
         "vnet-data-bricks-private",
         "vnet-data-bricks-product-public",
@@ -106,6 +107,7 @@ module "networking" {
     nsg = {
       subnets = [
         "vnet-services",
+        "vnet-services-mysql",
         "vnet-data-bricks-public",
         "vnet-data-bricks-private",
         "vnet-data-bricks-product-public",
