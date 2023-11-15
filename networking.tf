@@ -32,7 +32,7 @@ module "networking" {
           delegations = {
             data-bricks-delegation = {
               service_name = local.databricks_service_name
-              actions = local.databricks_subnet_deleated_actions
+              actions      = local.databricks_subnet_deleated_actions
             }
           }
         }
@@ -41,7 +41,7 @@ module "networking" {
           delegations = {
             data-bricks-delegation = {
               service_name = local.databricks_service_name
-              actions = local.databricks_subnet_deleated_actions
+              actions      = local.databricks_subnet_deleated_actions
             }
           }
         }
@@ -50,7 +50,7 @@ module "networking" {
           delegations = {
             data-bricks-delegation = {
               service_name = local.databricks_service_name
-              actions = local.databricks_subnet_deleated_actions
+              actions      = local.databricks_subnet_deleated_actions
             }
           }
         }
@@ -59,7 +59,7 @@ module "networking" {
           delegations = {
             data-bricks-delegation = {
               service_name = local.databricks_service_name
-              actions = local.databricks_subnet_deleated_actions
+              actions      = local.databricks_subnet_deleated_actions
             }
           }
         }
