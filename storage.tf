@@ -23,7 +23,6 @@ module "storage" {
     data.azurerm_subnet.ssptl-01.id
   ]
 
-  team_name    = "Platform Operations"
   team_contact = "#dtspo-orange"
   common_tags  = var.common_tags
 }
