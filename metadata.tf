@@ -1,6 +1,6 @@
 module "metadata_vault" {
   for_each            = toset(local.metadata_vaults)
-  source              = "github.com/hmcts/cnp-module-key-vault?ref=fix%2Fadd-metrics-block"
+  source              = "github.com/hmcts/cnp-module-key-vault?ref=master"
   name                = length("${local.name}-${each.key}-${var.env}") > 24 ? "${local.short_name}-${each.key}-${var.env}" : "${local.name}-${each.key}-${var.env}"
   product             = "data-landing"
   env                 = var.env
