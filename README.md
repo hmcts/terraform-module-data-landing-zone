@@ -145,6 +145,7 @@ module "data_landing_zone" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_additional_subnets"></a> [additional\_subnets](#input\_additional\_subnets) | Map of additional subnets to create, keyed by the subnet name. | <pre>map(object({<br>    name_override     = optional(string)<br>    address_prefixes  = list(string)<br>    service_endpoints = optional(list(string), [])<br>    delegations = optional(map(object({<br>      service_name = string,<br>      actions      = optional(list(string), [])<br>    })))<br>  }))</pre> | `{}` | no |
 | <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | Common tag to be applied to resources | `map(string)` | n/a | yes |
 | <a name="input_data_bricks_private_subnet_address_space"></a> [data\_bricks\_private\_subnet\_address\_space](#input\_data\_bricks\_private\_subnet\_address\_space) | The address space covered by the data bricks private subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
 | <a name="input_data_bricks_product_private_subnet_address_space"></a> [data\_bricks\_product\_private\_subnet\_address\_space](#input\_data\_bricks\_product\_private\_subnet\_address\_space) | The address space covered by the data bricks product private subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
@@ -177,6 +178,7 @@ module "data_landing_zone" {
 | Name | Description |
 |------|-------------|
 | <a name="output_resource_groups"></a> [resource\_groups](#output\_resource\_groups) | n/a |
+| <a name="output_subnet_ids"></a> [subnet\_ids](#output\_subnet\_ids) | n/a |
 <!-- END_TF_DOCS -->
 
 ## Contributing

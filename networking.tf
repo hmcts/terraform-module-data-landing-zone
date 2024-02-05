@@ -12,70 +12,7 @@ module "networking" {
   vnets = {
     vnet = {
       address_space = var.vnet_address_space
-      subnets = {
-        services = {
-          address_prefixes = var.services_subnet_address_space
-        }
-        services-mysql = {
-          address_prefixes = var.services_mysql_subnet_address_space
-          delegations = {
-            mysql-flexible-delegation = {
-              service_name = "Microsoft.DBforMySQL/flexibleServers"
-              actions = [
-                "Microsoft.Network/virtualNetworks/subnets/join/action"
-              ]
-            }
-          }
-        }
-        data-bricks-public = {
-          address_prefixes = var.data_bricks_public_subnet_address_space
-          delegations = {
-            data-bricks-delegation = {
-              service_name = local.databricks_service_name
-              actions      = local.databricks_subnet_deleated_actions
-            }
-          }
-        }
-        data-bricks-private = {
-          address_prefixes = var.data_bricks_private_subnet_address_space
-          delegations = {
-            data-bricks-delegation = {
-              service_name = local.databricks_service_name
-              actions      = local.databricks_subnet_deleated_actions
-            }
-          }
-        }
-        data-bricks-product-public = {
-          address_prefixes = var.data_bricks_product_public_subnet_address_space
-          delegations = {
-            data-bricks-delegation = {
-              service_name = local.databricks_service_name
-              actions      = local.databricks_subnet_deleated_actions
-            }
-          }
-        }
-        data-bricks-product-private = {
-          address_prefixes = var.data_bricks_product_private_subnet_address_space
-          delegations = {
-            data-bricks-delegation = {
-              service_name = local.databricks_service_name
-              actions      = local.databricks_subnet_deleated_actions
-            }
-          }
-        }
-        data-integration-001 = {
-          address_prefixes = var.data_integration_001_subnet_address_space
-        }
-        data-integration-002 = {
-          address_prefixes = var.data_integration_002_subnet_address_space
-        }
-        data-product-001 = {
-          address_prefixes = var.data_product_001_subnet_address_space
-        }
-        data-product-002 = {
-          address_prefixes = var.data_product_002_subnet_address_space
-        }
-      }
+      subnets       = merge(local.default_subnets, var.additional_subnets)
     }
   }
 
