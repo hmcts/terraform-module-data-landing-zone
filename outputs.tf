@@ -5,3 +5,7 @@ output "resource_groups" {
     id       = rg.id
   }]
 }
+
+output "subnet_ids" {
+  value = module.networking.subnet_ids
+}
