@@ -18,18 +18,7 @@ module "networking" {
 
   route_tables = {
     rt = {
-      subnets = [
-        "vnet-services",
-        "vnet-services-mysql",
-        "vnet-data-bricks-public",
-        "vnet-data-bricks-private",
-        "vnet-data-bricks-product-public",
-        "vnet-data-bricks-product-private",
-        "vnet-data-integration-001",
-        "vnet-data-integration-002",
-        "vnet-data-product-001",
-        "vnet-data-product-002"
-      ]
+      subnets = formatlist("vnet-%s", keys(merge(local.default_subnets, var.additional_subnets)))
       routes = {
         default = {
           address_prefix         = "0.0.0.0/0"
@@ -42,18 +31,7 @@ module "networking" {
 
   network_security_groups = {
     nsg = {
-      subnets = [
-        "vnet-services",
-        "vnet-services-mysql",
-        "vnet-data-bricks-public",
-        "vnet-data-bricks-private",
-        "vnet-data-bricks-product-public",
-        "vnet-data-bricks-product-private",
-        "vnet-data-integration-001",
-        "vnet-data-integration-002",
-        "vnet-data-product-001",
-        "vnet-data-product-002"
-      ]
+      subnets = formatlist("vnet-%s", keys(merge(local.default_subnets, var.additional_subnets)))
       rules = {
         "Dbricks-workspaces-UseOnly-databricks-worker-to-worker-inbound" = {
           priority                   = 200
