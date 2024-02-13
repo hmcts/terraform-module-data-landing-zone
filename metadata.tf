@@ -57,6 +57,11 @@ module "metadata_mssql" {
   depends_on = [azurerm_private_dns_zone_virtual_network_link.data_landing_link, module.vnet_peer_hub]
 }
 module "vm_database" {
+   providers = {
+    azurerm     = azurerm
+    azurerm.cnp = azurerm.cnp
+    azurerm.soc = azurerm.soc
+  }
 
   source                       = "github.com/hmcts/terraform-module-virtual-machine.git"
   vm_type                      = local.vm_type
