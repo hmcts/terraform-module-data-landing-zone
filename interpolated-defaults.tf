@@ -1,7 +1,34 @@
 data "azurerm_subscription" "current" {}
 data "azurerm_client_config" "current" {}
 
+resource "random_string" "vm_username" {
+  length  = 4
+  special = false
+}
+
+resource "random_password" "vm_password" {
+  length           = 16
+  special          = true
+  override_special = "#$%&@()_[]{}<>:?"
+  min_upper        = 1
+  min_lower        = 1
+  min_numeric      = 1
+}
+
 locals {
+  vm_type = "windows"
+
+  vm_size       = "Standard_D4ds_v5"
+  ipconfig_name = "IP_CONFIGURATION"
+
+  vm_subnet_id = data.azurerm_subnet.vm_subnet.id
+
+  vm_availability_zones = [1, 2]
+  marketplace_product   = "sql2019-ws2019"
+  marketplace_publisher = "MicrosoftSQLServer"
+  marketplace_sku       = "standard-gen2"
+  vm_version            = "latest"
+
   is_prod              = length(regexall(".*(prod).*", var.env)) > 0
   is_sbox              = length(regexall(".*(s?box).*", var.env)) > 0
   admin_group          = local.is_prod ? "DTS Platform Operations SC" : "DTS Platform Operations"
