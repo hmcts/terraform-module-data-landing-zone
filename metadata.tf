@@ -70,14 +70,16 @@ module "vm_database" {
   vm_size                      = local.vm_size
   vm_admin_name                = "sql_${random_string.vm_username.result}"
   vm_admin_password            = random_password.vm_password.result
+  vm_availabilty_zones = local.vm_availability_zones
   managed_disks                = var.vm_data_disks[0]
   os_disk_size_gb              = 127
   existing_resource_group_name = azurerm_resource_group.this["metadata"].name
   subnet_id                    = module.networking.subnet_ids["vnet-services"]
+  
 
   nic_name             = lower("SQL-VM-nic-${var.env}")
   ipconfig_name        = local.ipconfig_name
-  vm_subnet_id         = local.vm_subnet_id
+  # vm_subnet_id         = local.vm_subnet_id
   vm_private_ip        = var.vm_private_ip
   privateip_allocation = "Static"
 
@@ -90,6 +92,8 @@ module "vm_database" {
   env       = var.env
   product   = "data-landing"
   component = "metadata"
+  common_tags                     = var.common_tags
+
 
 }
 
