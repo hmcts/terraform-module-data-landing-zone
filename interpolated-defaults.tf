@@ -23,10 +23,9 @@ locals {
 
   vm_subnet_id = data.azurerm_subnet.vm_subnet.id
 
-  vm_availability_zones = [1, 2]
-  marketplace_product   = "sql2019-ws2019"
+  marketplace_product   = "SQL2008R2SP3-WS2008R2SP1"
   marketplace_publisher = "MicrosoftSQLServer"
-  marketplace_sku       = "standard-gen2"
+  marketplace_sku       = "Enterprise"
   vm_version            = "latest"
 
   is_prod              = length(regexall(".*(prod).*", var.env)) > 0

@@ -70,10 +70,10 @@ module "vm_database" {
   existing_resource_group_name = azurerm_resource_group.this["metadata"].name
   subnet_id                    = module.networking.subnet_ids["vnet-services"]
 
-  nic_name             = lower("SQL-VM${count.index + 1}-nic-${var.env}")
+  nic_name             = lower("SQL-VM-nic-${var.env}")
   ipconfig_name        = local.ipconfig_name
   vm_subnet_id         = local.vm_subnet_id
-  vm_private_ip        = var.vm_private_ip[count.index]
+  vm_private_ip        = var.vm_private_ip
   privateip_allocation = "Static"
 
   #storage_image_reference
