@@ -87,7 +87,7 @@ module "vm_database" {
   vm_version        = local.vm_version
 
   env  = var.env
-  tags = module.ctags.common_tags
+  tags = var.common_tags
 }
 
 

@@ -232,10 +232,3 @@ data "azurerm_private_dns_zone" "cftptl" {
   resource_group_name = local.cftptl_core_infra_resource_group
 }
 
-module "ctags" {
-  source = "github.com/hmcts/terraform-module-common-tags"
-
-  builtFrom   = var.builtFrom
-  environment = var.env
-  product     = var.product
-}

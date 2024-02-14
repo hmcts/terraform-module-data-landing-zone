@@ -7,15 +7,6 @@ variable "common_tags" {
   description = "Common tag to be applied to resources"
   type        = map(string)
 }
-variable "builtFrom" {
-  type        = string
-  description = "The name of the repository these resources are builtFrom."
-}
-
-variable "product" {
-  type        = string
-  description = "The name of the prodcut this infrastructure supports."
-}
 
 variable "vnet_address_space" {
   type        = list(string)
