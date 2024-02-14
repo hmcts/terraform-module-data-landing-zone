@@ -23,7 +23,7 @@ locals {
 
   # vm_subnet_id = data.azurerm_subnet.vm_subnet.id
 
-  vm_availability_zones = [1, 2]
+  # vm_availability_zones = [1, 2]
 
   marketplace_product   = "SQL2008R2SP3-WS2008R2SP1"
   marketplace_publisher = "MicrosoftSQLServer"
