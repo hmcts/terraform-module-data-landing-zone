@@ -86,9 +86,8 @@ module "vm_database" {
   vm_sku            = local.marketplace_sku
   vm_version        = local.vm_version
 
-  env         = var.env
-  common_tags = var.common_tags
-  # tags = module.ctags.common_tags
+  env  = var.env
+  tags = module.ctags.common_tags
 }
 
 
