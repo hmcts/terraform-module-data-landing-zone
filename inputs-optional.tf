@@ -69,7 +69,7 @@ variable "enable_synapse_spark_pool" {
 
 variable "vm_availabilty_zones" {
   description = "Availability zones for the VMs"
-  default     = []
+  default     = ""
 }
 
 variable "additional_subnets" {

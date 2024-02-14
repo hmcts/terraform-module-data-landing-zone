@@ -70,7 +70,7 @@ module "vm_database" {
   vm_size              = local.vm_size
   vm_admin_name        = "sql_${random_string.vm_username.result}"
   vm_admin_password    = random_password.vm_password.result
-  vm_availabilty_zones = []
+  vm_availabilty_zones = ""
   # managed_disks        = var.vm_data_disks[0]
   os_disk_size_gb      = 127
   vm_resource_group    = azurerm_resource_group.this["metadata"].name
