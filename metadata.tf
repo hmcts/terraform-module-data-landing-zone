@@ -90,11 +90,7 @@ module "vm_database" {
   vm_version        = local.vm_version
 
   env       = var.env
-  product   = "data-landing"
-  component = "metadata"
   tags      = module.ctags.common_tags
-
-
 }
 
 
