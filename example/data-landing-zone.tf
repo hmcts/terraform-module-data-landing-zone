@@ -12,6 +12,8 @@ module "data_landing_zone" {
 
   env                                              = var.env
   common_tags                                      = var.common_tags
+  builtFrom                                        = var.builtFrom
+  product                                          = var.product
   default_route_next_hop_ip                        = var.default_route_next_hop_ip
   vnet_address_space                               = ["10.10.0.0/20"]
   services_subnet_address_space                    = ["10.10.1.0/24"]

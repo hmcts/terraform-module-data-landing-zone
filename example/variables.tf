@@ -15,3 +15,13 @@ variable "common_tags" {
 variable "default_route_next_hop_ip" {
   default = "10.10.200.36"
 }
+
+variable "builtFrom" {
+  type        = string
+  description = "The name of the repository these resources are builtFrom."
+}
+
+variable "product" {
+  type        = string
+  description = "The name of the prodcut this infrastructure supports."
+}
