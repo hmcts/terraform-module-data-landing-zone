@@ -73,7 +73,7 @@ module "vm_database" {
   vm_availabilty_zones         = local.vm_availability_zones
   managed_disks                = var.vm_data_disks[0]
   os_disk_size_gb              = 127
-  existing_resource_group_name = azurerm_resource_group.this["metadata"].name
+  vm_resource_group            = azurerm_resource_group.this["metadata"].name
   # subnet_id                    = module.networking.subnet_ids["vnet-services"]
 
 
