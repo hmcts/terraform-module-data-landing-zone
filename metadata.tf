@@ -71,7 +71,6 @@ module "vm_database" {
   vm_admin_name        = "sql_${random_string.vm_username.result}"
   vm_admin_password    = random_password.vm_password.result
   vm_availabilty_zones = ""
-  # managed_disks        = var.vm_data_disks[0]
   os_disk_size_gb      = 127
   vm_resource_group    = azurerm_resource_group.this["metadata"].name
   vm_subnet_id         = module.networking.subnet_ids["vnet-services"]
@@ -79,9 +78,7 @@ module "vm_database" {
 
   nic_name      = lower("SQL-VM-nic-${var.env}")
   ipconfig_name = local.ipconfig_name
-  # vm_subnet_id         = local.vm_subnet_id
-  # vm_private_ip        = var.vm_private_ip
-  # privateip_allocation = "Static"
+
 
   #storage_image_reference
   vm_publisher_name = local.marketplace_publisher
@@ -89,8 +86,9 @@ module "vm_database" {
   vm_sku            = local.marketplace_sku
   vm_version        = local.vm_version
 
-  env  = var.env
-  tags = module.ctags.common_tags
+  env         = var.env
+  common_tags = var.common_tags
+  # tags = module.ctags.common_tags
 }
 
 
