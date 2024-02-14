@@ -89,6 +89,7 @@ module "data_landing_zone" {
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_ctags"></a> [ctags](#module\_ctags) | github.com/hmcts/terraform-module-common-tags | n/a |
 | <a name="module_logging_vault"></a> [logging\_vault](#module\_logging\_vault) | github.com/hmcts/cnp-module-key-vault | master |
 | <a name="module_logging_vault_pe"></a> [logging\_vault\_pe](#module\_logging\_vault\_pe) | ./modules/azure-private-endpoint | n/a |
 | <a name="module_metadata_mssql"></a> [metadata\_mssql](#module\_metadata\_mssql) | github.com/hmcts/terraform-module-mssql | main |
