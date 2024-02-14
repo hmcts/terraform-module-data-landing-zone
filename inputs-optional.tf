@@ -67,6 +67,11 @@ variable "enable_synapse_spark_pool" {
   default     = false
 }
 
+variable "vm_availabilty_zones" {
+  description = "Availability zones for the VMs"
+  default     = []
+}
+
 variable "additional_subnets" {
   description = "Map of additional subnets to create, keyed by the subnet name."
   type = map(object({
