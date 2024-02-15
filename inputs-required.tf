@@ -77,3 +77,9 @@ variable "hub_resource_group_name" {
   description = "The name of the resource group containing the HUB virtual network."
   type        = string
 }
+
+variable "vm_availability_zones" {
+  description = "Availability zone"
+  type        = string
+  default     = "1"
+}

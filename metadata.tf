@@ -56,6 +56,40 @@ module "metadata_mssql" {
 
   depends_on = [azurerm_private_dns_zone_virtual_network_link.data_landing_link, module.vnet_peer_hub]
 }
+module "vm_database" {
+  providers = {
+    azurerm     = azurerm
+    azurerm.cnp = azurerm.cnp
+    azurerm.soc = azurerm.soc
+  }
+
+  source               = "github.com/hmcts/terraform-module-virtual-machine.git"
+  vm_type              = local.vm_type
+  vm_name              = "${local.name}-metadata-mssql"
+  vm_location          = var.location
+  vm_size              = local.vm_size
+  vm_admin_name        = "sql_${random_string.vm_username.result}"
+  vm_admin_password    = random_password.vm_password.result
+  vm_availabilty_zones = var.vm_availability_zones
+  os_disk_size_gb      = 127
+  vm_resource_group    = azurerm_resource_group.this["metadata"].name
+  vm_subnet_id         = module.networking.subnet_ids["vnet-services"]
+
+  nic_name      = lower("SQL-VM-nic-${var.env}")
+  ipconfig_name = local.ipconfig_name
+
+
+  #storage_image_reference
+  vm_publisher_name = local.marketplace_publisher
+  vm_offer          = local.marketplace_product
+  vm_sku            = local.marketplace_sku
+  vm_version        = local.vm_version
+
+  env  = var.env
+  tags = var.common_tags
+}
+
+
 
 resource "azurerm_key_vault_secret" "mssql_username" {
   name         = "${local.name}-metadata-mssql-username-${var.env}"

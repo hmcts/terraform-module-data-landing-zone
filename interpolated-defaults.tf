@@ -1,7 +1,31 @@
 data "azurerm_subscription" "current" {}
 data "azurerm_client_config" "current" {}
 
+resource "random_string" "vm_username" {
+  length  = 4
+  special = false
+}
+
+resource "random_password" "vm_password" {
+  length           = 16
+  special          = true
+  override_special = "#$%&@()_[]{}<>:?"
+  min_upper        = 1
+  min_lower        = 1
+  min_numeric      = 1
+}
+
 locals {
+  vm_type = "windows"
+
+  vm_size       = "Standard_D4ds_v5"
+  ipconfig_name = "IP_CONFIGURATION"
+
+  marketplace_product   = "SQL2008R2SP3-WS2008R2SP1"
+  marketplace_publisher = "MicrosoftSQLServer"
+  marketplace_sku       = "Enterprise"
+  vm_version            = "latest"
+
   is_prod              = length(regexall(".*(prod).*", var.env)) > 0
   is_sbox              = length(regexall(".*(s?box).*", var.env)) > 0
   admin_group          = local.is_prod ? "DTS Platform Operations SC" : "DTS Platform Operations"
@@ -203,3 +227,4 @@ data "azurerm_private_dns_zone" "cftptl" {
   name                = each.key
   resource_group_name = local.cftptl_core_infra_resource_group
 }
+
