@@ -65,7 +65,7 @@ module "vm_database" {
 
   source               = "github.com/hmcts/terraform-module-virtual-machine.git"
   vm_type              = local.vm_type
-  vm_name              = "${local.name}-metadata-mssql"
+  vm_name              = "${local.name}-metadata-sql-vm"
   vm_location          = var.location
   vm_size              = local.vm_size
   vm_admin_name        = "sql_${random_string.vm_username.result}"
@@ -75,7 +75,8 @@ module "vm_database" {
   vm_resource_group    = azurerm_resource_group.this["metadata"].name
   vm_subnet_id         = module.networking.subnet_ids["vnet-services"]
 
-  nic_name      = lower("SQL-VM-nic-${var.env}")
+
+nic_name      = lower("SQL-VM-nic-${var.env}")
   ipconfig_name = local.ipconfig_name
 
 
