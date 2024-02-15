@@ -76,7 +76,7 @@ module "vm_database" {
   vm_subnet_id         = module.networking.subnet_ids["vnet-services"]
 
 
-nic_name      = lower("SQL-VM-nic-${var.env}")
+  nic_name      = lower("SQL-VM-nic-${var.env}")
   ipconfig_name = local.ipconfig_name
 
 
