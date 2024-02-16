@@ -75,6 +75,9 @@ module "vm_database" {
   vm_resource_group    = azurerm_resource_group.this["metadata"].name
   vm_subnet_id         = module.networking.subnet_ids["vnet-services"]
   nic_name             = lower("SQL-VM-nic-${var.env}")
+  ipconfig_name        = local.ipconfig_name
+  privateip_allocation = "Dynamic"
+
 
 
   #storage_image_reference
