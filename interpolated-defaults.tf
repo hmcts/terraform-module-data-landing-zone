@@ -18,8 +18,7 @@ resource "random_password" "vm_password" {
 locals {
   vm_type = "windows"
 
-  vm_size       = "Standard_D4ds_v5"
-  ipconfig_name = "IP_CONFIGURATION"
+  vm_size = "Standard_D4ds_v5"
 
   marketplace_product   = "SQL2008R2SP3-WS2008R2SP1"
   marketplace_publisher = "MicrosoftSQLServer"
