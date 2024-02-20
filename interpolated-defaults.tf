@@ -22,10 +22,10 @@ locals {
   ipconfig_name = "IP_CONFIGURATION"
 
 
-  marketplace_product   = "SQL2008R2SP3-WS2008R2SP1"
-  marketplace_publisher = "MicrosoftSQLServer"
-  marketplace_sku       = "Enterprise"
-  vm_version            = "latest"
+  marketplace_product   = "windowsserver-gen2preview"
+  marketplace_publisher = "MicrosoftWindowsServer"
+  marketplace_sku       = "2012-r2-datacenter-gen2"
+  vm_version            = "9600.19431.1908092124"
 
   is_prod              = length(regexall(".*(prod).*", var.env)) > 0
   is_sbox              = length(regexall(".*(s?box).*", var.env)) > 0
