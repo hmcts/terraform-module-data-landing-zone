@@ -78,7 +78,10 @@ module "vm_database" {
   ipconfig_name        = local.ipconfig_name
   privateip_allocation = "Dynamic"
 
-
+  nessus_install        = false
+  install_splunk_uf     = false
+  install_dynatrace     = false
+  install_azure_monitor = false
 
   #storage_image_reference
   vm_publisher_name = local.marketplace_publisher
