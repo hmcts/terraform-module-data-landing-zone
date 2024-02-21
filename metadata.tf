@@ -137,7 +137,7 @@ module "legacy_database" {
   }
 
   source               = "github.com/hmcts/terraform-module-virtual-machine.git"
-  vm_type              = each.value.vm_type
+  vm_type              = each.value.type
   vm_name              = "${local.name}-${each.key}-${var.env}"
   vm_location          = var.location
   vm_size              = each.value.size
