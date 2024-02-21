@@ -56,44 +56,6 @@ module "metadata_mssql" {
 
   depends_on = [azurerm_private_dns_zone_virtual_network_link.data_landing_link, module.vnet_peer_hub]
 }
-module "vm_database" {
-  providers = {
-    azurerm     = azurerm
-    azurerm.cnp = azurerm.cnp
-    azurerm.soc = azurerm.soc
-  }
-
-  source               = "github.com/hmcts/terraform-module-virtual-machine.git"
-  vm_type              = local.vm_type
-  vm_name              = "${local.name}-metadata-sql-vm"
-  vm_location          = var.location
-  vm_size              = local.vm_size
-  vm_admin_name        = "sql_${random_string.vm_username.result}"
-  vm_admin_password    = random_password.vm_password.result
-  vm_availabilty_zones = var.vm_availability_zones
-  os_disk_size_gb      = 127
-  vm_resource_group    = azurerm_resource_group.this["metadata"].name
-  vm_subnet_id         = module.networking.subnet_ids["vnet-services"]
-  nic_name             = lower("SQL-VM-nic-${var.env}")
-  ipconfig_name        = local.ipconfig_name
-  privateip_allocation = "Dynamic"
-
-  nessus_install             = false
-  install_splunk_uf          = false
-  install_dynatrace_oneagent = false
-  install_azure_monitor      = false
-
-  #storage_image_reference
-  vm_publisher_name = local.marketplace_publisher
-  vm_offer          = local.marketplace_product
-  vm_sku            = local.marketplace_sku
-  vm_version        = local.vm_version
-
-  env  = var.env
-  tags = var.common_tags
-}
-
-
 
 resource "azurerm_key_vault_secret" "mssql_username" {
   name         = "${local.name}-metadata-mssql-username-${var.env}"
@@ -145,6 +107,76 @@ resource "azurerm_key_vault_secret" "mysql_password" {
 resource "azurerm_key_vault_secret" "mysql_connection_string" {
   name         = "${local.name}-metadata-mysql-connection-string-${var.env}"
   value        = "jdbc:mysql://${module.metadata_mysql.fqdn}/${local.name}-HiveMetastoreDb-${var.env}?useSSL=true&requireSSL=false&enabledSslProtocolSuites=TLSv1.2"
+  key_vault_id = module.metadata_vault["meta002"].key_vault_id
+  depends_on   = [module.metadata_vault, module.metadata_vault_pe]
+}
+
+resource "random_string" "legacy_database_username" {
+  for_each = var.legacy_databases
+  length   = 4
+  special  = false
+}
+
+resource "random_password" "legacy_database_password" {
+  for_each         = var.legacy_databases
+  length           = 16
+  special          = true
+  override_special = "#$%&@()_[]{}<>:?"
+  min_upper        = 1
+  min_lower        = 1
+  min_numeric      = 1
+}
+
+module "legacy_database" {
+  for_each = var.legacy_databases
+
+  providers = {
+    azurerm     = azurerm
+    azurerm.cnp = azurerm.cnp
+    azurerm.soc = azurerm.soc
+  }
+
+  source               = "github.com/hmcts/terraform-module-virtual-machine.git"
+  vm_type              = each.value.vm_type
+  vm_name              = "${local.name}-${each.key}-${var.env}"
+  vm_location          = var.location
+  vm_size              = each.value.size
+  vm_admin_name        = "admin_${random_string.legacy_database_username[each.key].result}"
+  vm_admin_password    = random_password.legacy_database_password[each.key].result
+  vm_availabilty_zones = "1"
+  os_disk_size_gb      = 127
+  vm_resource_group    = azurerm_resource_group.this["metadata"].name
+  vm_subnet_id         = module.networking.subnet_ids["vnet-services"]
+  nic_name             = "${local.name}-${each.key}-nic-${var.env}"
+  ipconfig_name        = "${local.name}-${each.key}-ipconfig-${var.env}"
+  privateip_allocation = "Dynamic"
+
+  nessus_install             = false
+  install_splunk_uf          = false
+  install_dynatrace_oneagent = false
+  install_azure_monitor      = false
+
+  vm_publisher_name = each.value.publisher_name
+  vm_offer          = each.value.offer
+  vm_sku            = each.value.sku
+  vm_version        = each.value.version
+
+  env  = var.env
+  tags = var.common_tags
+}
+
+resource "azurerm_key_vault_secret" "legacy_database_username" {
+  for_each     = var.legacy_databases
+  name         = "${local.name}-legacy-sql-username-${var.env}"
+  value        = "admin${random_string.legacy_database_username[each.key].result}"
+  key_vault_id = module.metadata_vault["meta002"].key_vault_id
+  depends_on   = [module.metadata_vault, module.metadata_vault_pe]
+}
+
+resource "azurerm_key_vault_secret" "legacy_database_password" {
+  for_each     = var.legacy_databases
+  name         = "${local.name}-legacy-sql-password-${var.env}"
+  value        = random_password.legacy_database_password[each.key].result
   key_vault_id = module.metadata_vault["meta002"].key_vault_id
   depends_on   = [module.metadata_vault, module.metadata_vault_pe]
 }

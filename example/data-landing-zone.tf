@@ -26,4 +26,13 @@ module "data_landing_zone" {
   data_product_002_subnet_address_space            = ["10.10.10.0/24"]
   hub_vnet_name                                    = "hmcts-hub-sbox-int"
   hub_resource_group_name                          = "hmcts-hub-sbox-int"
+
+  legacy_databases = {
+    legacy-sql = {
+      publisher_name = "windowsserver-gen2preview"
+      offer          = "MicrosoftWindowsServer"
+      sku            = "2012-r2-datacenter-gen2"
+      version        = "9600.19431.1908092124"
+    }
+  }
 }

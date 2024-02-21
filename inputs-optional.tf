@@ -80,3 +80,16 @@ variable "additional_subnets" {
   }))
   default = {}
 }
+
+variable "legacy_databases" {
+  description = "Map of legacy databases to create as IaaS VMs."
+  type = map(object({
+    size           = optional(string, "Standard_D4ds_v5")
+    type           = optional(string, "windows")
+    publisher_name = string
+    offer          = string
+    sku            = string
+    version        = string
+  }))
+  default = {}
+}
