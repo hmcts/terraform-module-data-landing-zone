@@ -80,9 +80,9 @@ module "data_landing_zone" {
 | Name | Version |
 |------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | >= 2.43.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.74.0 |
-| <a name="provider_azurerm.cftptl"></a> [azurerm.cftptl](#provider\_azurerm.cftptl) | 3.74.0 |
-| <a name="provider_azurerm.ssptl"></a> [azurerm.ssptl](#provider\_azurerm.ssptl) | 3.74.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.7.0 |
+| <a name="provider_azurerm.cftptl"></a> [azurerm.cftptl](#provider\_azurerm.cftptl) | >= 3.7.0 |
+| <a name="provider_azurerm.ssptl"></a> [azurerm.ssptl](#provider\_azurerm.ssptl) | >= 3.7.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | >= 3.1.0 |
 
 ## Modules
@@ -177,6 +177,7 @@ module "data_landing_zone" {
 | <a name="input_storage_account_kind"></a> [storage\_account\_kind](#input\_storage\_account\_kind) | The storage account kind, will default to StorageV2. | `string` | `"StorageV2"` | no |
 | <a name="input_storage_account_replication_type"></a> [storage\_account\_replication\_type](#input\_storage\_account\_replication\_type) | The replication type of the storage account, will default to LRS. | `string` | `"LRS"` | no |
 | <a name="input_storage_account_tier"></a> [storage\_account\_tier](#input\_storage\_account\_tier) | The storage account tier, will default to Standard. | `string` | `"Standard"` | no |
+| <a name="input_use_microsoft_ip_kit_structure"></a> [use\_microsoft\_ip\_kit\_structure](#input\_use\_microsoft\_ip\_kit\_structure) | Whether to use the Microsoft IP Kit structure for the network. Defaults to false. | `bool` | `false` | no |
 | <a name="input_vnet_address_space"></a> [vnet\_address\_space](#input\_vnet\_address\_space) | The Address space covered by the data landing zone virtual network | `list(string)` | n/a | yes |
 
 ## Outputs
