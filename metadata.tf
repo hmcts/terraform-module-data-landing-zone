@@ -6,7 +6,7 @@ module "metadata_vault" {
   env                 = var.env
   object_id           = data.azurerm_client_config.current.object_id
   location            = var.location
-  resource_group_name = azurerm_resource_group.this["metadata"].name
+  resource_group_name = azurerm_resource_group.this[local.metadata_resource_group].name
   product_group_name  = local.admin_group
   common_tags         = var.common_tags
 }
@@ -18,7 +18,7 @@ module "metadata_vault_pe" {
   depends_on = [module.vnet_peer_hub]
 
   name             = "${local.name}-${each.key}-pe-${var.env}"
-  resource_group   = azurerm_resource_group.this["metadata"].name
+  resource_group   = azurerm_resource_group.this[local.metadata_resource_group].name
   location         = var.location
   subnet_id        = module.networking.subnet_ids["vnet-services"]
   common_tags      = var.common_tags
@@ -38,7 +38,7 @@ module "metadata_mssql" {
   enable_private_endpoint         = true
   private_endpoint_subnet_id      = module.networking.subnet_ids["vnet-services"]
   common_tags                     = var.common_tags
-  existing_resource_group_name    = azurerm_resource_group.this["metadata"].name
+  existing_resource_group_name    = azurerm_resource_group.this[local.metadata_resource_group].name
 
   mssql_databases = {
     "${local.metadata_mssql_db_name}" = {
@@ -78,7 +78,7 @@ module "metadata_mysql" {
   product                      = "data-landing"
   component                    = "metadata"
   common_tags                  = var.common_tags
-  existing_resource_group_name = azurerm_resource_group.this["metadata"].name
+  existing_resource_group_name = azurerm_resource_group.this[local.metadata_resource_group].name
   delegated_subnet_id          = module.networking.subnet_ids["vnet-services-mysql"]
   storage_size_gb              = 20
 
@@ -145,7 +145,7 @@ module "legacy_database" {
   vm_admin_password    = random_password.legacy_database_password[each.key].result
   vm_availabilty_zones = "1"
   os_disk_size_gb      = 127
-  vm_resource_group    = azurerm_resource_group.this["metadata"].name
+  vm_resource_group    = azurerm_resource_group.this[local.metadata_resource_group].name
   vm_subnet_id         = module.networking.subnet_ids["vnet-services"]
   nic_name             = "${local.name}-${each.key}-nic-${var.env}"
   ipconfig_name        = "${local.name}-${each.key}-ipconfig-${var.env}"

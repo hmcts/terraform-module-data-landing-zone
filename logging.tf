@@ -5,7 +5,7 @@ module "logging_vault" {
   env                 = var.env
   object_id           = data.azurerm_client_config.current.object_id
   location            = var.location
-  resource_group_name = azurerm_resource_group.this["logging"].name
+  resource_group_name = azurerm_resource_group.this[local.logging_resource_group].name
   product_group_name  = local.admin_group
   common_tags         = var.common_tags
 }
@@ -16,7 +16,7 @@ module "logging_vault_pe" {
   depends_on = [module.vnet_peer_hub]
 
   name             = "${local.name}-keyVault001-pe-${var.env}"
-  resource_group   = azurerm_resource_group.this["logging"].name
+  resource_group   = azurerm_resource_group.this[local.logging_resource_group].name
   location         = var.location
   subnet_id        = module.networking.subnet_ids["vnet-services"]
   common_tags      = var.common_tags
@@ -27,7 +27,7 @@ module "logging_vault_pe" {
 
 resource "azurerm_log_analytics_workspace" "this" {
   name                       = "${local.name}-logAnalytics001-${var.env}"
-  resource_group_name        = azurerm_resource_group.this["logging"].name
+  resource_group_name        = azurerm_resource_group.this[local.logging_resource_group].name
   location                   = var.location
   internet_ingestion_enabled = true
   internet_query_enabled     = true

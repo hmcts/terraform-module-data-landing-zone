@@ -14,7 +14,7 @@ module "runtimes_datafactory" {
   private_endpoint_enabled         = true
   private_endpoint_subnet_id       = module.networking.subnet_ids["vnet-services"]
   common_tags                      = var.common_tags
-  existing_resource_group_name     = azurerm_resource_group.this["runtimes"].name
+  existing_resource_group_name     = azurerm_resource_group.this[local.runtimes_resource_group].name
   managed_private_endpoints        = local.adf_managed_purview_endpoints
 }
 
@@ -38,7 +38,7 @@ module "shir001" {
   env                          = var.env
   name                         = "${local.name}-shir001"
   short_name                   = "shir001"
-  resource_group               = azurerm_resource_group.this["runtimes"].name
+  resource_group               = azurerm_resource_group.this[local.runtimes_resource_group].name
   subnet_id                    = module.networking.subnet_ids["vnet-services"]
   key_vault_id                 = module.metadata_vault["meta001"].key_vault_id
   integration_runtime_auth_key = azurerm_data_factory_integration_runtime_self_hosted.this.primary_authorization_key
@@ -60,7 +60,7 @@ module "shir002" {
   env                          = var.env
   name                         = "${local.name}-shir002"
   short_name                   = "shir002"
-  resource_group               = azurerm_resource_group.this["runtimes"].name
+  resource_group               = azurerm_resource_group.this[local.runtimes_resource_group].name
   subnet_id                    = module.networking.subnet_ids["vnet-services"]
   key_vault_id                 = module.metadata_vault["meta001"].key_vault_id
   integration_runtime_auth_key = var.existing_purview_account.self_hosted_integration_runtime_auth_key

@@ -93,3 +93,9 @@ variable "legacy_databases" {
   }))
   default = {}
 }
+
+variable "use_microsoft_ip_kit_structure" {
+  description = "Whether to use the Microsoft IP Kit structure for the network. Defaults to false."
+  type        = bool
+  default     = false
+}

@@ -5,7 +5,7 @@ module "shared_product_databricks" {
   product                      = "data-landing"
   component                    = "shared-integration"
   name                         = "${local.name}-product-databricks001"
-  existing_resource_group_name = azurerm_resource_group.this["shared-product"].name
+  existing_resource_group_name = azurerm_resource_group.this[local.shared_product_resource_group].name
   location                     = var.location
   common_tags                  = var.common_tags
   vnet_id                      = module.networking.vnet_ids["vnet"]
@@ -40,7 +40,7 @@ resource "azurerm_key_vault_secret" "synapse_sql_username" {
 
 resource "azurerm_synapse_workspace" "this" {
   name                                 = "${local.name}-product-synapse001-${var.env}"
-  resource_group_name                  = azurerm_resource_group.this["shared-product"].name
+  resource_group_name                  = azurerm_resource_group.this[local.shared_product_resource_group].name
   location                             = var.location
   storage_data_lake_gen2_filesystem_id = azurerm_storage_data_lake_gen2_filesystem.this["workspace"].id
   sql_administrator_login              = "sqladminuser"
@@ -113,7 +113,7 @@ module "synapse_pe" {
   source   = "./modules/azure-private-endpoint"
 
   name             = "${local.name}-product-synapse001-${each.key}-pe-${var.env}"
-  resource_group   = azurerm_resource_group.this["shared-product"].name
+  resource_group   = azurerm_resource_group.this[local.shared_product_resource_group].name
   location         = var.location
   subnet_id        = module.networking.subnet_ids["vnet-services"]
   common_tags      = var.common_tags

@@ -2,12 +2,14 @@ data "azurerm_subscription" "current" {}
 data "azurerm_client_config" "current" {}
 
 locals {
-  is_prod              = length(regexall(".*(prod).*", var.env)) > 0
-  is_sbox              = length(regexall(".*(s?box).*", var.env)) > 0
-  admin_group          = local.is_prod ? "DTS Platform Operations SC" : "DTS Platform Operations"
-  name                 = var.name != null ? var.name : "datalanding"
-  short_name           = substr(local.name, 0, 11)
-  resource_group_names = ["network", "management", "logging", "runtimes", "storage", "external-storage", "metadata", "shared-integration", "shared-product", "di001", "di002", "dp001", "dp002"]
+  is_prod                        = length(regexall(".*(prod).*", var.env)) > 0
+  is_sbox                        = length(regexall(".*(s?box).*", var.env)) > 0
+  admin_group                    = local.is_prod ? "DTS Platform Operations SC" : "DTS Platform Operations"
+  name                           = var.name != null ? var.name : "datalanding"
+  short_name                     = substr(local.name, 0, 11)
+  resource_group_names           = ["network", "management", "logging", "runtimes", "storage", "external-storage", "metadata", "shared-integration", "shared-product", "di001", "di002", "dp001", "dp002"]
+  ip_kit_resource_group_names    = ["network", "logic", "main"]
+  effective_resource_group_names = var.use_microsoft_ip_kit_structure ? local.ip_kit_resource_group_names : local.resource_group_names
 
   databricks_service_name = "Microsoft.Databricks/workspaces"
   databricks_subnet_delegated_actions = [
@@ -18,22 +20,22 @@ locals {
 
   storage_accounts = {
     raw = {
-      resource_group_key = "storage"
+      resource_group_key = var.use_microsoft_ip_kit_structure ? "main" : "storage"
       containers         = local.domain_file_system_names
       private_endpoints  = local.default_storage_private_endpoints
     }
     curated = {
-      resource_group_key = "storage"
+      resource_group_key = var.use_microsoft_ip_kit_structure ? "main" : "storage"
       containers         = local.domain_file_system_names
       private_endpoints  = local.default_storage_private_endpoints
     }
     workspace = {
-      resource_group_key = "storage"
+      resource_group_key = var.use_microsoft_ip_kit_structure ? "main" : "storage"
       containers         = local.data_product_file_system_names
       private_endpoints  = local.default_storage_private_endpoints
     }
     external = {
-      resource_group_key = "external-storage"
+      resource_group_key = var.use_microsoft_ip_kit_structure ? "main" : "external-storage"
       containers         = [{ name = "data", access_type = "private" }]
       private_endpoints  = local.default_storage_private_endpoints
     }
@@ -176,6 +178,12 @@ locals {
       address_prefixes = var.data_product_002_subnet_address_space
     }
   }
+
+  logging_resource_group            = var.use_microsoft_ip_kit_structure ? "main" : "logging"
+  metadata_resource_group           = var.use_microsoft_ip_kit_structure ? "main" : "metadata"
+  runtimes_resource_group           = var.use_microsoft_ip_kit_structure ? "main" : "runtimes"
+  shared_integration_resource_group = var.use_microsoft_ip_kit_structure ? "main" : "shared-integration"
+  shared_product_resource_group     = var.use_microsoft_ip_kit_structure ? "main" : "shared-product"
 }
 
 data "azuread_group" "admin_group" {
