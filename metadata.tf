@@ -168,7 +168,7 @@ module "legacy_database" {
 resource "azurerm_key_vault_secret" "legacy_database_username" {
   for_each     = var.legacy_databases
   name         = "${local.name}-legacy-sql-username-${var.env}"
-  value        = "admin${random_string.legacy_database_username[each.key].result}"
+  value        = "admin_${random_string.legacy_database_username[each.key].result}"
   key_vault_id = module.metadata_vault["meta002"].key_vault_id
   depends_on   = [module.metadata_vault, module.metadata_vault_pe]
 }
