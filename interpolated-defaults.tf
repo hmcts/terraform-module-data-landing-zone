@@ -71,7 +71,7 @@ locals {
   ])
 
   metadata_vaults        = ["meta001", "meta002"]
-  metadata_mssql_db_name = "${local.name}-metadata-db-${var.env}"
+  metadata_mssql_db_name = "MetadataControl"
 
   ssptl_vnet_name                  = local.is_sbox ? "ss-ptlsbox-vnet" : "ss-ptl-vnet"
   ssptl_vnet_resource_group        = local.is_sbox ? "ss-ptlsbox-network-rg" : "ss-ptl-network-rg"
