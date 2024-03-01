@@ -34,6 +34,11 @@ locals {
       containers         = local.data_product_file_system_names
       private_endpoints  = local.default_storage_private_endpoints
     }
+    workspace = {
+      resource_group_key = var.use_microsoft_ip_kit_structure ? "main" : "storage"
+      containers         = [{ name = "landing", access_type = "private" }]
+      private_endpoints  = local.default_storage_private_endpoints
+    }
     external = {
       resource_group_key = var.use_microsoft_ip_kit_structure ? "main" : "external-storage"
       containers         = [{ name = "data", access_type = "private" }]
