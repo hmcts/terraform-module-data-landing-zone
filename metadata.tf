@@ -133,6 +133,7 @@ resource "azurerm_public_ip" "legacy_pip" {
   resource_group_name = azurerm_resource_group.this[local.metadata_resource_group].name
   location            = var.location
   allocation_method   = "Static"
+  zones               = ["1"]
 }
 
 module "legacy_database" {
