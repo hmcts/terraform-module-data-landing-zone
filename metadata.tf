@@ -134,6 +134,7 @@ resource "azurerm_public_ip" "legacy_pip" {
   location            = var.location
   allocation_method   = "Static"
   zones               = ["1"]
+  sku                 = "Standard"
 }
 
 module "legacy_database" {
