@@ -86,6 +86,7 @@ variable "legacy_databases" {
   type = map(object({
     size           = optional(string, "Standard_D4ds_v5")
     type           = optional(string, "windows")
+    public_ip      = optional(bool, false)
     publisher_name = string
     offer          = string
     sku            = string

@@ -127,6 +127,14 @@ resource "random_password" "legacy_database_password" {
   min_numeric      = 1
 }
 
+resource "azurerm_public_ip" "legacy_pip" {
+  for_each            = { for k, v in var.legacy_databases : k => v if v.public_ip == true }
+  name                = "${local.name}-${each.key}-pip-${var.env}"
+  resource_group_name = azurerm_resource_group.this[local.metadata_resource_group].name
+  location            = var.location
+  allocation_method   = "Static"
+}
+
 module "legacy_database" {
   for_each = var.legacy_databases
 
@@ -150,6 +158,7 @@ module "legacy_database" {
   nic_name             = "${local.name}-${each.key}-nic-${var.env}"
   ipconfig_name        = "${local.name}-${each.key}-ipconfig-${var.env}"
   privateip_allocation = "Dynamic"
+  vm_public_ip_address = each.value.public_ip ? azurerm_public_ip.legacy_pip[each.key].id : null
 
   nessus_install             = false
   install_splunk_uf          = false
