@@ -32,7 +32,7 @@ module "networking" {
   network_security_groups = {
     nsg = {
       subnets = formatlist("vnet-%s", keys(merge(local.default_subnets, var.additional_subnets)))
-      rules = {
+      rules = merge({
         "Dbricks-workspaces-UseOnly-databricks-worker-to-worker-inbound" = {
           priority                   = 200
           direction                  = "Inbound"
@@ -110,7 +110,7 @@ module "networking" {
           destination_address_prefixes = var.vnet_address_space
           description                  = "Allow ADO agents to communicate with DLRM data ingest landing zone resources."
         }
-      }
+      }, var.additional_nsg_rules)
     }
   }
 }
