@@ -80,9 +80,9 @@ module "data_landing_zone" {
 | Name | Version |
 |------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | >= 2.43.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.7.0 |
-| <a name="provider_azurerm.cftptl"></a> [azurerm.cftptl](#provider\_azurerm.cftptl) | >= 3.7.0 |
-| <a name="provider_azurerm.ssptl"></a> [azurerm.ssptl](#provider\_azurerm.ssptl) | >= 3.7.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.74.0 |
+| <a name="provider_azurerm.cftptl"></a> [azurerm.cftptl](#provider\_azurerm.cftptl) | 3.74.0 |
+| <a name="provider_azurerm.ssptl"></a> [azurerm.ssptl](#provider\_azurerm.ssptl) | 3.74.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | >= 3.1.0 |
 
 ## Modules
