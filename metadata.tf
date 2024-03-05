@@ -180,7 +180,7 @@ module "legacy_database" {
 
 resource "azurerm_key_vault_secret" "legacy_database_username" {
   for_each     = var.legacy_databases
-  name         = "${local.name}-legacy-sql-username-${var.env}"
+  name         = "${local.name}-${each.key}-username-${var.env}"
   value        = "admin_${random_string.legacy_database_username[each.key].result}"
   key_vault_id = module.metadata_vault["meta002"].key_vault_id
   depends_on   = [module.metadata_vault, module.metadata_vault_pe]
@@ -188,7 +188,7 @@ resource "azurerm_key_vault_secret" "legacy_database_username" {
 
 resource "azurerm_key_vault_secret" "legacy_database_password" {
   for_each     = var.legacy_databases
-  name         = "${local.name}-legacy-sql-password-${var.env}"
+  name         = "${local.name}-${each.key}-password-${var.env}"
   value        = random_password.legacy_database_password[each.key].result
   key_vault_id = module.metadata_vault["meta002"].key_vault_id
   depends_on   = [module.metadata_vault, module.metadata_vault_pe]
