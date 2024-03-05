@@ -78,6 +78,7 @@ locals {
   cftptl_core_infra_resource_group = "core-infra-intsvc-rg"
 
   privatelink_dns_zone_names = [
+    "privatelink.database.windows.net",
     "privatelink.mysql.database.azure.com",
     "privatelink.blob.core.windows.net",
     "privatelink.dfs.core.windows.net",
