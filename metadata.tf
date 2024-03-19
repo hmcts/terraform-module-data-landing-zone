@@ -12,7 +12,7 @@ module "metadata_vault" {
 }
 
 resource "azurerm_key_vault_access_policy" "metadata_vault_reders" {
-  for_each     = setproduct(toset(var.key_vault_readers), toset(local.metadata_vaults))
+  for_each     = { for product in setproduct(toset(var.key_vault_readers), toset(local.metadata_vaults)) : "${product[0]}-${product[1]}" => product }
   key_vault_id = module.metadata_vault[each.value[1]].key_vault_id
 
   object_id = each.value[0]
