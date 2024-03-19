@@ -11,6 +11,29 @@ module "metadata_vault" {
   common_tags         = var.common_tags
 }
 
+resource "azurerm_key_vault_access_policy" "metadata_vault_reders" {
+  for_each     = setproduct(toset(var.key_vault_readers), toset(local.metadata_vaults))
+  key_vault_id = module.metadata_vault[each.value[1]].key_vault_id
+
+  object_id = each.value[0]
+  tenant_id = data.azurerm_client_config.current.tenant_id
+
+  secret_permissions = [
+    "Get",
+    "List"
+  ]
+
+  certificate_permissions = [
+    "Get",
+    "List"
+  ]
+
+  key_permissions = [
+    "Get",
+    "List"
+  ]
+}
+
 module "metadata_vault_pe" {
   for_each = toset(local.metadata_vaults)
   source   = "./modules/azure-private-endpoint"

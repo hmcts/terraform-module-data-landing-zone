@@ -10,6 +10,29 @@ module "logging_vault" {
   common_tags         = var.common_tags
 }
 
+resource "azurerm_key_vault_access_policy" "logging_vault_reders" {
+  for_each     = toset(var.key_vault_readers)
+  key_vault_id = module.logging_vault.key_vault_id
+
+  object_id = each.value
+  tenant_id = data.azurerm_client_config.current.tenant_id
+
+  secret_permissions = [
+    "Get",
+    "List"
+  ]
+
+  certificate_permissions = [
+    "Get",
+    "List"
+  ]
+
+  key_permissions = [
+    "Get",
+    "List"
+  ]
+}
+
 module "logging_vault_pe" {
   source = "./modules/azure-private-endpoint"
 

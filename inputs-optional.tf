@@ -122,4 +122,11 @@ variable "additional_nsg_rules" {
     destination_application_security_group_ids = optional(list(string))
     description                                = optional(string)
   }))
+  default = {}
+}
+
+variable "key_vault_readers" {
+  description = "List of strings representing the object ids of the users or groups that should have read access to the key vault."
+  type        = string
+  default     = []
 }

@@ -1,23 +1,24 @@
 module "storage" {
-  source = "github.com/hmcts/cnp-module-storage-account?ref=master"
+  source = "github.com/hmcts/cnp-module-storage-account?ref=feat%2Finfra-encryption"
 
   depends_on = [module.vnet_peer_hub]
 
-  for_each                 = local.storage_accounts
-  env                      = var.env
-  storage_account_name     = length(replace("${local.name}${each.key}${var.env}", "-", "")) > 24 ? lower(replace("${local.short_name}${each.key}${var.env}", "-", "")) : lower(replace("${local.name}${each.key}${var.env}", "-", ""))
-  resource_group_name      = azurerm_resource_group.this[each.value.resource_group_key].name
-  location                 = var.location
-  account_kind             = var.storage_account_kind
-  account_tier             = var.storage_account_tier
-  account_replication_type = var.storage_account_replication_type
-  enable_hns               = true
-  enable_sftp              = false
-  enable_nfs               = false
-  containers               = each.value.containers
-  enable_data_protection   = true
-  enable_versioning        = false
-  pim_roles                = {}
+  for_each                          = local.storage_accounts
+  env                               = var.env
+  storage_account_name              = length(replace("${local.name}${each.key}${var.env}", "-", "")) > 24 ? lower(replace("${local.short_name}${each.key}${var.env}", "-", "")) : lower(replace("${local.name}${each.key}${var.env}", "-", ""))
+  resource_group_name               = azurerm_resource_group.this[each.value.resource_group_key].name
+  location                          = var.location
+  account_kind                      = var.storage_account_kind
+  account_tier                      = var.storage_account_tier
+  account_replication_type          = var.storage_account_replication_type
+  enable_hns                        = true
+  enable_sftp                       = false
+  enable_nfs                        = false
+  containers                        = each.value.containers
+  enable_data_protection            = true
+  enable_versioning                 = false
+  pim_roles                         = {}
+  infrastructure_encryption_enabled = true
 
   sa_subnets = [
     data.azurerm_subnet.ssptl-00.id,
