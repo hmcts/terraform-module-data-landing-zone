@@ -127,6 +127,6 @@ variable "additional_nsg_rules" {
 
 variable "key_vault_readers" {
   description = "List of strings representing the object ids of the users or groups that should have read access to the key vault."
-  type        = string
+  type        = list(string)
   default     = []
 }
