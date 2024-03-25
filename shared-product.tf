@@ -46,7 +46,7 @@ resource "azurerm_synapse_workspace" "this" {
   sql_administrator_login              = "sqladminuser"
   sql_administrator_login_password     = random_password.synapse_sql_password.result
   sql_identity_control_enabled         = true
-  data_exfiltration_protection_enabled = true
+  data_exfiltration_protection_enabled = false
   managed_virtual_network_enabled      = true
   managed_resource_group_name          = "${local.name}-product-synapse001"
   purview_id                           = var.existing_purview_account == null ? null : var.existing_purview_account.resource_id
