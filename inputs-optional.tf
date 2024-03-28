@@ -86,10 +86,47 @@ variable "legacy_databases" {
   type = map(object({
     size           = optional(string, "Standard_D4ds_v5")
     type           = optional(string, "windows")
+    public_ip      = optional(bool, false)
+    computer_name  = optional(string)
     publisher_name = string
     offer          = string
     sku            = string
     version        = string
   }))
   default = {}
+}
+
+variable "use_microsoft_ip_kit_structure" {
+  description = "Whether to use the Microsoft IP Kit structure for the network. Defaults to false."
+  type        = bool
+  default     = false
+}
+
+variable "additional_nsg_rules" {
+  description = "Map of additional NSG rules to create, keyed by the rule name."
+  type = map(object({
+    name_override                              = optional(string)
+    priority                                   = number
+    direction                                  = string
+    access                                     = string
+    protocol                                   = string
+    source_port_range                          = optional(string)
+    source_port_ranges                         = optional(list(string))
+    destination_port_range                     = optional(string)
+    destination_port_ranges                    = optional(list(string))
+    source_address_prefix                      = optional(string)
+    source_address_prefixes                    = optional(list(string))
+    source_application_security_group_ids      = optional(list(string))
+    destination_address_prefix                 = optional(string)
+    destination_address_prefixes               = optional(list(string))
+    destination_application_security_group_ids = optional(list(string))
+    description                                = optional(string)
+  }))
+  default = {}
+}
+
+variable "key_vault_readers" {
+  description = "List of strings representing the object ids of the users or groups that should have read access to the key vault."
+  type        = list(string)
+  default     = []
 }

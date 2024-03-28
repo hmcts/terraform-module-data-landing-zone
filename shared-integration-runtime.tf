@@ -7,7 +7,7 @@ module "shared_integration_databricks" {
   product                      = "data-landing"
   component                    = "shared-integration"
   name                         = "${local.name}-integration-databricks001"
-  existing_resource_group_name = azurerm_resource_group.this["shared-integration"].name
+  existing_resource_group_name = azurerm_resource_group.this[local.shared_integration_resource_group].name
   location                     = var.location
   common_tags                  = var.common_tags
   vnet_id                      = module.networking.vnet_ids["vnet"]
@@ -20,7 +20,7 @@ module "shared_integration_databricks" {
 resource "azurerm_eventhub_namespace" "this" {
   name                     = length("${local.name}-integration-eventHubNamespace001-${var.env}") > 50 ? "${local.short_name}-integration-eventHubNamespace001-${var.env}" : "${local.name}-integration-eventHubNamespace001-${var.env}"
   location                 = var.location
-  resource_group_name      = azurerm_resource_group.this["shared-integration"].name
+  resource_group_name      = azurerm_resource_group.this[local.shared_integration_resource_group].name
   sku                      = "Standard"
   capacity                 = 1
   maximum_throughput_units = 2
@@ -40,7 +40,7 @@ module "shared_integration_eventhub_pe" {
   depends_on = [module.vnet_peer_hub]
 
   name             = "${local.name}-integration-eventHubNamespace001-pe-${var.env}"
-  resource_group   = azurerm_resource_group.this["shared-integration"].name
+  resource_group   = azurerm_resource_group.this[local.shared_integration_resource_group].name
   location         = var.location
   subnet_id        = module.networking.subnet_ids["vnet-services"]
   common_tags      = var.common_tags
@@ -65,7 +65,7 @@ module "shared_integration_datafactory" {
   private_endpoint_enabled         = true
   private_endpoint_subnet_id       = module.networking.subnet_ids["vnet-services"]
   common_tags                      = var.common_tags
-  existing_resource_group_name     = azurerm_resource_group.this["shared-integration"].name
+  existing_resource_group_name     = azurerm_resource_group.this[local.shared_integration_resource_group].name
 
   managed_private_endpoints = merge({
     keyvault = {

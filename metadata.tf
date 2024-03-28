@@ -6,9 +6,32 @@ module "metadata_vault" {
   env                 = var.env
   object_id           = data.azurerm_client_config.current.object_id
   location            = var.location
-  resource_group_name = azurerm_resource_group.this["metadata"].name
+  resource_group_name = azurerm_resource_group.this[local.metadata_resource_group].name
   product_group_name  = local.admin_group
   common_tags         = var.common_tags
+}
+
+resource "azurerm_key_vault_access_policy" "metadata_vault_reders" {
+  for_each     = { for product in setproduct(toset(var.key_vault_readers), toset(local.metadata_vaults)) : "${product[0]}-${product[1]}" => product }
+  key_vault_id = module.metadata_vault[each.value[1]].key_vault_id
+
+  object_id = each.value[0]
+  tenant_id = data.azurerm_client_config.current.tenant_id
+
+  secret_permissions = [
+    "Get",
+    "List"
+  ]
+
+  certificate_permissions = [
+    "Get",
+    "List"
+  ]
+
+  key_permissions = [
+    "Get",
+    "List"
+  ]
 }
 
 module "metadata_vault_pe" {
@@ -18,7 +41,7 @@ module "metadata_vault_pe" {
   depends_on = [module.vnet_peer_hub]
 
   name             = "${local.name}-${each.key}-pe-${var.env}"
-  resource_group   = azurerm_resource_group.this["metadata"].name
+  resource_group   = azurerm_resource_group.this[local.metadata_resource_group].name
   location         = var.location
   subnet_id        = module.networking.subnet_ids["vnet-services"]
   common_tags      = var.common_tags
@@ -38,7 +61,7 @@ module "metadata_mssql" {
   enable_private_endpoint         = true
   private_endpoint_subnet_id      = module.networking.subnet_ids["vnet-services"]
   common_tags                     = var.common_tags
-  existing_resource_group_name    = azurerm_resource_group.this["metadata"].name
+  existing_resource_group_name    = azurerm_resource_group.this[local.metadata_resource_group].name
 
   mssql_databases = {
     "${local.metadata_mssql_db_name}" = {
@@ -78,7 +101,7 @@ module "metadata_mysql" {
   product                      = "data-landing"
   component                    = "metadata"
   common_tags                  = var.common_tags
-  existing_resource_group_name = azurerm_resource_group.this["metadata"].name
+  existing_resource_group_name = azurerm_resource_group.this[local.metadata_resource_group].name
   delegated_subnet_id          = module.networking.subnet_ids["vnet-services-mysql"]
   storage_size_gb              = 20
 
@@ -127,6 +150,17 @@ resource "random_password" "legacy_database_password" {
   min_numeric      = 1
 }
 
+resource "azurerm_public_ip" "legacy_pip" {
+  for_each            = { for k, v in var.legacy_databases : k => v if v.public_ip == true }
+  name                = "${local.name}-${each.key}-pip-${var.env}"
+  resource_group_name = azurerm_resource_group.this[local.metadata_resource_group].name
+  location            = var.location
+  allocation_method   = "Static"
+  zones               = ["1"]
+  sku                 = "Standard"
+  tags                = var.common_tags
+}
+
 module "legacy_database" {
   for_each = var.legacy_databases
 
@@ -139,17 +173,19 @@ module "legacy_database" {
   source               = "github.com/hmcts/terraform-module-virtual-machine.git"
   vm_type              = each.value.type
   vm_name              = "${local.name}-${each.key}-${var.env}"
+  computer_name        = each.value.computer_name == null ? "${each.key}-${var.env}" : each.value.computer_name
   vm_location          = var.location
   vm_size              = each.value.size
   vm_admin_name        = "admin_${random_string.legacy_database_username[each.key].result}"
   vm_admin_password    = random_password.legacy_database_password[each.key].result
   vm_availabilty_zones = "1"
   os_disk_size_gb      = 127
-  vm_resource_group    = azurerm_resource_group.this["metadata"].name
+  vm_resource_group    = azurerm_resource_group.this[local.metadata_resource_group].name
   vm_subnet_id         = module.networking.subnet_ids["vnet-services"]
   nic_name             = "${local.name}-${each.key}-nic-${var.env}"
   ipconfig_name        = "${local.name}-${each.key}-ipconfig-${var.env}"
   privateip_allocation = "Dynamic"
+  vm_public_ip_address = each.value.public_ip ? azurerm_public_ip.legacy_pip[each.key].id : null
 
   nessus_install             = false
   install_splunk_uf          = false
@@ -167,7 +203,7 @@ module "legacy_database" {
 
 resource "azurerm_key_vault_secret" "legacy_database_username" {
   for_each     = var.legacy_databases
-  name         = "${local.name}-legacy-sql-username-${var.env}"
+  name         = "${local.name}-${each.key}-username-${var.env}"
   value        = "admin_${random_string.legacy_database_username[each.key].result}"
   key_vault_id = module.metadata_vault["meta002"].key_vault_id
   depends_on   = [module.metadata_vault, module.metadata_vault_pe]
@@ -175,7 +211,7 @@ resource "azurerm_key_vault_secret" "legacy_database_username" {
 
 resource "azurerm_key_vault_secret" "legacy_database_password" {
   for_each     = var.legacy_databases
-  name         = "${local.name}-legacy-sql-password-${var.env}"
+  name         = "${local.name}-${each.key}-password-${var.env}"
   value        = random_password.legacy_database_password[each.key].result
   key_vault_id = module.metadata_vault["meta002"].key_vault_id
   depends_on   = [module.metadata_vault, module.metadata_vault_pe]

@@ -20,8 +20,18 @@ module "networking" {
     rt = {
       subnets = formatlist("vnet-%s", keys(merge(local.default_subnets, var.additional_subnets)))
       routes = {
-        default = {
-          address_prefix         = "0.0.0.0/0"
+        rfc_1918_class_a = {
+          address_prefix         = "10.0.0.0/8"
+          next_hop_type          = "VirtualAppliance"
+          next_hop_in_ip_address = var.default_route_next_hop_ip
+        }
+        rfc_1918_class_b = {
+          address_prefix         = "172.16.0.0/12"
+          next_hop_type          = "VirtualAppliance"
+          next_hop_in_ip_address = var.default_route_next_hop_ip
+        }
+        rfc_1918_class_c = {
+          address_prefix         = "192.168.0.0/16"
           next_hop_type          = "VirtualAppliance"
           next_hop_in_ip_address = var.default_route_next_hop_ip
         }
@@ -32,7 +42,7 @@ module "networking" {
   network_security_groups = {
     nsg = {
       subnets = formatlist("vnet-%s", keys(merge(local.default_subnets, var.additional_subnets)))
-      rules = {
+      rules = merge({
         "Dbricks-workspaces-UseOnly-databricks-worker-to-worker-inbound" = {
           priority                   = 200
           direction                  = "Inbound"
@@ -110,7 +120,7 @@ module "networking" {
           destination_address_prefixes = var.vnet_address_space
           description                  = "Allow ADO agents to communicate with DLRM data ingest landing zone resources."
         }
-      }
+      }, var.additional_nsg_rules)
     }
   }
 }
