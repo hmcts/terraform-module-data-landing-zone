@@ -179,6 +179,14 @@ locals {
     }
     data-product-001 = {
       address_prefixes = var.data_product_001_subnet_address_space
+      delegations = {
+        app-service-delegation = {
+          service_name = "Microsoft.Web/serverFarms"
+          actions = [
+            "Microsoft.Network/virtualNetworks/subnets/action"
+          ]
+        }
+      }
     }
     data-product-002 = {
       address_prefixes = var.data_product_002_subnet_address_space
