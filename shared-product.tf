@@ -9,9 +9,9 @@ module "shared_product_databricks" {
   location                     = var.location
   common_tags                  = var.common_tags
   vnet_id                      = module.networking.vnet_ids["vnet"]
-  public_subnet_name           = module.networking.subnet_names["vnet-data-bricks-public"]
+  public_subnet_name           = module.networking.subnet_names["vnet-data-bricks-product-public"]
   public_subnet_nsg_id         = module.networking.network_security_groups_ids["nsg"]
-  private_subnet_name          = module.networking.subnet_names["vnet-data-bricks-private"]
+  private_subnet_name          = module.networking.subnet_names["vnet-data-bricks-product-private"]
   private_subnet_nsg_id        = module.networking.network_security_groups_ids["nsg"]
 }
 
