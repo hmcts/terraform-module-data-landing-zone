@@ -84,7 +84,7 @@ module "shared_integration_datafactory" {
       resource_id      = module.storage["curated"].storageaccount_id
       subresource_name = "blob"
     }
-  }, local.adf_managed_purview_endpoints)
+  }, var.adf_deploy_purview_private_endpoints ? local.adf_managed_purview_endpoints : {})
 
   linked_key_vaults = {
     "${module.metadata_vault["meta001"].key_vault_name}" = {

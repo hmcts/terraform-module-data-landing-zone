@@ -130,3 +130,9 @@ variable "key_vault_readers" {
   type        = list(string)
   default     = []
 }
+
+variable "adf_deploy_purview_private_endpoints" {
+  description = "Whether to deploy a private endpoint for the ADF to Purview connection. Defaults to false."
+  type        = bool
+  default     = true
+}

@@ -15,7 +15,7 @@ module "runtimes_datafactory" {
   private_endpoint_subnet_id       = module.networking.subnet_ids["vnet-services"]
   common_tags                      = var.common_tags
   existing_resource_group_name     = azurerm_resource_group.this[local.runtimes_resource_group].name
-  managed_private_endpoints        = local.adf_managed_purview_endpoints
+  managed_private_endpoints        = var.adf_deploy_purview_private_endpoints ? local.adf_managed_purview_endpoints : {}
 }
 
 resource "azurerm_data_factory_integration_runtime_self_hosted" "this" {
