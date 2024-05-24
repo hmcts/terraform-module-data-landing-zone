@@ -190,6 +190,7 @@ module "data_landing_zone" {
 
 | Name | Description |
 |------|-------------|
+| <a name="output_metadata_mssql"></a> [metadata\_mssql](#output\_metadata\_mssql) | n/a |
 | <a name="output_resource_groups"></a> [resource\_groups](#output\_resource\_groups) | n/a |
 | <a name="output_subnet_ids"></a> [subnet\_ids](#output\_subnet\_ids) | n/a |
 <!-- END_TF_DOCS -->

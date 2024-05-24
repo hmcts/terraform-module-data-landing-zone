@@ -9,3 +9,12 @@ output "resource_groups" {
 output "subnet_ids" {
   value = module.networking.subnet_ids
 }
+
+output "metadata_mssql" {
+  value = {
+    server_name  = module.metadata_mssql.mssql_server_name
+    fqdn         = module.metadata_mssql.fqdn
+    id           = module.metadata_mssql.mssql_server_id
+    database_ids = module.metadata_mssql.mssql_database_ids
+  }
+}
