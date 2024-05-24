@@ -187,7 +187,7 @@ locals {
           ]
         }
       }
-      service_endpoinds = ["Microsoft.Storage"]
+      service_endpoints = ["Microsoft.Storage"]
     }
     data-product-002 = {
       address_prefixes = var.data_product_002_subnet_address_space

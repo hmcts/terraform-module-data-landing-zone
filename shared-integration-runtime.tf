@@ -67,6 +67,17 @@ module "shared_integration_datafactory" {
   common_tags                      = var.common_tags
   existing_resource_group_name     = azurerm_resource_group.this[local.shared_integration_resource_group].name
 
+  global_parameters = {
+    "dataLakeStorageAccountName" = {
+      type  = "String"
+      value = module.storage["raw"].storageaccount_name
+    }
+    "landingStorageAccountName" = {
+      type  = "String"
+      value = module.storage["landing"].storageaccount_name
+    }
+  }
+
   managed_private_endpoints = merge({
     keyvault = {
       resource_id      = module.metadata_vault["meta001"].key_vault_id
