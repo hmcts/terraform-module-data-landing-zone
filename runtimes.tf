@@ -15,13 +15,62 @@ module "runtimes_datafactory" {
   private_endpoint_subnet_id       = module.networking.subnet_ids["vnet-services"]
   common_tags                      = var.common_tags
   existing_resource_group_name     = azurerm_resource_group.this[local.runtimes_resource_group].name
-  managed_private_endpoints        = var.adf_deploy_purview_private_endpoints ? local.adf_managed_purview_endpoints : {}
+
+  managed_private_endpoints = merge({
+    landing-blob = {
+      resource_id      = module.storage["landing"].storageaccount_id
+      subresource_name = "blob"
+    }
+    landing-dfs = {
+      resource_id      = module.storage["landing"].storageaccount_id
+      subresource_name = "dfs"
+    }
+    keyvault = {
+      resource_id      = module.metadata_vault["meta002"].key_vault_id
+      subresource_name = "vault"
+    }
+  }, var.adf_deploy_purview_private_endpoints ? local.adf_managed_purview_endpoints : {})
+
+  linked_key_vaults = {
+    "${module.metadata_vault["meta002"].key_vault_name}" = {
+      resource_id              = module.metadata_vault["meta002"].key_vault_id
+      integration_runtime_name = "AutoResolveIntegrationRuntime"
+    }
+  }
+
+  linked_blob_storage = {
+    "${module.storage["landing"].storageaccount_name}" = {
+      service_endpoint         = module.storage["landing"].storageaccount_primary_blob_endpoint
+      use_managed_identity     = true
+      integration_runtime_name = "AutoResolveIntegrationRuntime"
+    }
+  }
+}
+
+resource "azurerm_monitor_diagnostic_setting" "runtimes_datafactory" {
+  name                       = "runtimes-datafactory-diag"
+  target_resource_id         = module.runtimes_datafactory.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.this.id
+
+  enabled_log {
+    category = "allLogs"
+  }
+  metric {
+    category = "AllMetrics"
+  }
 }
 
 resource "azurerm_data_factory_integration_runtime_self_hosted" "this" {
   name            = "${local.name}-runtimes-dataFactory001-shir001"
   description     = "Data Landing Zone - Self Hosted Integration Runtime running on ${local.name}-shir001"
   data_factory_id = module.runtimes_datafactory.id
+}
+
+resource "azurerm_role_assignment" "runtimes_datafactory_storage" {
+  for_each             = toset(["raw", "curated", "landing", "workspace", "external"])
+  scope                = module.storage[each.key].storageaccount_id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = module.runtimes_Datafactory.identity.principal_id
 }
 
 module "shir001" {

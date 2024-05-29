@@ -95,11 +95,27 @@ module "shared_integration_datafactory" {
       resource_id      = module.storage["curated"].storageaccount_id
       subresource_name = "blob"
     }
+    landing-blob = {
+      resource_id      = module.storage["landing"].storageaccount_id
+      subresource_name = "blob"
+    }
+    landing-dfs = {
+      resource_id      = module.storage["landing"].storageaccount_id
+      subresource_name = "dfs"
+    }
+    keyvault = {
+      resource_id      = module.metadata_vault["meta002"].key_vault_id
+      subresource_name = "vault"
+    }
   }, var.adf_deploy_purview_private_endpoints ? local.adf_managed_purview_endpoints : {})
 
   linked_key_vaults = {
     "${module.metadata_vault["meta001"].key_vault_name}" = {
       resource_id              = module.metadata_vault["meta001"].key_vault_id
+      integration_runtime_name = "AutoResolveIntegrationRuntime"
+    }
+    "${module.metadata_vault["meta002"].key_vault_name}" = {
+      resource_id              = module.metadata_vault["meta002"].key_vault_id
       integration_runtime_name = "AutoResolveIntegrationRuntime"
     }
   }
@@ -152,8 +168,21 @@ module "shared_integration_datafactory" {
   }
 }
 
-resource "azurerm_role_assignment" "datafactory_storage" {
-  for_each             = toset(["raw", "curated"])
+resource "azurerm_monitor_diagnostic_setting" "shared_integration_datafactory" {
+  name                       = "shared-integration-datafactory-diag"
+  target_resource_id         = module.shared_integration_datafactory.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.this.id
+
+  enabled_log {
+    category = "allLogs"
+  }
+  metric {
+    category = "AllMetrics"
+  }
+}
+
+resource "azurerm_role_assignment" "shared_integration_datafactory_storage" {
+  for_each             = toset(["raw", "curated", "landing", "workspace", "external"])
   scope                = module.storage[each.key].storageaccount_id
   role_definition_name = "Storage Blob Data Contributor"
   principal_id         = module.shared_integration_datafactory.identity.principal_id
