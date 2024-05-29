@@ -53,7 +53,7 @@ resource "azurerm_monitor_diagnostic_setting" "runtimes_datafactory" {
   log_analytics_workspace_id = azurerm_log_analytics_workspace.this.id
 
   enabled_log {
-    category = "allLogs"
+    category_group = "allLogs"
   }
   metric {
     category = "AllMetrics"
