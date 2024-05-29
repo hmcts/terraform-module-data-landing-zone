@@ -70,7 +70,7 @@ resource "azurerm_role_assignment" "runtimes_datafactory_storage" {
   for_each             = toset(["raw", "curated", "landing", "workspace", "external"])
   scope                = module.storage[each.key].storageaccount_id
   role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = module.runtimes_Datafactory.identity.principal_id
+  principal_id         = module.runtimes_datafactory.identity.principal_id
 }
 
 module "shir001" {
