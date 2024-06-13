@@ -20,6 +20,9 @@ module "storage" {
   pim_roles                         = {}
   infrastructure_encryption_enabled = true
 
+  defender_enabled                  = true
+  defender_malware_scanning_enabled = true
+
   sa_subnets = [
     data.azurerm_subnet.ssptl-00.id,
     data.azurerm_subnet.ssptl-01.id
