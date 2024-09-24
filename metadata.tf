@@ -192,8 +192,9 @@ module "legacy_database" {
   nessus_install             = false
   install_splunk_uf          = false
   install_dynatrace_oneagent = false
-  install_azure_monitor      = var.install_azure_monitor
-  systemassigned_identity    = var.systemassigned_identity
+  install_azure_monitor      = false
+
+  systemassigned_identity = var.systemassigned_identity
 
   vm_publisher_name = each.value.publisher_name
   vm_offer          = each.value.offer
