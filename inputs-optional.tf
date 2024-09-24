@@ -151,3 +151,11 @@ variable "install_azure_monitor" {
   default     = false
 }
 
+variable "private_link_access" {
+  type = list(object({
+    endpoint_resource_id = string
+    endpoint_tenant_id   = string
+  }))
+  description = "List of private_link_access"
+  default     = []
+}
