@@ -136,3 +136,10 @@ variable "adf_deploy_purview_private_endpoints" {
   type        = bool
   default     = true
 }
+
+# Azure Monitor
+variable "install_azure_monitor" {
+  description = "Install Azure Monitor Agent."
+  type        = bool
+  default     = false
+}
