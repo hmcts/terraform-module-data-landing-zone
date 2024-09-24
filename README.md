@@ -72,7 +72,7 @@ module "data_landing_zone" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >= 2.43.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.7.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.116.0 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.1.0 |
 
 ## Providers
@@ -80,16 +80,16 @@ module "data_landing_zone" {
 | Name | Version |
 |------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | >= 2.43.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.74.0 |
-| <a name="provider_azurerm.cftptl"></a> [azurerm.cftptl](#provider\_azurerm.cftptl) | 3.74.0 |
-| <a name="provider_azurerm.ssptl"></a> [azurerm.ssptl](#provider\_azurerm.ssptl) | 3.74.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.116.0 |
+| <a name="provider_azurerm.cftptl"></a> [azurerm.cftptl](#provider\_azurerm.cftptl) | >= 3.116.0 |
+| <a name="provider_azurerm.ssptl"></a> [azurerm.ssptl](#provider\_azurerm.ssptl) | >= 3.116.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | >= 3.1.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_legacy_database"></a> [legacy\_database](#module\_legacy\_database) | github.com/hmcts/terraform-module-virtual-machine.git | n/a |
+| <a name="module_legacy_database"></a> [legacy\_database](#module\_legacy\_database) | github.com/hmcts/terraform-module-virtual-machine.git | ama-extension |
 | <a name="module_logging_vault"></a> [logging\_vault](#module\_logging\_vault) | github.com/hmcts/cnp-module-key-vault | master |
 | <a name="module_logging_vault_pe"></a> [logging\_vault\_pe](#module\_logging\_vault\_pe) | ./modules/azure-private-endpoint | n/a |
 | <a name="module_metadata_mssql"></a> [metadata\_mssql](#module\_metadata\_mssql) | github.com/hmcts/terraform-module-mssql | main |
@@ -156,8 +156,8 @@ module "data_landing_zone" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_additional_nsg_rules"></a> [additional\_nsg\_rules](#input\_additional\_nsg\_rules) | Map of additional NSG rules to create, keyed by the rule name. | <pre>map(object({<br>    name_override                              = optional(string)<br>    priority                                   = number<br>    direction                                  = string<br>    access                                     = string<br>    protocol                                   = string<br>    source_port_range                          = optional(string)<br>    source_port_ranges                         = optional(list(string))<br>    destination_port_range                     = optional(string)<br>    destination_port_ranges                    = optional(list(string))<br>    source_address_prefix                      = optional(string)<br>    source_address_prefixes                    = optional(list(string))<br>    source_application_security_group_ids      = optional(list(string))<br>    destination_address_prefix                 = optional(string)<br>    destination_address_prefixes               = optional(list(string))<br>    destination_application_security_group_ids = optional(list(string))<br>    description                                = optional(string)<br>  }))</pre> | `{}` | no |
-| <a name="input_additional_subnets"></a> [additional\_subnets](#input\_additional\_subnets) | Map of additional subnets to create, keyed by the subnet name. | <pre>map(object({<br>    name_override     = optional(string)<br>    address_prefixes  = list(string)<br>    service_endpoints = optional(list(string), [])<br>    delegations = optional(map(object({<br>      service_name = string,<br>      actions      = optional(list(string), [])<br>    })))<br>  }))</pre> | `{}` | no |
+| <a name="input_additional_nsg_rules"></a> [additional\_nsg\_rules](#input\_additional\_nsg\_rules) | Map of additional NSG rules to create, keyed by the rule name. | <pre>map(object({<br/>    name_override                              = optional(string)<br/>    priority                                   = number<br/>    direction                                  = string<br/>    access                                     = string<br/>    protocol                                   = string<br/>    source_port_range                          = optional(string)<br/>    source_port_ranges                         = optional(list(string))<br/>    destination_port_range                     = optional(string)<br/>    destination_port_ranges                    = optional(list(string))<br/>    source_address_prefix                      = optional(string)<br/>    source_address_prefixes                    = optional(list(string))<br/>    source_application_security_group_ids      = optional(list(string))<br/>    destination_address_prefix                 = optional(string)<br/>    destination_address_prefixes               = optional(list(string))<br/>    destination_application_security_group_ids = optional(list(string))<br/>    description                                = optional(string)<br/>  }))</pre> | `{}` | no |
+| <a name="input_additional_subnets"></a> [additional\_subnets](#input\_additional\_subnets) | Map of additional subnets to create, keyed by the subnet name. | <pre>map(object({<br/>    name_override     = optional(string)<br/>    address_prefixes  = list(string)<br/>    service_endpoints = optional(list(string), [])<br/>    delegations = optional(map(object({<br/>      service_name = string,<br/>      actions      = optional(list(string), [])<br/>    })))<br/>  }))</pre> | `{}` | no |
 | <a name="input_adf_deploy_purview_private_endpoints"></a> [adf\_deploy\_purview\_private\_endpoints](#input\_adf\_deploy\_purview\_private\_endpoints) | Whether to deploy a private endpoint for the ADF to Purview connection. Defaults to false. | `bool` | `true` | no |
 | <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | Common tag to be applied to resources | `map(string)` | n/a | yes |
 | <a name="input_data_bricks_private_subnet_address_space"></a> [data\_bricks\_private\_subnet\_address\_space](#input\_data\_bricks\_private\_subnet\_address\_space) | The address space covered by the data bricks private subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
@@ -172,20 +172,23 @@ module "data_landing_zone" {
 | <a name="input_enable_synapse_spark_pool"></a> [enable\_synapse\_spark\_pool](#input\_enable\_synapse\_spark\_pool) | Whether to deploy a Synapse Spark pool. Defaults to false. | `bool` | `false` | no |
 | <a name="input_enable_synapse_sql_pool"></a> [enable\_synapse\_sql\_pool](#input\_enable\_synapse\_sql\_pool) | Whether to deploy a Synapse SQL pool. Defaults to false. | `bool` | `false` | no |
 | <a name="input_env"></a> [env](#input\_env) | Environment value | `string` | n/a | yes |
-| <a name="input_existing_purview_account"></a> [existing\_purview\_account](#input\_existing\_purview\_account) | Details of an existing purview account to use, if not specified a new one will be created. | <pre>object({<br>    resource_id                              = string<br>    managed_storage_account_id               = optional(string)<br>    managed_event_hub_namespace_id           = optional(string)<br>    self_hosted_integration_runtime_auth_key = optional(string)<br>    identity = object({<br>      principal_id = string<br>      tenant_id    = string<br>    })<br>  })</pre> | `null` | no |
+| <a name="input_existing_purview_account"></a> [existing\_purview\_account](#input\_existing\_purview\_account) | Details of an existing purview account to use, if not specified a new one will be created. | <pre>object({<br/>    resource_id                              = string<br/>    managed_storage_account_id               = optional(string)<br/>    managed_event_hub_namespace_id           = optional(string)<br/>    self_hosted_integration_runtime_auth_key = optional(string)<br/>    identity = object({<br/>      principal_id = string<br/>      tenant_id    = string<br/>    })<br/>  })</pre> | `null` | no |
 | <a name="input_existing_resource_group_name"></a> [existing\_resource\_group\_name](#input\_existing\_resource\_group\_name) | Name of existing resource group to deploy resources into | `string` | `null` | no |
 | <a name="input_hub_resource_group_name"></a> [hub\_resource\_group\_name](#input\_hub\_resource\_group\_name) | The name of the resource group containing the HUB virtual network. | `string` | n/a | yes |
 | <a name="input_hub_vnet_name"></a> [hub\_vnet\_name](#input\_hub\_vnet\_name) | The name of the HUB virtual network. | `string` | n/a | yes |
+| <a name="input_install_azure_monitor"></a> [install\_azure\_monitor](#input\_install\_azure\_monitor) | Install Azure Monitor Agent. | `bool` | `false` | no |
 | <a name="input_key_vault_readers"></a> [key\_vault\_readers](#input\_key\_vault\_readers) | List of strings representing the object ids of the users or groups that should have read access to the key vault. | `list(string)` | `[]` | no |
-| <a name="input_legacy_databases"></a> [legacy\_databases](#input\_legacy\_databases) | Map of legacy databases to create as IaaS VMs. | <pre>map(object({<br>    size           = optional(string, "Standard_D4ds_v5")<br>    type           = optional(string, "windows")<br>    public_ip      = optional(bool, false)<br>    computer_name  = optional(string)<br>    publisher_name = string<br>    offer          = string<br>    sku            = string<br>    version        = string<br>  }))</pre> | `{}` | no |
+| <a name="input_legacy_databases"></a> [legacy\_databases](#input\_legacy\_databases) | Map of legacy databases to create as IaaS VMs. | <pre>map(object({<br/>    size           = optional(string, "Standard_D4ds_v5")<br/>    type           = optional(string, "windows")<br/>    public_ip      = optional(bool, false)<br/>    computer_name  = optional(string)<br/>    publisher_name = string<br/>    offer          = string<br/>    sku            = string<br/>    version        = string<br/>  }))</pre> | `{}` | no |
 | <a name="input_location"></a> [location](#input\_location) | Target Azure location to deploy the resource | `string` | `"UK South"` | no |
 | <a name="input_log_analytics_sku"></a> [log\_analytics\_sku](#input\_log\_analytics\_sku) | The sku of the log analytics workspace, will default to PerGB2018. | `string` | `"PerGB2018"` | no |
 | <a name="input_name"></a> [name](#input\_name) | The default name will be data-landing+env, you can override the data-landing part by setting this | `string` | `null` | no |
+| <a name="input_private_link_access"></a> [private\_link\_access](#input\_private\_link\_access) | List of private\_link\_access | <pre>list(object({<br/>    endpoint_resource_id = string<br/>    endpoint_tenant_id   = string<br/>  }))</pre> | `[]` | no |
 | <a name="input_services_mysql_subnet_address_space"></a> [services\_mysql\_subnet\_address\_space](#input\_services\_mysql\_subnet\_address\_space) | The address space covered by the services-mysql subnet, must be included in vnet\_address\_space. This is delegated to MySQL Flexible Server. | `list(string)` | n/a | yes |
 | <a name="input_services_subnet_address_space"></a> [services\_subnet\_address\_space](#input\_services\_subnet\_address\_space) | The address space covered by the services subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
 | <a name="input_storage_account_kind"></a> [storage\_account\_kind](#input\_storage\_account\_kind) | The storage account kind, will default to StorageV2. | `string` | `"StorageV2"` | no |
 | <a name="input_storage_account_replication_type"></a> [storage\_account\_replication\_type](#input\_storage\_account\_replication\_type) | The replication type of the storage account, will default to LRS. | `string` | `"LRS"` | no |
 | <a name="input_storage_account_tier"></a> [storage\_account\_tier](#input\_storage\_account\_tier) | The storage account tier, will default to Standard. | `string` | `"Standard"` | no |
+| <a name="input_systemassigned_identity"></a> [systemassigned\_identity](#input\_systemassigned\_identity) | Assign System identity | `bool` | `false` | no |
 | <a name="input_use_microsoft_ip_kit_structure"></a> [use\_microsoft\_ip\_kit\_structure](#input\_use\_microsoft\_ip\_kit\_structure) | Whether to use the Microsoft IP Kit structure for the network. Defaults to false. | `bool` | `false` | no |
 | <a name="input_vnet_address_space"></a> [vnet\_address\_space](#input\_vnet\_address\_space) | The Address space covered by the data landing zone virtual network | `list(string)` | n/a | yes |
 
