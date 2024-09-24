@@ -137,9 +137,17 @@ variable "adf_deploy_purview_private_endpoints" {
   default     = true
 }
 
+
+variable "systemassigned_identity" {
+  description = "Assign System identity"
+  type        = bool
+  default     = false
+}
+
 # Azure Monitor
 variable "install_azure_monitor" {
   description = "Install Azure Monitor Agent."
   type        = bool
   default     = false
 }
+
