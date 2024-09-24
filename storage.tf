@@ -12,7 +12,7 @@ module "storage" {
   account_tier                      = var.storage_account_tier
   account_replication_type          = var.storage_account_replication_type
   enable_hns                        = true
-  enable_sftp                       = false
+  enable_sftp                       = true
   enable_nfs                        = false
   containers                        = each.value.containers
   enable_data_protection            = true
