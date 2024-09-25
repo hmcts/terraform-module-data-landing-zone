@@ -95,17 +95,9 @@ module "shared_integration_datafactory" {
       resource_id      = module.storage["curated"].storageaccount_id
       subresource_name = "blob"
     }
-    landing-blob = {
-      resource_id      = module.storage["landing"].storageaccount_id
-      subresource_name = "blob"
-    }
     landing-dfs = {
       resource_id      = module.storage["landing"].storageaccount_id
       subresource_name = "dfs"
-    }
-    keyvault = {
-      resource_id      = module.metadata_vault["meta002"].key_vault_id
-      subresource_name = "vault"
     }
   }, var.adf_deploy_purview_private_endpoints ? local.adf_managed_purview_endpoints : {})
 
