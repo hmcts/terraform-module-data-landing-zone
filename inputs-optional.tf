@@ -136,3 +136,26 @@ variable "adf_deploy_purview_private_endpoints" {
   type        = bool
   default     = true
 }
+
+
+variable "systemassigned_identity" {
+  description = "Assign System identity"
+  type        = bool
+  default     = false
+}
+
+# Azure Monitor
+variable "install_azure_monitor" {
+  description = "Install Azure Monitor Agent."
+  type        = bool
+  default     = false
+}
+
+variable "private_link_access" {
+  type = list(object({
+    endpoint_resource_id = string
+    endpoint_tenant_id   = string
+  }))
+  description = "List of private_link_access"
+  default     = []
+}

@@ -169,9 +169,10 @@ module "legacy_database" {
     azurerm     = azurerm
     azurerm.cnp = azurerm.cnp
     azurerm.soc = azurerm.soc
+    azurerm.dcr = azurerm.dcr
   }
 
-  source               = "github.com/hmcts/terraform-module-virtual-machine.git"
+  source               = "github.com/hmcts/terraform-module-virtual-machine.git?ref=ama-extension"
   vm_type              = each.value.type
   vm_name              = "${local.name}-${each.key}-${var.env}"
   computer_name        = each.value.computer_name == null ? "${each.key}-${var.env}" : each.value.computer_name
@@ -191,7 +192,9 @@ module "legacy_database" {
   nessus_install             = false
   install_splunk_uf          = false
   install_dynatrace_oneagent = false
-  install_azure_monitor      = false
+  install_azure_monitor      = var.install_azure_monitor
+
+  systemassigned_identity = var.systemassigned_identity
 
   vm_publisher_name = each.value.publisher_name
   vm_offer          = each.value.offer

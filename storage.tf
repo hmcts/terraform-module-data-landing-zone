@@ -12,7 +12,7 @@ module "storage" {
   account_tier                      = var.storage_account_tier
   account_replication_type          = var.storage_account_replication_type
   enable_hns                        = true
-  enable_sftp                       = false
+  enable_sftp                       = true
   enable_nfs                        = false
   containers                        = each.value.containers
   enable_data_protection            = true
@@ -27,9 +27,9 @@ module "storage" {
     data.azurerm_subnet.ssptl-00.id,
     data.azurerm_subnet.ssptl-01.id
   ]
-
-  team_contact = "#dtspo-orange"
-  common_tags  = var.common_tags
+  private_link_access = var.private_link_access
+  team_contact        = "#dtspo-orange"
+  common_tags         = var.common_tags
 }
 
 module "storage_pe" {
