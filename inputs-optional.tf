@@ -159,3 +159,16 @@ variable "private_link_access" {
   description = "List of private_link_access"
   default     = []
 }
+
+variable "github_configuration" {
+  description = "Optional GitHub configuration settings for the Azure Data Factory."
+  type        = map(object({
+    branch_name        = string
+    git_url            = string
+    repository_name    = string
+    root_folder        = string
+    publishing_enabled = bool
+  }))
+  
+  default     = {}
+}

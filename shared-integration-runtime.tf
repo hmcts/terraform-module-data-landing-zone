@@ -194,16 +194,3 @@ resource "azurerm_role_assignment" "datafactory_databricks" {
   role_definition_name = "Contributor"
   principal_id         = module.shared_integration_datafactory.identity.principal_id
 }
-
-variable "github_configuration" {
-  description = "Optional GitHub configuration settings for the Azure Data Factory."
-  type        = map(object({
-    branch_name        = string
-    git_url            = string
-    repository_name    = string
-    root_folder        = string
-    publishing_enabled = bool
-  }))
-  
-  default     = {}
-}
