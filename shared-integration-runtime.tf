@@ -50,7 +50,7 @@ module "shared_integration_eventhub_pe" {
 }
 
 module "shared_integration_datafactory" {
-  source = "github.com/hmcts/terraform-module-azure-datafactory?ref=main"
+  source = "github.com/hmcts/terraform-module-azure-datafactory?ref=dtspo-18706-github-configuration-support"
 
   depends_on = [module.vnet_peer_hub]
 
@@ -66,6 +66,7 @@ module "shared_integration_datafactory" {
   private_endpoint_subnet_id       = module.networking.subnet_ids["vnet-services"]
   common_tags                      = var.common_tags
   existing_resource_group_name     = azurerm_resource_group.this[local.shared_integration_resource_group].name
+  github_configuration             = var.github_configuration
 
   global_parameters = {
     "dataLakeStorageAccountName" = {
@@ -192,4 +193,17 @@ resource "azurerm_role_assignment" "datafactory_databricks" {
   scope                = module.shared_integration_databricks.workspace_id
   role_definition_name = "Contributor"
   principal_id         = module.shared_integration_datafactory.identity.principal_id
+}
+
+variable "github_configuration" {
+  description = "Optional GitHub configuration settings for the Azure Data Factory."
+  type        = map(object({
+    branch_name        = string
+    git_url            = string
+    repository_name    = string
+    root_folder        = string
+    publishing_enabled = bool
+  }))
+  
+  default     = {}
 }
