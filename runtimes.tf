@@ -1,5 +1,5 @@
 module "runtimes_datafactory" {
-  source = "github.com/hmcts/terraform-module-azure-datafactory?ref=main"
+  source = "github.com/hmcts/terraform-module-azure-datafactory?ref=dtspo-18706-github-configuration-support"
 
   depends_on = [module.vnet_peer_hub]
 

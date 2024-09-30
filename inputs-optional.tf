@@ -160,7 +160,6 @@ variable "private_link_access" {
   default     = []
 }
 
-/*
 variable "github_configuration" {
   description = "Optional GitHub configuration settings for the Azure Data Factory."
   type        = map(object({
@@ -173,4 +172,3 @@ variable "github_configuration" {
   
   default     = {}
 }
-*/
