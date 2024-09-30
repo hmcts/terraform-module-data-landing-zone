@@ -50,7 +50,7 @@ module "shared_integration_eventhub_pe" {
 }
 
 module "shared_integration_datafactory" {
-  source = "github.com/hmcts/terraform-module-azure-datafactory?ref=dtspo-18706-github-configuration-support"
+  source = "github.com/hmcts/terraform-module-azure-datafactory?ref=main"
 
   depends_on = [module.vnet_peer_hub]
 
