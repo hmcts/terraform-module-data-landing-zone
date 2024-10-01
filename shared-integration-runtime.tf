@@ -66,6 +66,7 @@ module "shared_integration_datafactory" {
   private_endpoint_subnet_id       = module.networking.subnet_ids["vnet-services"]
   common_tags                      = var.common_tags
   existing_resource_group_name     = azurerm_resource_group.this[local.shared_integration_resource_group].name
+  github_configuration             = var.github_configuration
 
   global_parameters = {
     "dataLakeStorageAccountName" = {
