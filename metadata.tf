@@ -172,7 +172,7 @@ module "legacy_database" {
     azurerm.dcr = azurerm.dcr
   }
 
-  source               = "github.com/hmcts/terraform-module-virtual-machine.git?ref=ama-extension"
+  source               = "github.com/hmcts/terraform-module-virtual-machine.git?ref=master"
   vm_type              = each.value.type
   vm_name              = "${local.name}-${each.key}-${var.env}"
   computer_name        = each.value.computer_name == null ? "${each.key}-${var.env}" : each.value.computer_name
