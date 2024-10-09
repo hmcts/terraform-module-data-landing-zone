@@ -23,7 +23,7 @@ module "shir_vmss" {
     azurerm.dcr = azurerm.dcr
   }
 
-  env                     = var.env
+  environment             = var.env
   vm_type                 = "windows-scale-set"
   vm_name                 = "${var.name}-vmss-${var.env}"
   computer_name_prefix    = local.short_name
