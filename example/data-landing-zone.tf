@@ -8,6 +8,7 @@ module "data_landing_zone" {
     azurerm.cftptl = azurerm.cftptl
     azurerm.soc    = azurerm.soc
     azurerm.cnp    = azurerm.cnp
+    azurerm.dcr    = azurerm.dcr
   }
 
   env                                              = var.env

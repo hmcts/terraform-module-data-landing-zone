@@ -14,12 +14,13 @@ resource "azurerm_key_vault_secret" "shir_password" {
 }
 
 module "shir_vmss" {
-  source = "github.com/hmcts/terraform-module-virtual-machine-scale-set?ref=feat%2Fadd-ip-config-options"
+  source = "github.com/hmcts/terraform-module-virtual-machine-scale-set?ref=master"
 
   providers = {
     azurerm     = azurerm,
     azurerm.soc = azurerm.soc,
-    azurerm.cnp = azurerm.cnp
+    azurerm.cnp = azurerm.cnp,
+    azurerm.dcr = azurerm.dcr
   }
 
   env                     = var.env

@@ -83,6 +83,7 @@ module "shir001" {
     azurerm     = azurerm
     azurerm.soc = azurerm.soc
     azurerm.cnp = azurerm.cnp
+    azurerm.dcr = azurerm.dcr
   }
 
   env                          = var.env
@@ -105,6 +106,7 @@ module "shir002" {
     azurerm     = azurerm
     azurerm.soc = azurerm.soc
     azurerm.cnp = azurerm.cnp
+    azurerm.dcr = azurerm.dcr
   }
 
   env                          = var.env
