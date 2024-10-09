@@ -1,5 +1,5 @@
 module "networking" {
-  source = "github.com/hmcts/terraform-module-azure-virtual-networking?ref=main"
+  source = "github.com/hmcts/terraform-module-azure-virtual-networking?ref=4.x"
 
   env                          = var.env
   product                      = "data-landing"

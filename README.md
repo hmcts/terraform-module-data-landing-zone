@@ -89,14 +89,14 @@ module "data_landing_zone" {
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_legacy_database"></a> [legacy\_database](#module\_legacy\_database) | github.com/hmcts/terraform-module-virtual-machine.git | ama-extension |
+| <a name="module_legacy_database"></a> [legacy\_database](#module\_legacy\_database) | github.com/hmcts/terraform-module-virtual-machine.git | master |
 | <a name="module_logging_vault"></a> [logging\_vault](#module\_logging\_vault) | github.com/hmcts/cnp-module-key-vault | master |
 | <a name="module_logging_vault_pe"></a> [logging\_vault\_pe](#module\_logging\_vault\_pe) | ./modules/azure-private-endpoint | n/a |
 | <a name="module_metadata_mssql"></a> [metadata\_mssql](#module\_metadata\_mssql) | github.com/hmcts/terraform-module-mssql | main |
 | <a name="module_metadata_mysql"></a> [metadata\_mysql](#module\_metadata\_mysql) | github.com/hmcts/terraform-module-mysql-flexible | main |
 | <a name="module_metadata_vault"></a> [metadata\_vault](#module\_metadata\_vault) | github.com/hmcts/cnp-module-key-vault | master |
 | <a name="module_metadata_vault_pe"></a> [metadata\_vault\_pe](#module\_metadata\_vault\_pe) | ./modules/azure-private-endpoint | n/a |
-| <a name="module_networking"></a> [networking](#module\_networking) | github.com/hmcts/terraform-module-azure-virtual-networking | main |
+| <a name="module_networking"></a> [networking](#module\_networking) | github.com/hmcts/terraform-module-azure-virtual-networking | 4.x |
 | <a name="module_runtimes_datafactory"></a> [runtimes\_datafactory](#module\_runtimes\_datafactory) | github.com/hmcts/terraform-module-azure-datafactory | main |
 | <a name="module_shared_integration_databricks"></a> [shared\_integration\_databricks](#module\_shared\_integration\_databricks) | github.com/hmcts/terraform-module-databricks | main |
 | <a name="module_shared_integration_datafactory"></a> [shared\_integration\_datafactory](#module\_shared\_integration\_datafactory) | github.com/hmcts/terraform-module-azure-datafactory | main |
@@ -142,6 +142,7 @@ module "data_landing_zone" {
 | [azurerm_synapse_spark_pool.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/synapse_spark_pool) | resource |
 | [azurerm_synapse_sql_pool.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/synapse_sql_pool) | resource |
 | [azurerm_synapse_workspace.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/synapse_workspace) | resource |
+| [azurerm_synapse_workspace_aad_admin.aad](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/synapse_workspace_aad_admin) | resource |
 | [random_password.legacy_database_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [random_password.synapse_sql_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [random_string.legacy_database_username](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
