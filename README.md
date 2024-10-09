@@ -96,7 +96,7 @@ module "data_landing_zone" {
 | <a name="module_metadata_mysql"></a> [metadata\_mysql](#module\_metadata\_mysql) | github.com/hmcts/terraform-module-mysql-flexible | main |
 | <a name="module_metadata_vault"></a> [metadata\_vault](#module\_metadata\_vault) | github.com/hmcts/cnp-module-key-vault | master |
 | <a name="module_metadata_vault_pe"></a> [metadata\_vault\_pe](#module\_metadata\_vault\_pe) | ./modules/azure-private-endpoint | n/a |
-| <a name="module_networking"></a> [networking](#module\_networking) | github.com/hmcts/terraform-module-azure-virtual-networking | main |
+| <a name="module_networking"></a> [networking](#module\_networking) | github.com/hmcts/terraform-module-azure-virtual-networking | 4.x |
 | <a name="module_runtimes_datafactory"></a> [runtimes\_datafactory](#module\_runtimes\_datafactory) | github.com/hmcts/terraform-module-azure-datafactory | main |
 | <a name="module_shared_integration_databricks"></a> [shared\_integration\_databricks](#module\_shared\_integration\_databricks) | github.com/hmcts/terraform-module-databricks | main |
 | <a name="module_shared_integration_datafactory"></a> [shared\_integration\_datafactory](#module\_shared\_integration\_datafactory) | github.com/hmcts/terraform-module-azure-datafactory | main |
