@@ -99,7 +99,7 @@ resource "azurerm_synapse_spark_pool" "this" {
     delay_in_minutes = 15
   }
 
-  spark_version = 2.4
+  spark_version = "3.2"
   tags          = var.common_tags
 }
 
