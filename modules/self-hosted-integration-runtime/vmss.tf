@@ -14,7 +14,7 @@ resource "azurerm_key_vault_secret" "shir_password" {
 }
 
 module "shir_vmss" {
-  source = "github.com/hmcts/terraform-module-virtual-machine-scale-set?ref=master"
+  source = "github.com/hmcts/terraform-module-virtual-machine-scale-set?ref=main"
 
   providers = {
     azurerm     = azurerm,
