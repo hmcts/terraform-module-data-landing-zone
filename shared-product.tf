@@ -60,23 +60,17 @@ resource "azurerm_synapse_workspace" "this" {
     delete = "2h"
   }
 
-  aad_admin {
-    login     = local.admin_group
-    object_id = data.azuread_group.admin_group.object_id
-    tenant_id = data.azurerm_client_config.current.tenant_id
-  }
-
-  sql_aad_admin {
-    login     = local.admin_group
-    object_id = data.azuread_group.admin_group.object_id
-    tenant_id = data.azurerm_client_config.current.tenant_id
-  }
-
   tags = var.common_tags
 
   depends_on = [module.vnet_peer_hub]
 }
 
+resource "azurerm_synapse_workspace_aad_admin" "aad" {
+  synapse_workspace_id = azurerm_synapse_workspace.this.id
+  login                = local.admin_group
+  object_id            = data.azuread_group.admin_group.object_id
+  tenant_id            = data.azurerm_client_config.current.tenant_id
+}
 resource "azurerm_synapse_sql_pool" "this" {
   count                = var.enable_synapse_sql_pool ? 1 : 0
   name                 = "${local.name}-product-synapse001-sql001-${var.env}"
