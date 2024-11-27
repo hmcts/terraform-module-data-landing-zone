@@ -88,13 +88,21 @@ module "shared_integration_datafactory" {
       resource_id      = module.metadata_mssql.mssql_server_id
       subresource_name = "sqlServer"
     }
-    storage-raw = {
+    raw-blob = {
       resource_id      = module.storage["raw"].storageaccount_id
       subresource_name = "blob"
     }
-    storage-curated = {
+    raw-dfs = {
+      resource_id      = module.storage["raw"].storageaccount_id
+      subresource_name = "dfs"
+    }
+    curated-blob = {
       resource_id      = module.storage["curated"].storageaccount_id
       subresource_name = "blob"
+    }
+    curated-dfs = {
+      resource_id      = module.storage["curated"].storageaccount_id
+      subresource_name = "dfs"
     }
     landing-blob = {
       resource_id      = module.storage["landing"].storageaccount_id

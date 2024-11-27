@@ -1,5 +1,5 @@
 module "storage" {
-  source = "github.com/hmcts/cnp-module-storage-account?ref=feat%2Finfra-encryption"
+  source = "github.com/hmcts/cnp-module-storage-account?ref=feat%2Finfra-encryption-4.x"
 
   depends_on = [module.vnet_peer_hub]
 

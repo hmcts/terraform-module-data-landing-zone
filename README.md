@@ -80,9 +80,9 @@ module "data_landing_zone" {
 | Name | Version |
 |------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | >= 2.43.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.116.0 |
-| <a name="provider_azurerm.cftptl"></a> [azurerm.cftptl](#provider\_azurerm.cftptl) | >= 3.116.0 |
-| <a name="provider_azurerm.ssptl"></a> [azurerm.ssptl](#provider\_azurerm.ssptl) | >= 3.116.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.74.0 |
+| <a name="provider_azurerm.cftptl"></a> [azurerm.cftptl](#provider\_azurerm.cftptl) | 3.74.0 |
+| <a name="provider_azurerm.ssptl"></a> [azurerm.ssptl](#provider\_azurerm.ssptl) | 3.74.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | >= 3.1.0 |
 
 ## Modules
@@ -104,7 +104,7 @@ module "data_landing_zone" {
 | <a name="module_shared_product_databricks"></a> [shared\_product\_databricks](#module\_shared\_product\_databricks) | github.com/hmcts/terraform-module-databricks | main |
 | <a name="module_shir001"></a> [shir001](#module\_shir001) | ./modules/self-hosted-integration-runtime | n/a |
 | <a name="module_shir002"></a> [shir002](#module\_shir002) | ./modules/self-hosted-integration-runtime | n/a |
-| <a name="module_storage"></a> [storage](#module\_storage) | github.com/hmcts/cnp-module-storage-account | feat%2Finfra-encryption |
+| <a name="module_storage"></a> [storage](#module\_storage) | github.com/hmcts/cnp-module-storage-account | feat%2Finfra-encryption-4.x |
 | <a name="module_storage_pe"></a> [storage\_pe](#module\_storage\_pe) | ./modules/azure-private-endpoint | n/a |
 | <a name="module_synapse_pe"></a> [synapse\_pe](#module\_synapse\_pe) | ./modules/azure-private-endpoint | n/a |
 | <a name="module_vnet_peer_hub"></a> [vnet\_peer\_hub](#module\_vnet\_peer\_hub) | github.com/hmcts/terraform-module-vnet-peering | feat%2Ftweak-to-enable-planning-in-a-clean-env |
