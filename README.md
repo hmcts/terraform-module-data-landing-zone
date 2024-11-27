@@ -184,7 +184,6 @@ module "data_landing_zone" {
 | <a name="input_location"></a> [location](#input\_location) | Target Azure location to deploy the resource | `string` | `"UK South"` | no |
 | <a name="input_log_analytics_sku"></a> [log\_analytics\_sku](#input\_log\_analytics\_sku) | The sku of the log analytics workspace, will default to PerGB2018. | `string` | `"PerGB2018"` | no |
 | <a name="input_name"></a> [name](#input\_name) | The default name will be data-landing+env, you can override the data-landing part by setting this | `string` | `null` | no |
-| <a name="input_private_link_access"></a> [private\_link\_access](#input\_private\_link\_access) | List of private\_link\_access | <pre>list(object({<br/>    endpoint_resource_id = string<br/>    endpoint_tenant_id   = string<br/>  }))</pre> | `[]` | no |
 | <a name="input_services_mysql_subnet_address_space"></a> [services\_mysql\_subnet\_address\_space](#input\_services\_mysql\_subnet\_address\_space) | The address space covered by the services-mysql subnet, must be included in vnet\_address\_space. This is delegated to MySQL Flexible Server. | `list(string)` | n/a | yes |
 | <a name="input_services_subnet_address_space"></a> [services\_subnet\_address\_space](#input\_services\_subnet\_address\_space) | The address space covered by the services subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
 | <a name="input_storage_account_kind"></a> [storage\_account\_kind](#input\_storage\_account\_kind) | The storage account kind, will default to StorageV2. | `string` | `"StorageV2"` | no |

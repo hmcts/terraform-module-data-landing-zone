@@ -27,9 +27,8 @@ module "storage" {
     data.azurerm_subnet.ssptl-00.id,
     data.azurerm_subnet.ssptl-01.id
   ]
-  private_link_access = var.private_link_access
-  team_contact        = "#dtspo-orange"
-  common_tags         = var.common_tags
+  team_contact = "#dtspo-orange"
+  common_tags  = var.common_tags
 }
 
 module "storage_pe" {
