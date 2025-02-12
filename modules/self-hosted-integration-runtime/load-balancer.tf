@@ -3,7 +3,7 @@ resource "azurerm_lb" "shir_lb" {
   resource_group_name = var.resource_group
   location            = var.location
 
-  sku      = "Basic"
+  sku      = "Standard"
   sku_tier = "Regional"
 
   frontend_ip_configuration {
