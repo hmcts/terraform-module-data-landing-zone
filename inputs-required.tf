@@ -18,6 +18,11 @@ variable "services_subnet_address_space" {
   description = "The address space covered by the services subnet, must be included in vnet_address_space."
 }
 
+variable "services_bastion_subnet_address_space" {
+  type        = list(string)
+  description = "The address space covered by the Bastion services subnet, must be included in vnet_address_space."
+}
+
 variable "services_mysql_subnet_address_space" {
   type        = list(string)
   description = "The address space covered by the services-mysql subnet, must be included in vnet_address_space. This is delegated to MySQL Flexible Server."
