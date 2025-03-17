@@ -39,7 +39,7 @@ module "networking" {
     }
   }
 
-  network_security_groups = {
+  network_security_groups = merge({
     nsg = {
       subnets = formatlist("vnet-%s", keys(local.default_subnets_not_bastion))
       rules = merge({
@@ -122,8 +122,9 @@ module "networking" {
         }
       }, var.additional_nsg_rules)
     }
+    }, var.bastion_host_subnet_address_space == null ? null : {
     bastion-nsg = {
-      subnets = var.bastion_host_subnet_address_space == null ? [] : ["vnet-bastion"]
+      subnets = ["vnet-bastion"]
       rules = {
         "Bastion-gateway-manager-inbound" = {
           priority                     = 500
@@ -215,7 +216,7 @@ module "networking" {
         }
       }
     }
-  }
+  })
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "data_landing_link" {
