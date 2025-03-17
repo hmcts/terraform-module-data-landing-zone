@@ -18,7 +18,7 @@ module "networking" {
 
   route_tables = {
     rt = {
-      subnets = formatlist("vnet-%s", local.default_subnets_not_bastion)
+      subnets = formatlist("vnet-%s", keys(local.default_subnets_not_bastion))
       routes = {
         rfc_1918_class_a = {
           address_prefix         = "10.0.0.0/8"
@@ -41,7 +41,7 @@ module "networking" {
 
   network_security_groups = {
     nsg = {
-      subnets = formatlist("vnet-%s", local.default_subnets_not_bastion)
+      subnets = formatlist("vnet-%s", keys(local.default_subnets_not_bastion))
       rules = merge({
         "Dbricks-workspaces-UseOnly-databricks-worker-to-worker-inbound" = {
           priority                   = 200

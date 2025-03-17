@@ -200,7 +200,7 @@ locals {
   })
 
   default_subnets_not_bastion = {
-    for key, value in local.default_subnets : key => value if key != "bastion"
+    for key, value in merge(local.default_subnets, var.additional_subnets) : key => value if key != "bastion"
   }
 
   logging_resource_group            = var.use_microsoft_ip_kit_structure ? "main" : "logging"
