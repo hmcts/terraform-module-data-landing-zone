@@ -132,8 +132,19 @@ module "networking" {
           destination_address_prefixes = var.bastion_host_subnet_address_space
           description                  = "Allow Bastion Gateway Manager to communicate with Bastion Host."
         }
+        "Bastion-gateway-manager-inbound" = {
+          priority                     = 501
+          direction                    = "Inbound"
+          access                       = "Allow"
+          protocol                     = "*"
+          source_port_range            = "*"
+          destination_port_range       = "443"
+          source_address_prefix        = "AzureLoadBalancer"
+          destination_address_prefixes = var.bastion_host_subnet_address_space
+          description                  = "Allow Azure Load Balancer to communicate with Bastion Host."
+        }
         "Bastion-data-plane-inbound" = {
-          priority                   = 501
+          priority                   = 502
           direction                  = "Inbound"
           access                     = "Allow"
           protocol                   = "*"
@@ -144,7 +155,7 @@ module "networking" {
           description                = "Allow Bastion data plane connections."
         }
         "Bastion-data-plane-outbound" = {
-          priority                   = 501
+          priority                   = 502
           direction                  = "Outbound"
           access                     = "Allow"
           protocol                   = "*"
@@ -155,7 +166,7 @@ module "networking" {
           description                = "Allow Bastion data plane connections."
         }
         "Bastion-azure-cloud-outbound" = {
-          priority                   = 502
+          priority                   = 503
           direction                  = "Outbound"
           access                     = "Allow"
           protocol                   = "*"
@@ -166,7 +177,7 @@ module "networking" {
           description                = "Allow Bastion to talk to other Azure services."
         }
         "Bastion-internet-outbound" = {
-          priority                   = 503
+          priority                   = 504
           direction                  = "Outbound"
           access                     = "Allow"
           protocol                   = "*"
@@ -177,7 +188,7 @@ module "networking" {
           description                = "Allow Bastion to talk to internet."
         }
         "Bastion-vm-outbound" = {
-          priority                   = 504
+          priority                   = 505
           direction                  = "Outbound"
           access                     = "Allow"
           protocol                   = "*"
