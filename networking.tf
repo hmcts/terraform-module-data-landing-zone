@@ -18,7 +18,7 @@ module "networking" {
 
   route_tables = {
     rt = {
-      subnets = formatlist("vnet-%s", [for key in keys(merge(local.default_subnets, var.additional_subnets)) : key if key != "vnet-bastion"])
+      subnets = formatlist("vnet-%s", [for key in keys(merge(local.default_subnets, var.additional_subnets)) : key if key != "bastion"])
       routes = {
         rfc_1918_class_a = {
           address_prefix         = "10.0.0.0/8"
