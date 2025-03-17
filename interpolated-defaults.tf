@@ -7,7 +7,7 @@ locals {
   admin_group                    = local.is_prod ? "DTS Platform Operations SC" : "DTS Platform Operations"
   name                           = var.name != null ? var.name : "datalanding"
   short_name                     = substr(local.name, 0, 11)
-  resource_group_names           = ["network", "management", "logging", "runtimes", "storage", "external-storage", "metadata", "shared-integration", "shared-product", "di001", "di002", "dp001", "dp002"]
+  resource_group_names           = ["network", "logic", "management", "logging", "runtimes", "storage", "external-storage", "metadata", "shared-integration", "shared-product", "di001", "di002", "dp001", "dp002"]
   ip_kit_resource_group_names    = ["network", "logic", "main"]
   effective_resource_group_names = var.use_microsoft_ip_kit_structure ? local.ip_kit_resource_group_names : local.resource_group_names
 
