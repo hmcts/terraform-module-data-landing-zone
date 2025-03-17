@@ -172,7 +172,7 @@ module "networking" {
           protocol                   = "*"
           source_port_range          = "*"
           destination_port_range     = "443,80"
-          source_address_prefix      = var.bastion_host_subnet_address_space
+          source_address_prefixes    = var.bastion_host_subnet_address_space
           destination_address_prefix = "Internet"
           description                = "Allow Bastion to talk to internet."
         }
