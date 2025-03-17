@@ -18,7 +18,7 @@ module "networking" {
 
   route_tables = {
     rt = {
-      subnets = formatlist("vnet-%s", [for key in keys(merge(local.default_subnets, var.additional_subnets)) : key if key != "bastion"])
+      subnets = formatlist("vnet-%s", local.default_subnets_not_bastion)
       routes = {
         rfc_1918_class_a = {
           address_prefix         = "10.0.0.0/8"
@@ -41,7 +41,7 @@ module "networking" {
 
   network_security_groups = {
     nsg = {
-      subnets = formatlist("vnet-%s", [for key in keys(merge(local.default_subnets, var.additional_subnets)) : key if key != "bastion"])
+      subnets = formatlist("vnet-%s", local.default_subnets_not_bastion)
       rules = merge({
         "Dbricks-workspaces-UseOnly-databricks-worker-to-worker-inbound" = {
           priority                   = 200
@@ -120,7 +120,11 @@ module "networking" {
           destination_address_prefixes = var.vnet_address_space
           description                  = "Allow ADO agents to communicate with DLRM data ingest landing zone resources."
         }
-        }, var.additional_nsg_rules, var.bastion_host_subnet_address_space == null ? null : {
+      }, var.additional_nsg_rules)
+    }
+    bastion-nsg = {
+      subnets = var.bastion_host_subnet_address_space == null ? [] : ["vnet-bastion"]
+      rules = {
         "Bastion-gateway-manager-inbound" = {
           priority                     = 500
           direction                    = "Inbound"
@@ -209,7 +213,7 @@ module "networking" {
           destination_address_prefixes = var.bastion_host_subnet_address_space
           description                  = "Allow users to access Bastion."
         }
-      })
+      }
     }
   }
 }
