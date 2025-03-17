@@ -5,6 +5,7 @@ resource "azurerm_public_ip" "bastion" {
   resource_group_name = azurerm_resource_group.this["network"].name
   allocation_method   = "Static"
   sku                 = "Standard"
+  tags                = var.common_tags
 }
 
 resource "azurerm_bastion_host" "this" {
@@ -12,6 +13,7 @@ resource "azurerm_bastion_host" "this" {
   name                = "${local.name}-bastion"
   location            = var.location
   resource_group_name = azurerm_resource_group.this["network"].name
+  tags                = var.common_tags
   ip_configuration {
     name                 = "${local.name}-bastion-ip-config"
     subnet_id            = module.networking.subnet_ids["vnet-bastion"]
