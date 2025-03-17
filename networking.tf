@@ -120,17 +120,17 @@ module "networking" {
           destination_address_prefixes = var.vnet_address_space
           description                  = "Allow ADO agents to communicate with DLRM data ingest landing zone resources."
         }
-        }, var.additional_nsg_rules, var.bastion_host_subnet_address_space == null ? {} : {
+        }, var.additional_nsg_rules, var.bastion_host_subnet_address_space == null ? null : {
         "Bastion-gateway-manager-inbound" = {
-          priority                   = 500
-          direction                  = "Inbound"
-          access                     = "Allow"
-          protocol                   = "*"
-          source_port_range          = "*"
-          destination_port_range     = "443"
-          source_address_prefix      = "GatewayManager"
-          destination_address_prefix = var.bastion_host_subnet_address_space
-          description                = "Allow Bastion Gateway Manager to communicate with Bastion Host."
+          priority                     = 500
+          direction                    = "Inbound"
+          access                       = "Allow"
+          protocol                     = "*"
+          source_port_range            = "*"
+          destination_port_range       = "443"
+          source_address_prefix        = "GatewayManager"
+          destination_address_prefixes = var.bastion_host_subnet_address_space
+          description                  = "Allow Bastion Gateway Manager to communicate with Bastion Host."
         }
         "Bastion-data-plane-inbound" = {
           priority                   = 501
@@ -161,7 +161,7 @@ module "networking" {
           protocol                   = "*"
           source_port_range          = "*"
           destination_port_range     = "443"
-          source_address_prefix      = var.bastion_host_subnet_address_space
+          source_address_prefixes    = var.bastion_host_subnet_address_space
           destination_address_prefix = "AzureCloud"
           description                = "Allow Bastion to talk to other Azure services."
         }
@@ -183,20 +183,20 @@ module "networking" {
           protocol                   = "*"
           source_port_range          = "*"
           destination_port_range     = "22,3389"
-          source_address_prefix      = var.bastion_host_subnet_address_space
+          source_address_prefixes    = var.bastion_host_subnet_address_space
           destination_address_prefix = "VirtualNetwork"
           description                = "Allow Bastion to talk to VMs."
         }
         "Bastion-user-inbound" = {
-          priority                   = 505
-          direction                  = "Inbound"
-          access                     = "Allow"
-          protocol                   = "*"
-          source_port_range          = "*"
-          destination_port_range     = "443"
-          source_address_prefix      = "*"
-          destination_address_prefix = var.bastion_host_subnet_address_space
-          description                = "Allow users to access Bastion."
+          priority                     = 505
+          direction                    = "Inbound"
+          access                       = "Allow"
+          protocol                     = "*"
+          source_port_range            = "*"
+          destination_port_range       = "443"
+          source_address_prefix        = "*"
+          destination_address_prefixes = var.bastion_host_subnet_address_space
+          description                  = "Allow users to access Bastion."
         }
       })
     }
