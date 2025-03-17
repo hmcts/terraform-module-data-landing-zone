@@ -132,7 +132,7 @@ module "networking" {
           destination_address_prefixes = var.bastion_host_subnet_address_space
           description                  = "Allow Bastion Gateway Manager to communicate with Bastion Host."
         }
-        "Bastion-gateway-manager-inbound" = {
+        "Bastion-load-balancer-inbound" = {
           priority                     = 501
           direction                    = "Inbound"
           access                       = "Allow"
