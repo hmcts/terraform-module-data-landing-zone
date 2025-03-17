@@ -182,7 +182,7 @@ module "networking" {
           access                     = "Allow"
           protocol                   = "*"
           source_port_range          = "*"
-          destination_port_rangees   = ["22", "3389"]
+          destination_port_ranges    = ["22", "3389"]
           source_address_prefixes    = var.bastion_host_subnet_address_space
           destination_address_prefix = "VirtualNetwork"
           description                = "Allow Bastion to talk to VMs."
