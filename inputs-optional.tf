@@ -151,6 +151,13 @@ variable "install_azure_monitor" {
   default     = false
 }
 
+# Azure Bastion
+variable "install_azure_bastion" {
+  description = "Install Azure Bastion."
+  type        = bool
+  default     = false
+}
+
 variable "github_configuration" {
   description = "Optional GitHub configuration settings for the Azure Data Factory."
   type = map(object({
