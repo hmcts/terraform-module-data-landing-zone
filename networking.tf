@@ -41,7 +41,7 @@ module "networking" {
 
   network_security_groups = {
     nsg = {
-      subnets = formatlist("vnet-%s", keys(merge(local.default_subnets, var.additional_subnets)))
+      subnets = formatlist("vnet-%s", [for key in keys(merge(local.default_subnets, var.additional_subnets)) : key if key != "bastion"])
       rules = merge({
         "Dbricks-workspaces-UseOnly-databricks-worker-to-worker-inbound" = {
           priority                   = 200
