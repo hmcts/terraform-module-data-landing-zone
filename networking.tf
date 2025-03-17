@@ -109,6 +109,83 @@ module "networking" {
           destination_address_prefix = "AzureDatabricks"
           description                = "Required for workers communication with Databricks webapp."
         }
+        "Bastion-gateway-manager-inbound" = {
+          priority                   = 500
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "*"
+          source_port_range          = "*"
+          destination_port_range     = "443"
+          source_address_prefix      = "GatewayManager"
+          destination_address_prefix = var.bastion_host_subnet_address_space
+          description                = "Allow Bastion Gateway Manager to communicate with Bastion Host."
+        }
+        "Bastion-data-plane-inbound" = {
+          priority                   = 501
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "*"
+          source_port_range          = "*"
+          destination_port_range     = "8080,5701"
+          source_address_prefix      = "VirtualNetwork"
+          destination_address_prefix = "VirtualNetwork"
+          description                = "Allow Bastion data plane connections."
+        }
+        "Bastion-data-plane-outbound" = {
+          priority                   = 501
+          direction                  = "Outbound"
+          access                     = "Allow"
+          protocol                   = "*"
+          source_port_range          = "*"
+          destination_port_range     = "8080,5701"
+          source_address_prefix      = "VirtualNetwork"
+          destination_address_prefix = "VirtualNetwork"
+          description                = "Allow Bastion data plane connections."
+        }
+        "Bastion-azure-cloud-outbound" = {
+          priority                   = 502
+          direction                  = "Outbound"
+          access                     = "Allow"
+          protocol                   = "*"
+          source_port_range          = "*"
+          destination_port_range     = "443"
+          source_address_prefix      = var.bastion_host_subnet_address_space
+          destination_address_prefix = "AzureCloud"
+          description                = "Allow Bastion to talk to other Azure services."
+        }
+        "Bastion-internet-outbound" = {
+          priority                   = 503
+          direction                  = "Outbound"
+          access                     = "Allow"
+          protocol                   = "*"
+          source_port_range          = "*"
+          destination_port_range     = "443,80"
+          source_address_prefix      = var.bastion_host_subnet_address_space
+          destination_address_prefix = "Internet"
+          description                = "Allow Bastion to talk to internet."
+        }
+        "Bastion-vm-outbound" = {
+          priority                   = 504
+          direction                  = "Outbound"
+          access                     = "Allow"
+          protocol                   = "*"
+          source_port_range          = "*"
+          destination_port_range     = "22,3389"
+          source_address_prefix      = var.bastion_host_subnet_address_space
+          destination_address_prefix = "VirtualNetwork"
+          description                = "Allow Bastion to talk to VMs."
+        }
+        "Bastion-user-inbound" = {
+          priority                   = 505
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "*"
+          source_port_range          = "*"
+          destination_port_range     = "443"
+          source_address_prefix      = "*"
+          destination_address_prefix = var.bastion_host_subnet_address_space
+          description                = "Allow users to access Bastion."
+        }
         "Allow_SDS_PTL_ADO_Agents" = {
           priority                     = 4000
           direction                    = "Inbound"
