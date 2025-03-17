@@ -14,7 +14,7 @@ resource "azurerm_bastion_host" "this" {
   resource_group_name = azurerm_resource_group.this["network"].name
   ip_configuration {
     name                 = "${local.name}-bastion-ip-config"
-    subnet_id            = module.networking.subnet_ids["vnet-AzureBastionSubnet"]
+    subnet_id            = module.networking.subnet_ids["vnet-bastion"]
     public_ip_address_id = azurerm_public_ip.bastion[0].id
   }
 }
