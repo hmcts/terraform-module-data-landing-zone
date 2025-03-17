@@ -134,7 +134,7 @@ module "networking" {
           source_port_range          = "*"
           destination_port_range     = "443"
           source_address_prefix      = "GatewayManager"
-          destination_address_prefix = "Any"
+          destination_address_prefix = "*"
           description                = "Allow Bastion Gateway Manager to communicate with Bastion Host."
         }
         "Bastion-load-balancer-inbound" = {
@@ -145,7 +145,7 @@ module "networking" {
           source_port_range          = "*"
           destination_port_range     = "443"
           source_address_prefix      = "AzureLoadBalancer"
-          destination_address_prefix = "Any"
+          destination_address_prefix = "*"
           description                = "Allow Azure Load Balancer to communicate with Bastion Host."
         }
         "Bastion-data-plane-inbound" = {
@@ -167,7 +167,7 @@ module "networking" {
           source_port_range          = "*"
           destination_port_range     = "443"
           source_address_prefix      = "*"
-          destination_address_prefix = "Any"
+          destination_address_prefix = "*"
           description                = "Allow users to access Bastion."
         }
         "Bastion-data-plane-outbound" = {
@@ -188,7 +188,7 @@ module "networking" {
           protocol                   = "Tcp"
           source_port_range          = "*"
           destination_port_range     = "443"
-          source_address_prefix      = "Any"
+          source_address_prefix      = "*"
           destination_address_prefix = "AzureCloud"
           description                = "Allow Bastion to talk to other Azure services."
         }
@@ -199,7 +199,7 @@ module "networking" {
           protocol                   = "*"
           source_port_range          = "*"
           destination_port_ranges    = ["443", "80"]
-          source_address_prefix      = "Any"
+          source_address_prefix      = "*"
           destination_address_prefix = "Internet"
           description                = "Allow Bastion to talk to internet."
         }
@@ -210,7 +210,7 @@ module "networking" {
           protocol                   = "*"
           source_port_range          = "*"
           destination_port_ranges    = ["22", "3389"]
-          source_address_prefix      = "Any"
+          source_address_prefix      = "*"
           destination_address_prefix = "VirtualNetwork"
           description                = "Allow Bastion to talk to VMs."
         }
