@@ -193,8 +193,9 @@ locals {
       address_prefixes = var.data_product_002_subnet_address_space
     }
     }, var.bastion_host_subnet_address_space == null ? {} : {
-    AzureBastionSubnet = {
+    bastion = {
       address_prefixes = var.bastion_host_subnet_address_space
+      name_override    = "AzureBastionSubnet"
     }
   })
 
