@@ -166,7 +166,8 @@ module "networking" {
           protocol                   = "Tcp"
           source_port_range          = "*"
           destination_port_range     = "443"
-          source_address_prefix      = "*"
+          source_address_prefix      = var.bastion_host_source_ip_allowlist == null || length(var.bastion_host_source_ip_allowlist) == 0 ? "*" : null
+          source_address_prefixes    = var.bastion_host_source_ip_allowlist == null || length(var.bastion_host_source_ip_allowlist) == 0 ? null : var.bastion_host_source_ip_allowlist
           destination_address_prefix = "*"
           description                = "Allow users to access Bastion."
         }
