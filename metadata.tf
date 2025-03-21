@@ -74,7 +74,7 @@ module "metadata_mssql" {
       create_mode                 = "Default"
       min_capacity                = 0
       geo_backup_enabled          = true
-      auto_pause_delay_in_minutes = 0
+      auto_pause_delay_in_minutes = -1
     }
   }
 
