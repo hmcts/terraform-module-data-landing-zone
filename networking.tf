@@ -18,7 +18,7 @@ module "networking" {
 
   route_tables = {
     rt = {
-      subnets = formatlist("vnet-%s", keys(merge(local.default_subnets, var.additional_subnets)))
+      subnets = formatlist("vnet-%s", keys(local.default_subnets_not_bastion))
       routes = {
         rfc_1918_class_a = {
           address_prefix         = "10.0.0.0/8"
@@ -39,9 +39,9 @@ module "networking" {
     }
   }
 
-  network_security_groups = {
+  network_security_groups = merge({
     nsg = {
-      subnets = formatlist("vnet-%s", keys(merge(local.default_subnets, var.additional_subnets)))
+      subnets = formatlist("vnet-%s", keys(local.default_subnets_not_bastion))
       rules = merge({
         "Dbricks-workspaces-UseOnly-databricks-worker-to-worker-inbound" = {
           priority                   = 200
@@ -122,7 +122,102 @@ module "networking" {
         }
       }, var.additional_nsg_rules)
     }
-  }
+    }, var.bastion_host_subnet_address_space == null ? null : {
+    bastion-nsg = {
+      subnets = ["vnet-bastion"]
+      rules = {
+        "Bastion-gateway-manager-inbound" = {
+          priority                   = 500
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "Tcp"
+          source_port_range          = "*"
+          destination_port_range     = "443"
+          source_address_prefix      = "GatewayManager"
+          destination_address_prefix = "*"
+          description                = "Allow Bastion Gateway Manager to communicate with Bastion Host."
+        }
+        "Bastion-load-balancer-inbound" = {
+          priority                   = 501
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "Tcp"
+          source_port_range          = "*"
+          destination_port_range     = "443"
+          source_address_prefix      = "AzureLoadBalancer"
+          destination_address_prefix = "*"
+          description                = "Allow Azure Load Balancer to communicate with Bastion Host."
+        }
+        "Bastion-data-plane-inbound" = {
+          priority                   = 502
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "*"
+          source_port_range          = "*"
+          destination_port_ranges    = ["8080", "5701"]
+          source_address_prefix      = "VirtualNetwork"
+          destination_address_prefix = "VirtualNetwork"
+          description                = "Allow Bastion data plane connections."
+        }
+        "Bastion-user-inbound" = {
+          priority                   = 505
+          direction                  = "Inbound"
+          access                     = "Allow"
+          protocol                   = "Tcp"
+          source_port_range          = "*"
+          destination_port_range     = "443"
+          source_address_prefix      = var.bastion_host_source_ip_allowlist == null || length(var.bastion_host_source_ip_allowlist) == 0 ? "*" : null
+          source_address_prefixes    = var.bastion_host_source_ip_allowlist == null || length(var.bastion_host_source_ip_allowlist) == 0 ? null : var.bastion_host_source_ip_allowlist
+          destination_address_prefix = "*"
+          description                = "Allow users to access Bastion."
+        }
+        "Bastion-data-plane-outbound" = {
+          priority                   = 502
+          direction                  = "Outbound"
+          access                     = "Allow"
+          protocol                   = "*"
+          source_port_range          = "*"
+          destination_port_ranges    = ["8080", "5701"]
+          source_address_prefix      = "VirtualNetwork"
+          destination_address_prefix = "VirtualNetwork"
+          description                = "Allow Bastion data plane connections."
+        }
+        "Bastion-azure-cloud-outbound" = {
+          priority                   = 503
+          direction                  = "Outbound"
+          access                     = "Allow"
+          protocol                   = "Tcp"
+          source_port_range          = "*"
+          destination_port_range     = "443"
+          source_address_prefix      = "*"
+          destination_address_prefix = "AzureCloud"
+          description                = "Allow Bastion to talk to other Azure services."
+        }
+        "Bastion-internet-outbound" = {
+          priority                   = 504
+          direction                  = "Outbound"
+          access                     = "Allow"
+          protocol                   = "*"
+          source_port_range          = "*"
+          destination_port_ranges    = ["443", "80"]
+          source_address_prefix      = "*"
+          destination_address_prefix = "Internet"
+          description                = "Allow Bastion to talk to internet."
+        }
+        "Bastion-vm-outbound" = {
+          priority                   = 505
+          direction                  = "Outbound"
+          access                     = "Allow"
+          protocol                   = "*"
+          source_port_range          = "*"
+          destination_port_ranges    = ["22", "3389"]
+          source_address_prefix      = "*"
+          destination_address_prefix = "VirtualNetwork"
+          description                = "Allow Bastion to talk to VMs."
+        }
+      }
+    }
+  })
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "data_landing_link" {
