@@ -48,7 +48,7 @@ locals {
     sftp = {
       resource_group_key = var.use_microsoft_ip_kit_structure ? "main" : "storage"
       containers         = [{ name = "sftp", access_type = "private" }]
-      private_endpoints  = local.default_storage_private_endpoints
+      private_endpoints  = {}
     }
   } : {})
   default_storage_private_endpoints = {
