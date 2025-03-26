@@ -137,7 +137,6 @@ variable "adf_deploy_purview_private_endpoints" {
   default     = true
 }
 
-
 variable "systemassigned_identity" {
   description = "Assign System identity"
   type        = bool
@@ -162,4 +161,16 @@ variable "github_configuration" {
   }))
 
   default = {}
+}
+
+variable "bastion_host_subnet_address_space" {
+  type        = list(string)
+  description = "The address space covered by the bastion host subnet, must be included in vnet_address_space. Minimum of /26"
+  default     = null
+}
+
+variable "bastion_host_source_ip_allowlist" {
+  type        = list(string)
+  description = "The list of IP addresses that are allowed to connect to the bastion host."
+  default     = []
 }

@@ -120,7 +120,7 @@ locals {
     } : {}
   )
 
-  default_subnets = {
+  default_subnets = merge({
     services = {
       address_prefixes = var.services_subnet_address_space
     }
@@ -192,6 +192,15 @@ locals {
     data-product-002 = {
       address_prefixes = var.data_product_002_subnet_address_space
     }
+    }, var.bastion_host_subnet_address_space == null ? {} : {
+    bastion = {
+      address_prefixes = var.bastion_host_subnet_address_space
+      name_override    = "AzureBastionSubnet"
+    }
+  })
+
+  default_subnets_not_bastion = {
+    for key, value in merge(local.default_subnets, var.additional_subnets) : key => value if key != "bastion"
   }
 
   logging_resource_group            = var.use_microsoft_ip_kit_structure ? "main" : "logging"
