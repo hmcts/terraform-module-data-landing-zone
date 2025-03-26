@@ -74,16 +74,18 @@ module "data_landing_zone" {
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >= 2.43.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.116.0 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.1.0 |
+| <a name="requirement_tls"></a> [tls](#requirement\_tls) | 4.0.6 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | >= 2.43.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.116.0 |
-| <a name="provider_azurerm.cftptl"></a> [azurerm.cftptl](#provider\_azurerm.cftptl) | >= 3.116.0 |
-| <a name="provider_azurerm.ssptl"></a> [azurerm.ssptl](#provider\_azurerm.ssptl) | >= 3.116.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.74.0 |
+| <a name="provider_azurerm.cftptl"></a> [azurerm.cftptl](#provider\_azurerm.cftptl) | 3.74.0 |
+| <a name="provider_azurerm.ssptl"></a> [azurerm.ssptl](#provider\_azurerm.ssptl) | 3.74.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | >= 3.1.0 |
+| <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.6 |
 
 ## Modules
 
@@ -127,6 +129,7 @@ module "data_landing_zone" {
 | [azurerm_key_vault_secret.mysql_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.mysql_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.mysql_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.sftpkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.synapse_sql_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.synapse_sql_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_log_analytics_workspace.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) | resource |
@@ -139,6 +142,7 @@ module "data_landing_zone" {
 | [azurerm_role_assignment.datafactory_databricks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.runtimes_datafactory_storage](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.shared_integration_datafactory_storage](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_storage_account_local_user.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_account_local_user) | resource |
 | [azurerm_storage_data_lake_gen2_filesystem.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_data_lake_gen2_filesystem) | resource |
 | [azurerm_storage_management_policy.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_management_policy) | resource |
 | [azurerm_synapse_spark_pool.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/synapse_spark_pool) | resource |
@@ -148,6 +152,7 @@ module "data_landing_zone" {
 | [random_password.legacy_database_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [random_password.synapse_sql_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [random_string.legacy_database_username](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
+| [tls_private_key.sftpkey](https://registry.terraform.io/providers/hashicorp/tls/4.0.6/docs/resources/private_key) | resource |
 | [azuread_group.admin_group](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 | [azurerm_private_dns_zone.cftptl](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
@@ -174,6 +179,7 @@ module "data_landing_zone" {
 | <a name="input_data_product_001_subnet_address_space"></a> [data\_product\_001\_subnet\_address\_space](#input\_data\_product\_001\_subnet\_address\_space) | The address space covered by the data product 001 subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
 | <a name="input_data_product_002_subnet_address_space"></a> [data\_product\_002\_subnet\_address\_space](#input\_data\_product\_002\_subnet\_address\_space) | The address space covered by the data product 002 subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
 | <a name="input_default_route_next_hop_ip"></a> [default\_route\_next\_hop\_ip](#input\_default\_route\_next\_hop\_ip) | The IP address of the private ip configuration of the Hub Palo load balancer. | `string` | n/a | yes |
+| <a name="input_deploy_sftp_storage"></a> [deploy\_sftp\_storage](#input\_deploy\_sftp\_storage) | Whether to deploy an SFTP storage account. Defaults to false. | `bool` | `false` | no |
 | <a name="input_enable_synapse_spark_pool"></a> [enable\_synapse\_spark\_pool](#input\_enable\_synapse\_spark\_pool) | Whether to deploy a Synapse Spark pool. Defaults to false. | `bool` | `false` | no |
 | <a name="input_enable_synapse_sql_pool"></a> [enable\_synapse\_sql\_pool](#input\_enable\_synapse\_sql\_pool) | Whether to deploy a Synapse SQL pool. Defaults to false. | `bool` | `false` | no |
 | <a name="input_env"></a> [env](#input\_env) | Environment value | `string` | n/a | yes |

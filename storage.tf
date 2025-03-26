@@ -12,7 +12,7 @@ module "storage" {
   account_tier                      = var.storage_account_tier
   account_replication_type          = var.storage_account_replication_type
   enable_hns                        = true
-  enable_sftp                       = true
+  enable_sftp                       = each.key == "sftp" ? true : false
   enable_nfs                        = false
   containers                        = each.value.containers
   enable_data_protection            = true
@@ -29,6 +29,44 @@ module "storage" {
   ]
   team_contact = "#dtspo-orange"
   common_tags  = var.common_tags
+}
+
+resource "azurerm_storage_account_local_user" "this" {
+  for_each             = { for key, value in local.storage_accounts : key => value.local_user if key == "sftp" }
+  name                 = "sftpuser"
+  storage_account_id   = module.storage["sftp"].storageaccount_id
+  ssh_key_enabled      = true
+  ssh_password_enabled = false
+  home_directory       = "sftp"
+  permission_scope {
+    permissions {
+      read   = true
+      write  = true
+      delete = true
+      list   = true
+      create = true
+    }
+    service       = "blob"
+    resource_name = "sftp"
+  }
+  ssh_authorized_key {
+    key         = tls_private_key.sftpkey[each.key].public_key_openssh
+    description = azurerm_key_vault_secret.sftpkey[each.key].resource_versionless_id
+  }
+}
+
+resource "tls_private_key" "sftpkey" {
+  for_each  = { for key, value in local.storage_accounts : key => value.local_user if key == "sftp" }
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "azurerm_key_vault_secret" "sftpkey" {
+  for_each     = { for key, value in local.storage_accounts : key => value.local_user if key == "sftp" }
+  name         = "${length(replace("${local.name}${each.key}${var.env}", "-", "")) > 24 ? lower(replace("${local.short_name}${each.key}${var.env}", "-", "")) : lower(replace("${local.name}${each.key}${var.env}", "-", ""))}-sftpkey"
+  value        = tls_private_key.sftpkey[each.key].private_key_openssh
+  key_vault_id = module.metadata_vault["meta002"].key_vault_id
+  depends_on   = [module.metadata_vault, module.metadata_vault_pe]
 }
 
 module "storage_pe" {

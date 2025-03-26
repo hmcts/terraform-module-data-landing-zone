@@ -174,3 +174,9 @@ variable "bastion_host_source_ip_allowlist" {
   description = "The list of IP addresses that are allowed to connect to the bastion host."
   default     = []
 }
+
+variable "deploy_sftp_storage" {
+  description = "Whether to deploy an SFTP storage account. Defaults to false."
+  type        = bool
+  default     = false
+}
