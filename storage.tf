@@ -54,7 +54,7 @@ resource "azurerm_storage_account_local_user" "this" {
   }
   ssh_authorized_key {
     key         = tls_private_key.sftpkey[each.key].public_key_openssh
-    description = azurerm_key_vault_secret.sftpkey[each.key].resource_versionless_id
+    description = "https://portal.azure.com/#@HMCTS.NET/asset/Microsoft_Azure_KeyVault/Secret/${azurerm_key_vault_secret.sftpkey[each.key].versionless_id}"
   }
 }
 
