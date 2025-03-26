@@ -32,7 +32,7 @@ module "storage" {
 }
 
 resource "azurerm_storage_account_local_user" "this" {
-  for_each             = { for key, value in local.storage_accounts : key => value.local_user if key == "sftp" }
+  for_each             = { for key, value in local.storage_accounts : key => value if key == "sftp" }
   name                 = "sftpuser"
   storage_account_id   = module.storage["sftp"].storageaccount_id
   ssh_key_enabled      = true
@@ -56,13 +56,13 @@ resource "azurerm_storage_account_local_user" "this" {
 }
 
 resource "tls_private_key" "sftpkey" {
-  for_each  = { for key, value in local.storage_accounts : key => value.local_user if key == "sftp" }
+  for_each  = { for key, value in local.storage_accounts : key => value if key == "sftp" }
   algorithm = "RSA"
   rsa_bits  = 4096
 }
 
 resource "azurerm_key_vault_secret" "sftpkey" {
-  for_each     = { for key, value in local.storage_accounts : key => value.local_user if key == "sftp" }
+  for_each     = { for key, value in local.storage_accounts : key => value if key == "sftp" }
   name         = "${length(replace("${local.name}${each.key}${var.env}", "-", "")) > 24 ? lower(replace("${local.short_name}${each.key}${var.env}", "-", "")) : lower(replace("${local.name}${each.key}${var.env}", "-", ""))}-sftpkey"
   value        = tls_private_key.sftpkey[each.key].private_key_openssh
   key_vault_id = module.metadata_vault["meta002"].key_vault_id
