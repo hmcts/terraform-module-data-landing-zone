@@ -18,7 +18,7 @@ locals {
     "Microsoft.Network/virtualNetworks/subnets/unprepareNetworkPolicies/action"
   ]
 
-  storage_accounts = {
+  storage_accounts = merge({
     raw = {
       resource_group_key = var.use_microsoft_ip_kit_structure ? "main" : "storage"
       containers         = local.domain_file_system_names
@@ -44,7 +44,13 @@ locals {
       containers         = [{ name = "data", access_type = "private" }]
       private_endpoints  = local.default_storage_private_endpoints
     }
-  }
+    }, var.deploy_sftp_storage ? {
+    sftp = {
+      resource_group_key = var.use_microsoft_ip_kit_structure ? "main" : "storage"
+      containers         = [{ name = "sftp", access_type = "private" }]
+      private_endpoints  = {}
+    }
+  } : {})
   default_storage_private_endpoints = {
     blob = data.azurerm_private_dns_zone.cftptl["privatelink.blob.core.windows.net"].id
     dfs  = data.azurerm_private_dns_zone.cftptl["privatelink.dfs.core.windows.net"].id
