@@ -120,7 +120,21 @@ module "networking" {
           destination_address_prefixes = var.vnet_address_space
           description                  = "Allow ADO agents to communicate with DLRM data ingest landing zone resources."
         }
-      }, var.additional_nsg_rules)
+        },
+        var.additional_nsg_rules,
+        var.bastion_host_subnet_address_space == null ? {} : {
+          "Allow_Bastion" = {
+            priority                     = 3999
+            direction                    = "Inbound"
+            access                       = "Allow"
+            protocol                     = "*"
+            source_port_range            = "*"
+            destination_port_range       = "*"
+            source_address_prefixes      = var.bastion_host_subnet_address_space
+            destination_address_prefixes = var.vnet_address_space
+            description                  = "Allow Azure Bastion to communicate with DLRM data ingest landing zone resources."
+          }
+      })
     }
     }, var.bastion_host_subnet_address_space == null ? null : {
     bastion-nsg = {
