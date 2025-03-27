@@ -44,6 +44,11 @@ locals {
       containers         = [{ name = "data", access_type = "private" }]
       private_endpoints  = local.default_storage_private_endpoints
     }
+    cross-cutting = {
+      resource_group_key = var.use_microsoft_ip_kit_structure ? "main" : "storage"
+      containers         = local.domain_file_system_names
+      private_endpoints  = local.default_storage_private_endpoints
+    }
   }
   default_storage_private_endpoints = {
     blob = data.azurerm_private_dns_zone.cftptl["privatelink.blob.core.windows.net"].id
