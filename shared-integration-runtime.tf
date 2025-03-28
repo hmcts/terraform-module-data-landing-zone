@@ -116,12 +116,12 @@ module "shared_integration_datafactory" {
       resource_id      = module.metadata_vault["meta002"].key_vault_id
       subresource_name = "vault"
     }
-    cross-cutting-blob = {
-      resource_id      = module.storage["cross-cutting"].storageaccount_id
+    xcutting-blob = {
+      resource_id      = module.storage["xcutting"].storageaccount_id
       subresource_name = "blob"
     }
-    cross-cutting-dfs = {
-      resource_id      = module.storage["cross-cutting"].storageaccount_id
+    xcutting-dfs = {
+      resource_id      = module.storage["xcutting"].storageaccount_id
       subresource_name = "dfs"
     }
   }, var.adf_deploy_purview_private_endpoints ? local.adf_managed_purview_endpoints : {})
@@ -164,8 +164,8 @@ module "shared_integration_datafactory" {
       use_managed_identity     = true
       integration_runtime_name = "AutoResolveIntegrationRuntime"
     }
-    "${module.storage["cross-cutting"].storageaccount_name}" = {
-      service_endpoint         = module.storage["cross-cutting"].storageaccount_primary_blob_endpoint
+    "${module.storage["xcutting"].storageaccount_name}" = {
+      service_endpoint         = module.storage["xcutting"].storageaccount_primary_blob_endpoint
       use_managed_identity     = true
       integration_runtime_name = "AutoResolveIntegrationRuntime"
     }
@@ -204,7 +204,7 @@ resource "azurerm_monitor_diagnostic_setting" "shared_integration_datafactory" {
 }
 
 resource "azurerm_role_assignment" "shared_integration_datafactory_storage" {
-  for_each             = toset(["raw", "curated", "landing", "workspace", "external", "cross-cutting"])
+  for_each             = toset(["raw", "curated", "landing", "workspace", "external", "xcutting"])
   scope                = module.storage[each.key].storageaccount_id
   role_definition_name = "Storage Blob Data Contributor"
   principal_id         = module.shared_integration_datafactory.identity.principal_id

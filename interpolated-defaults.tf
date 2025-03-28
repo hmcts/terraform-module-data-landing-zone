@@ -44,7 +44,7 @@ locals {
       containers         = [{ name = "data", access_type = "private" }]
       private_endpoints  = local.default_storage_private_endpoints
     }
-    cross-cutting = {
+    xcutting = {
       resource_group_key = var.use_microsoft_ip_kit_structure ? "main" : "storage"
       containers         = local.domain_file_system_names
       private_endpoints  = local.default_storage_private_endpoints
