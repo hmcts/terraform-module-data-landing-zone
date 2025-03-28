@@ -47,7 +47,7 @@ locals {
     xcutting = {
       resource_group_key = var.use_microsoft_ip_kit_structure ? "main" : "storage"
       containers         = local.domain_file_system_names
-      private_endpoints  = local.default_storage_private_endpoints
+      private_endpoints  = {} #local.default_storage_private_endpoints
     }
     }, var.deploy_sftp_storage ? {
     sftp = {
