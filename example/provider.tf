@@ -13,7 +13,7 @@ provider "azurerm" {
   alias                           = "ssptl"
   resource_provider_registrations = "none"
   features {}
-  subscription_id = "6c4d2513-a873-41b4-afdd-b05a33206631"
+  subscription_id = "64b1c6d6-1481-44ad-b620-d8fe26a2c768"
 }
 
 provider "azurerm" {
