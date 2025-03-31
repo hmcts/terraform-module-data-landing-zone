@@ -23,11 +23,8 @@ module "storage" {
   defender_enabled                  = true
   defender_malware_scanning_enabled = true
 
-  # Temp to allow local apply.
-  public_network_access_enabled = true
-  default_action                = "Allow"
-  # public_network_access_enabled = each.key == "sftp" ? true : null
-  # default_action                = each.key == "sftp" ? "Allow" : "Deny"
+  public_network_access_enabled = each.key == "sftp" ? true : null
+  default_action                = each.key == "sftp" ? "Allow" : "Deny"
 
   sa_subnets = [
     data.azurerm_subnet.ssptl-00.id,
