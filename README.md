@@ -91,6 +91,7 @@ module "data_landing_zone" {
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_databricks_cluster"></a> [databricks\_cluster](#module\_databricks\_cluster) | ./Modules/databricks/Cluster | n/a |
 | <a name="module_legacy_database"></a> [legacy\_database](#module\_legacy\_database) | github.com/hmcts/terraform-module-virtual-machine.git | master |
 | <a name="module_logging_vault"></a> [logging\_vault](#module\_logging\_vault) | github.com/hmcts/cnp-module-key-vault | master |
 | <a name="module_logging_vault_pe"></a> [logging\_vault\_pe](#module\_logging\_vault\_pe) | ./modules/azure-private-endpoint | n/a |
@@ -155,6 +156,7 @@ module "data_landing_zone" {
 | [tls_private_key.sftpkey](https://registry.terraform.io/providers/hashicorp/tls/4.0.6/docs/resources/private_key) | resource |
 | [azuread_group.admin_group](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
+| [azurerm_key_vault.ingest00-meta002-sbox](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_private_dns_zone.cftptl](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_subnet.ssptl-00](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.ssptl-01](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
@@ -169,6 +171,8 @@ module "data_landing_zone" {
 | <a name="input_adf_deploy_purview_private_endpoints"></a> [adf\_deploy\_purview\_private\_endpoints](#input\_adf\_deploy\_purview\_private\_endpoints) | Whether to deploy a private endpoint for the ADF to Purview connection. Defaults to false. | `bool` | `true` | no |
 | <a name="input_bastion_host_source_ip_allowlist"></a> [bastion\_host\_source\_ip\_allowlist](#input\_bastion\_host\_source\_ip\_allowlist) | The list of IP addresses that are allowed to connect to the bastion host. | `list(string)` | `[]` | no |
 | <a name="input_bastion_host_subnet_address_space"></a> [bastion\_host\_subnet\_address\_space](#input\_bastion\_host\_subnet\_address\_space) | The address space covered by the bastion host subnet, must be included in vnet\_address\_space. Minimum of /26 | `list(string)` | `null` | no |
+| <a name="input_client_id"></a> [client\_id](#input\_client\_id) | Azure client ID | `string` | n/a | yes |
+| <a name="input_client_secret"></a> [client\_secret](#input\_client\_secret) | Azure client secret | `string` | n/a | yes |
 | <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | Common tag to be applied to resources | `map(string)` | n/a | yes |
 | <a name="input_data_bricks_private_subnet_address_space"></a> [data\_bricks\_private\_subnet\_address\_space](#input\_data\_bricks\_private\_subnet\_address\_space) | The address space covered by the data bricks private subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
 | <a name="input_data_bricks_product_private_subnet_address_space"></a> [data\_bricks\_product\_private\_subnet\_address\_space](#input\_data\_bricks\_product\_private\_subnet\_address\_space) | The address space covered by the data bricks product private subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
@@ -178,6 +182,7 @@ module "data_landing_zone" {
 | <a name="input_data_integration_002_subnet_address_space"></a> [data\_integration\_002\_subnet\_address\_space](#input\_data\_integration\_002\_subnet\_address\_space) | The address space covered by the data integration 002 subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
 | <a name="input_data_product_001_subnet_address_space"></a> [data\_product\_001\_subnet\_address\_space](#input\_data\_product\_001\_subnet\_address\_space) | The address space covered by the data product 001 subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
 | <a name="input_data_product_002_subnet_address_space"></a> [data\_product\_002\_subnet\_address\_space](#input\_data\_product\_002\_subnet\_address\_space) | The address space covered by the data product 002 subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
+| <a name="input_databricks_token"></a> [databricks\_token](#input\_databricks\_token) | Databricks authentication token | `string` | `""` | no |
 | <a name="input_default_route_next_hop_ip"></a> [default\_route\_next\_hop\_ip](#input\_default\_route\_next\_hop\_ip) | The IP address of the private ip configuration of the Hub Palo load balancer. | `string` | n/a | yes |
 | <a name="input_deploy_sftp_storage"></a> [deploy\_sftp\_storage](#input\_deploy\_sftp\_storage) | Whether to deploy an SFTP storage account. Defaults to false. | `bool` | `false` | no |
 | <a name="input_enable_synapse_spark_pool"></a> [enable\_synapse\_spark\_pool](#input\_enable\_synapse\_spark\_pool) | Whether to deploy a Synapse Spark pool. Defaults to false. | `bool` | `false` | no |
@@ -194,12 +199,15 @@ module "data_landing_zone" {
 | <a name="input_location"></a> [location](#input\_location) | Target Azure location to deploy the resource | `string` | `"UK South"` | no |
 | <a name="input_log_analytics_sku"></a> [log\_analytics\_sku](#input\_log\_analytics\_sku) | The sku of the log analytics workspace, will default to PerGB2018. | `string` | `"PerGB2018"` | no |
 | <a name="input_name"></a> [name](#input\_name) | The default name will be data-landing+env, you can override the data-landing part by setting this | `string` | `null` | no |
+| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | ARIA Sandbox resource group name | `string` | `"ingest00-main-sbox"` | no |
 | <a name="input_services_mysql_subnet_address_space"></a> [services\_mysql\_subnet\_address\_space](#input\_services\_mysql\_subnet\_address\_space) | The address space covered by the services-mysql subnet, must be included in vnet\_address\_space. This is delegated to MySQL Flexible Server. | `list(string)` | n/a | yes |
 | <a name="input_services_subnet_address_space"></a> [services\_subnet\_address\_space](#input\_services\_subnet\_address\_space) | The address space covered by the services subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
 | <a name="input_storage_account_kind"></a> [storage\_account\_kind](#input\_storage\_account\_kind) | The storage account kind, will default to StorageV2. | `string` | `"StorageV2"` | no |
 | <a name="input_storage_account_replication_type"></a> [storage\_account\_replication\_type](#input\_storage\_account\_replication\_type) | The replication type of the storage account, will default to LRS. | `string` | `"LRS"` | no |
 | <a name="input_storage_account_tier"></a> [storage\_account\_tier](#input\_storage\_account\_tier) | The storage account tier, will default to Standard. | `string` | `"Standard"` | no |
+| <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id) | Azure subscription ID | `string` | n/a | yes |
 | <a name="input_systemassigned_identity"></a> [systemassigned\_identity](#input\_systemassigned\_identity) | Assign System identity | `bool` | `false` | no |
+| <a name="input_tenant_id"></a> [tenant\_id](#input\_tenant\_id) | Azure tenant ID | `string` | n/a | yes |
 | <a name="input_use_microsoft_ip_kit_structure"></a> [use\_microsoft\_ip\_kit\_structure](#input\_use\_microsoft\_ip\_kit\_structure) | Whether to use the Microsoft IP Kit structure for the network. Defaults to false. | `bool` | `false` | no |
 | <a name="input_vnet_address_space"></a> [vnet\_address\_space](#input\_vnet\_address\_space) | The Address space covered by the data landing zone virtual network | `list(string)` | n/a | yes |
 
@@ -207,6 +215,7 @@ module "data_landing_zone" {
 
 | Name | Description |
 |------|-------------|
+| <a name="output_ingest00-meta002-sbox_kv_id"></a> [ingest00-meta002-sbox\_kv\_id](#output\_ingest00-meta002-sbox\_kv\_id) | n/a |
 | <a name="output_metadata_mssql"></a> [metadata\_mssql](#output\_metadata\_mssql) | n/a |
 | <a name="output_resource_groups"></a> [resource\_groups](#output\_resource\_groups) | n/a |
 | <a name="output_subnet_ids"></a> [subnet\_ids](#output\_subnet\_ids) | n/a |
