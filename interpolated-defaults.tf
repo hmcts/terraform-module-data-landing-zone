@@ -134,6 +134,7 @@ locals {
   default_subnets = merge({
     services = {
       address_prefixes = var.services_subnet_address_space
+      service_endpoints = ["Microsoft.CognitiveServices"]
     }
     services-mysql = {
       address_prefixes = var.services_mysql_subnet_address_space
