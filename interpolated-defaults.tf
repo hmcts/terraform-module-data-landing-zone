@@ -1,5 +1,4 @@
 data "azurerm_subscription" "current" {}
-data "azurerm_client_config" "current" {}
 
 locals {
   is_prod                        = length(regexall(".*(prod).*", var.env)) > 0
@@ -7,7 +6,7 @@ locals {
   admin_group                    = local.is_prod ? "DTS Platform Operations SC" : "DTS Platform Operations"
   name                           = var.name != null ? var.name : "datalanding"
   short_name                     = substr(local.name, 0, 11)
-  resource_group_names           = ["network", "management", "logging", "runtimes", "storage", "external-storage", "metadata", "shared-integration", "shared-product", "di001", "di002", "dp001", "dp002"]
+  resource_group_names           = ["network", "logic", "management", "logging", "runtimes", "storage", "external-storage", "metadata", "shared-integration", "shared-product", "di001", "di002", "dp001", "dp002"]
   ip_kit_resource_group_names    = ["network", "logic", "main"]
   effective_resource_group_names = var.use_microsoft_ip_kit_structure ? local.ip_kit_resource_group_names : local.resource_group_names
 
@@ -18,7 +17,7 @@ locals {
     "Microsoft.Network/virtualNetworks/subnets/unprepareNetworkPolicies/action"
   ]
 
-  storage_accounts = {
+  storage_accounts = merge({
     raw = {
       resource_group_key = var.use_microsoft_ip_kit_structure ? "main" : "storage"
       containers         = local.domain_file_system_names
@@ -44,7 +43,18 @@ locals {
       containers         = [{ name = "data", access_type = "private" }]
       private_endpoints  = local.default_storage_private_endpoints
     }
-  }
+    xcutting = {
+      resource_group_key = var.use_microsoft_ip_kit_structure ? "main" : "storage"
+      containers         = local.domain_file_system_names
+      private_endpoints  = local.default_storage_private_endpoints
+    }
+    }, var.deploy_sftp_storage ? {
+    sftp = {
+      resource_group_key = var.use_microsoft_ip_kit_structure ? "main" : "storage"
+      containers         = [{ name = "sftp", access_type = "private" }]
+      private_endpoints  = {}
+    }
+  } : {})
   default_storage_private_endpoints = {
     blob = data.azurerm_private_dns_zone.cftptl["privatelink.blob.core.windows.net"].id
     dfs  = data.azurerm_private_dns_zone.cftptl["privatelink.dfs.core.windows.net"].id
@@ -120,7 +130,7 @@ locals {
     } : {}
   )
 
-  default_subnets = {
+  default_subnets = merge({
     services = {
       address_prefixes = var.services_subnet_address_space
     }
@@ -192,6 +202,15 @@ locals {
     data-product-002 = {
       address_prefixes = var.data_product_002_subnet_address_space
     }
+    }, var.bastion_host_subnet_address_space == null ? {} : {
+    bastion = {
+      address_prefixes = var.bastion_host_subnet_address_space
+      name_override    = "AzureBastionSubnet"
+    }
+  })
+
+  default_subnets_not_bastion = {
+    for key, value in merge(local.default_subnets, var.additional_subnets) : key => value if key != "bastion"
   }
 
   logging_resource_group            = var.use_microsoft_ip_kit_structure ? "main" : "logging"

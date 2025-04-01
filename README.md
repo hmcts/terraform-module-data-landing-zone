@@ -74,16 +74,18 @@ module "data_landing_zone" {
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >= 2.43.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.116.0 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.1.0 |
+| <a name="requirement_tls"></a> [tls](#requirement\_tls) | 4.0.6 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | >= 2.43.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.74.0 |
-| <a name="provider_azurerm.cftptl"></a> [azurerm.cftptl](#provider\_azurerm.cftptl) | 3.74.0 |
-| <a name="provider_azurerm.ssptl"></a> [azurerm.ssptl](#provider\_azurerm.ssptl) | 3.74.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.116.0 |
+| <a name="provider_azurerm.cftptl"></a> [azurerm.cftptl](#provider\_azurerm.cftptl) | >= 3.116.0 |
+| <a name="provider_azurerm.ssptl"></a> [azurerm.ssptl](#provider\_azurerm.ssptl) | >= 3.116.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | >= 3.1.0 |
+| <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.6 |
 
 ## Modules
 
@@ -113,6 +115,7 @@ module "data_landing_zone" {
 
 | Name | Type |
 |------|------|
+| [azurerm_bastion_host.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/bastion_host) | resource |
 | [azurerm_data_factory_integration_runtime_self_hosted.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_integration_runtime_self_hosted) | resource |
 | [azurerm_eventhub_namespace.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/eventhub_namespace) | resource |
 | [azurerm_key_vault_access_policy.logging_vault_reders](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
@@ -126,17 +129,20 @@ module "data_landing_zone" {
 | [azurerm_key_vault_secret.mysql_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.mysql_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.mysql_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.sftpkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.synapse_sql_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.synapse_sql_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_log_analytics_workspace.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) | resource |
 | [azurerm_monitor_diagnostic_setting.runtimes_datafactory](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_diagnostic_setting) | resource |
 | [azurerm_monitor_diagnostic_setting.shared_integration_datafactory](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_diagnostic_setting) | resource |
 | [azurerm_private_dns_zone_virtual_network_link.data_landing_link](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone_virtual_network_link) | resource |
+| [azurerm_public_ip.bastion](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) | resource |
 | [azurerm_public_ip.legacy_pip](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) | resource |
 | [azurerm_resource_group.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_role_assignment.datafactory_databricks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.runtimes_datafactory_storage](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.shared_integration_datafactory_storage](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_storage_account_local_user.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_account_local_user) | resource |
 | [azurerm_storage_data_lake_gen2_filesystem.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_data_lake_gen2_filesystem) | resource |
 | [azurerm_storage_management_policy.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_management_policy) | resource |
 | [azurerm_synapse_spark_pool.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/synapse_spark_pool) | resource |
@@ -146,6 +152,7 @@ module "data_landing_zone" {
 | [random_password.legacy_database_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [random_password.synapse_sql_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [random_string.legacy_database_username](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
+| [tls_private_key.sftpkey](https://registry.terraform.io/providers/hashicorp/tls/4.0.6/docs/resources/private_key) | resource |
 | [azuread_group.admin_group](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 | [azurerm_private_dns_zone.cftptl](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
@@ -160,6 +167,8 @@ module "data_landing_zone" {
 | <a name="input_additional_nsg_rules"></a> [additional\_nsg\_rules](#input\_additional\_nsg\_rules) | Map of additional NSG rules to create, keyed by the rule name. | <pre>map(object({<br/>    name_override                              = optional(string)<br/>    priority                                   = number<br/>    direction                                  = string<br/>    access                                     = string<br/>    protocol                                   = string<br/>    source_port_range                          = optional(string)<br/>    source_port_ranges                         = optional(list(string))<br/>    destination_port_range                     = optional(string)<br/>    destination_port_ranges                    = optional(list(string))<br/>    source_address_prefix                      = optional(string)<br/>    source_address_prefixes                    = optional(list(string))<br/>    source_application_security_group_ids      = optional(list(string))<br/>    destination_address_prefix                 = optional(string)<br/>    destination_address_prefixes               = optional(list(string))<br/>    destination_application_security_group_ids = optional(list(string))<br/>    description                                = optional(string)<br/>  }))</pre> | `{}` | no |
 | <a name="input_additional_subnets"></a> [additional\_subnets](#input\_additional\_subnets) | Map of additional subnets to create, keyed by the subnet name. | <pre>map(object({<br/>    name_override     = optional(string)<br/>    address_prefixes  = list(string)<br/>    service_endpoints = optional(list(string), [])<br/>    delegations = optional(map(object({<br/>      service_name = string,<br/>      actions      = optional(list(string), [])<br/>    })))<br/>  }))</pre> | `{}` | no |
 | <a name="input_adf_deploy_purview_private_endpoints"></a> [adf\_deploy\_purview\_private\_endpoints](#input\_adf\_deploy\_purview\_private\_endpoints) | Whether to deploy a private endpoint for the ADF to Purview connection. Defaults to false. | `bool` | `true` | no |
+| <a name="input_bastion_host_source_ip_allowlist"></a> [bastion\_host\_source\_ip\_allowlist](#input\_bastion\_host\_source\_ip\_allowlist) | The list of IP addresses that are allowed to connect to the bastion host. | `list(string)` | `[]` | no |
+| <a name="input_bastion_host_subnet_address_space"></a> [bastion\_host\_subnet\_address\_space](#input\_bastion\_host\_subnet\_address\_space) | The address space covered by the bastion host subnet, must be included in vnet\_address\_space. Minimum of /26 | `list(string)` | `null` | no |
 | <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | Common tag to be applied to resources | `map(string)` | n/a | yes |
 | <a name="input_data_bricks_private_subnet_address_space"></a> [data\_bricks\_private\_subnet\_address\_space](#input\_data\_bricks\_private\_subnet\_address\_space) | The address space covered by the data bricks private subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
 | <a name="input_data_bricks_product_private_subnet_address_space"></a> [data\_bricks\_product\_private\_subnet\_address\_space](#input\_data\_bricks\_product\_private\_subnet\_address\_space) | The address space covered by the data bricks product private subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
@@ -170,6 +179,7 @@ module "data_landing_zone" {
 | <a name="input_data_product_001_subnet_address_space"></a> [data\_product\_001\_subnet\_address\_space](#input\_data\_product\_001\_subnet\_address\_space) | The address space covered by the data product 001 subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
 | <a name="input_data_product_002_subnet_address_space"></a> [data\_product\_002\_subnet\_address\_space](#input\_data\_product\_002\_subnet\_address\_space) | The address space covered by the data product 002 subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
 | <a name="input_default_route_next_hop_ip"></a> [default\_route\_next\_hop\_ip](#input\_default\_route\_next\_hop\_ip) | The IP address of the private ip configuration of the Hub Palo load balancer. | `string` | n/a | yes |
+| <a name="input_deploy_sftp_storage"></a> [deploy\_sftp\_storage](#input\_deploy\_sftp\_storage) | Whether to deploy an SFTP storage account. Defaults to false. | `bool` | `false` | no |
 | <a name="input_enable_synapse_spark_pool"></a> [enable\_synapse\_spark\_pool](#input\_enable\_synapse\_spark\_pool) | Whether to deploy a Synapse Spark pool. Defaults to false. | `bool` | `false` | no |
 | <a name="input_enable_synapse_sql_pool"></a> [enable\_synapse\_sql\_pool](#input\_enable\_synapse\_sql\_pool) | Whether to deploy a Synapse SQL pool. Defaults to false. | `bool` | `false` | no |
 | <a name="input_env"></a> [env](#input\_env) | Environment value | `string` | n/a | yes |
