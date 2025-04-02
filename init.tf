@@ -17,5 +17,9 @@ terraform {
       source  = "hashicorp/tls"
       version = "4.0.6"
     }
-  }
+    databricks = {
+      source  = "databricks/databricks"
+      version = ">=1.69.0"
+    }
+}
 }
