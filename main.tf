@@ -1,5 +1,5 @@
 module "databricks_cluster" {
-  source                   = "./Modules/databricks/Cluster"
+  source                   = "./modules/databricks/Cluster"
   depends_on               = [module.shared_integration_databricks]
   databricks_workspace_url = module.shared_integration_databricks.workspace_url
   #initialization_complete  = module.databricks_workspace.databricks_workspace_init
