@@ -73,6 +73,7 @@ module "data_landing_zone" {
 |------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >= 2.43.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.116.0 |
+| <a name="requirement_databricks"></a> [databricks](#requirement\_databricks) | >= 1.69.0 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.1.0 |
 | <a name="requirement_tls"></a> [tls](#requirement\_tls) | 4.0.6 |
 
@@ -91,7 +92,7 @@ module "data_landing_zone" {
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_databricks_cluster"></a> [databricks\_cluster](#module\_databricks\_cluster) | ./Modules/databricks/Cluster | n/a |
+| <a name="module_databricks_cluster"></a> [databricks\_cluster](#module\_databricks\_cluster) | ./modules/databricks/Cluster | n/a |
 | <a name="module_legacy_database"></a> [legacy\_database](#module\_legacy\_database) | github.com/hmcts/terraform-module-virtual-machine.git | master |
 | <a name="module_logging_vault"></a> [logging\_vault](#module\_logging\_vault) | github.com/hmcts/cnp-module-key-vault | master |
 | <a name="module_logging_vault_pe"></a> [logging\_vault\_pe](#module\_logging\_vault\_pe) | ./modules/azure-private-endpoint | n/a |
@@ -182,7 +183,9 @@ module "data_landing_zone" {
 | <a name="input_data_integration_002_subnet_address_space"></a> [data\_integration\_002\_subnet\_address\_space](#input\_data\_integration\_002\_subnet\_address\_space) | The address space covered by the data integration 002 subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
 | <a name="input_data_product_001_subnet_address_space"></a> [data\_product\_001\_subnet\_address\_space](#input\_data\_product\_001\_subnet\_address\_space) | The address space covered by the data product 001 subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
 | <a name="input_data_product_002_subnet_address_space"></a> [data\_product\_002\_subnet\_address\_space](#input\_data\_product\_002\_subnet\_address\_space) | The address space covered by the data product 002 subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
+| <a name="input_databricks_target_workspace"></a> [databricks\_target\_workspace](#input\_databricks\_target\_workspace) | n/a | `string` | `"ingest02-product-databricks001-sbox"` | no |
 | <a name="input_databricks_token"></a> [databricks\_token](#input\_databricks\_token) | Databricks authentication token | `string` | `""` | no |
+| <a name="input_databricks_workspaces"></a> [databricks\_workspaces](#input\_databricks\_workspaces) | n/a | <pre>map(object({<br/>    resource_group_name = string<br/>    location            = string<br/>  }))</pre> | <pre>{<br/>  "ingest00-integration-databricks001-sbox": {<br/>    "location": "UK South",<br/>    "resource_group_name": "ingest02-main-sbox"<br/>  },<br/>  "ingest00-product-databricks001-sbox": {<br/>    "location": "UK South",<br/>    "resource_group_name": "ingest02-main-sbox"<br/>  },<br/>  "ingest02-integration-databricks001-sbox": {<br/>    "location": "UK South",<br/>    "resource_group_name": "ingest02-main-sbox"<br/>  },<br/>  "ingest02-product-databricks001-sbox": {<br/>    "location": "UK South",<br/>    "resource_group_name": "ingest02-main-sbox"<br/>  }<br/>}</pre> | no |
 | <a name="input_default_route_next_hop_ip"></a> [default\_route\_next\_hop\_ip](#input\_default\_route\_next\_hop\_ip) | The IP address of the private ip configuration of the Hub Palo load balancer. | `string` | n/a | yes |
 | <a name="input_deploy_sftp_storage"></a> [deploy\_sftp\_storage](#input\_deploy\_sftp\_storage) | Whether to deploy an SFTP storage account. Defaults to false. | `bool` | `false` | no |
 | <a name="input_enable_synapse_spark_pool"></a> [enable\_synapse\_spark\_pool](#input\_enable\_synapse\_spark\_pool) | Whether to deploy a Synapse Spark pool. Defaults to false. | `bool` | `false` | no |
