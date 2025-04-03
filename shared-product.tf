@@ -3,7 +3,7 @@ module "shared_product_databricks" {
 
   providers = {
     databricks = databricks
-    }
+  }
 
   env                          = var.env
   product                      = "data-landing"

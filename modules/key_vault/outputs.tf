@@ -10,6 +10,6 @@ output "key-vault-name" {
 
 # Return databricks secret (PAT) value
 output "databricks_token_value" {
-  value = azurerm_key_vault_secret.databricks_token.value
+  value     = azurerm_key_vault_secret.databricks_token.value
   sensitive = true
 }

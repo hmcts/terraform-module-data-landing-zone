@@ -6,29 +6,29 @@ resource "databricks_cluster" "interactive" {
   num_workers             = 2
 
   spark_conf = {
-"spark.conf.set('fs.azure.account.auth.type.ingest02rawsbox.dfs.core.windows.net', 'OAuth')" = "true"
-"spark.conf.set('fs.azure.account.oauth.provider.type.ingest02rawsbox.dfs.core.windows.net', 'org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider')" = "true"
-"spark.conf.set('fs.azure.account.oauth2.client.id.ingest02rawsbox.dfs.core.windows.net', '{{secrets/key-vault-secrets/client-id}}')" = "true"
-"spark.conf.set('fs.azure.account.oauth2.client.secret.ingest02rawsbox.dfs.core.windows.net', '{{secrets/key-vault-secrets/client-secret}}')" = "true"
-"spark.conf.set('fs.azure.account.oauth2.client.endpoint.ingest02rawsbox.dfs.core.windows.net', 'https://login.microsoftonline.com/{{secrets/key-vault-secrets/tenant-id}}/oauth2/token')" = "true"
+    "spark.conf.set('fs.azure.account.auth.type.ingest02rawsbox.dfs.core.windows.net', 'OAuth')"                                                                                               = "true"
+    "spark.conf.set('fs.azure.account.oauth.provider.type.ingest02rawsbox.dfs.core.windows.net', 'org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider')"                             = "true"
+    "spark.conf.set('fs.azure.account.oauth2.client.id.ingest02rawsbox.dfs.core.windows.net', '{{secrets/key-vault-secrets/client-id}}')"                                                      = "true"
+    "spark.conf.set('fs.azure.account.oauth2.client.secret.ingest02rawsbox.dfs.core.windows.net', '{{secrets/key-vault-secrets/client-secret}}')"                                              = "true"
+    "spark.conf.set('fs.azure.account.oauth2.client.endpoint.ingest02rawsbox.dfs.core.windows.net', 'https://login.microsoftonline.com/{{secrets/key-vault-secrets/tenant-id}}/oauth2/token')" = "true"
 
-"spark.conf.set('fs.azure.account.auth.type.ingest02landingsbox.dfs.core.windows.net', 'OAuth')" = "true"
-"spark.conf.set('fs.azure.account.oauth.provider.type.ingest02landingsbox.dfs.core.windows.net', 'org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider')" = "true"
-"spark.conf.set('fs.azure.account.oauth2.client.id.ingest02landingsbox.dfs.core.windows.net', '{{secrets/key-vault-secrets/client-id}}')" = "true"
-"spark.conf.set('fs.azure.account.oauth2.client.secret.ingest02landingsbox.dfs.core.windows.net', '{{secrets/key-vault-secrets/client-secret}}')" = "true"
-"spark.conf.set('fs.azure.account.oauth2.client.endpoint.ingest02landingsbox.dfs.core.windows.net', 'https://login.microsoftonline.com/{{secrets/key-vault-secrets/tenant-id}}/oauth2/token')" = "true"
+    "spark.conf.set('fs.azure.account.auth.type.ingest02landingsbox.dfs.core.windows.net', 'OAuth')"                                                                                               = "true"
+    "spark.conf.set('fs.azure.account.oauth.provider.type.ingest02landingsbox.dfs.core.windows.net', 'org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider')"                             = "true"
+    "spark.conf.set('fs.azure.account.oauth2.client.id.ingest02landingsbox.dfs.core.windows.net', '{{secrets/key-vault-secrets/client-id}}')"                                                      = "true"
+    "spark.conf.set('fs.azure.account.oauth2.client.secret.ingest02landingsbox.dfs.core.windows.net', '{{secrets/key-vault-secrets/client-secret}}')"                                              = "true"
+    "spark.conf.set('fs.azure.account.oauth2.client.endpoint.ingest02landingsbox.dfs.core.windows.net', 'https://login.microsoftonline.com/{{secrets/key-vault-secrets/tenant-id}}/oauth2/token')" = "true"
 
-"spark.conf.set('fs.azure.account.auth.type.ingest02curatedsbox.dfs.core.windows.net', 'OAuth')" = "true"
-"spark.conf.set('fs.azure.account.oauth.provider.type.ingest02curatedsbox.dfs.core.windows.net', 'org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider')" = "true"
-"spark.conf.set('fs.azure.account.oauth2.client.id.ingest02curatedsbox.dfs.core.windows.net', '{{secrets/key-vault-secrets/client-id}}')" = "true"
-"spark.conf.set('fs.azure.account.oauth2.client.secret.ingest02curatedsbox.dfs.core.windows.net', '{{secrets/key-vault-secrets/client-secret}}')" = "true"
-"spark.conf.set('fs.azure.account.oauth2.client.endpoint.ingest02curatedsbox.dfs.core.windows.net', 'https://login.microsoftonline.com/{{secrets/key-vault-secrets/tenant-id}}/oauth2/token')" = "true"
+    "spark.conf.set('fs.azure.account.auth.type.ingest02curatedsbox.dfs.core.windows.net', 'OAuth')"                                                                                               = "true"
+    "spark.conf.set('fs.azure.account.oauth.provider.type.ingest02curatedsbox.dfs.core.windows.net', 'org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider')"                             = "true"
+    "spark.conf.set('fs.azure.account.oauth2.client.id.ingest02curatedsbox.dfs.core.windows.net', '{{secrets/key-vault-secrets/client-id}}')"                                                      = "true"
+    "spark.conf.set('fs.azure.account.oauth2.client.secret.ingest02curatedsbox.dfs.core.windows.net', '{{secrets/key-vault-secrets/client-secret}}')"                                              = "true"
+    "spark.conf.set('fs.azure.account.oauth2.client.endpoint.ingest02curatedsbox.dfs.core.windows.net', 'https://login.microsoftonline.com/{{secrets/key-vault-secrets/tenant-id}}/oauth2/token')" = "true"
 
-"spark.conf.set('fs.azure.account.auth.type.ingest02externalsbox.dfs.core.windows.net', 'OAuth')" = "true"
-"spark.conf.set('fs.azure.account.oauth.provider.type.ingest02externalsbox.dfs.core.windows.net', 'org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider')" = "true"
-"spark.conf.set('fs.azure.account.oauth2.client.id.ingest02externalsbox.dfs.core.windows.net', '{{secrets/key-vault-secrets/client-id}}')" = "true"
-"spark.conf.set('fs.azure.account.oauth2.client.secret.ingest02externalsbox.dfs.core.windows.net', '{{secrets/key-vault-secrets/client-secret}}')" = "true"
-"spark.conf.set('fs.azure.account.oauth2.client.endpoint.ingest02externalsbox.dfs.core.windows.net', 'https://login.microsoftonline.com/{{secrets/key-vault-secrets/tenant-id}}/oauth2/token')" = "true"
+    "spark.conf.set('fs.azure.account.auth.type.ingest02externalsbox.dfs.core.windows.net', 'OAuth')"                                                                                               = "true"
+    "spark.conf.set('fs.azure.account.oauth.provider.type.ingest02externalsbox.dfs.core.windows.net', 'org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider')"                             = "true"
+    "spark.conf.set('fs.azure.account.oauth2.client.id.ingest02externalsbox.dfs.core.windows.net', '{{secrets/key-vault-secrets/client-id}}')"                                                      = "true"
+    "spark.conf.set('fs.azure.account.oauth2.client.secret.ingest02externalsbox.dfs.core.windows.net', '{{secrets/key-vault-secrets/client-secret}}')"                                              = "true"
+    "spark.conf.set('fs.azure.account.oauth2.client.endpoint.ingest02externalsbox.dfs.core.windows.net', 'https://login.microsoftonline.com/{{secrets/key-vault-secrets/tenant-id}}/oauth2/token')" = "true"
 
   }
   depends_on = [
@@ -40,11 +40,11 @@ resource "databricks_cluster" "interactive" {
 
 # Create Serverless SQL Warehouse with OAuth Authentication
 resource "databricks_sql_endpoint" "serverless_warehouse" {
-  name             = "serverless_warehouse"
-  warehouse_type   = "CLASSIC"
-  cluster_size     = "Small"
+  name                      = "serverless_warehouse"
+  warehouse_type            = "CLASSIC"
+  cluster_size              = "Small"
   enable_serverless_compute = true
-  max_num_clusters = 1
+  max_num_clusters          = 1
 
   depends_on = [
     var.client_id,

@@ -1,13 +1,13 @@
 variable "resource_group_name" {
-    description = "ARIA Sandbox resource group name"
-    type = string
-    default = "ingest00-main-sbox"
+  description = "ARIA Sandbox resource group name"
+  type        = string
+  default     = "ingest00-main-sbox"
 }
 
 variable "location" {
-    description = "Azure region"
-    type = string
-    default = "UK South"
+  description = "Azure region"
+  type        = string
+  default     = "UK South"
 }
 
 

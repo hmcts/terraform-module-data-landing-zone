@@ -3,8 +3,8 @@
 #Store Service Principal credentials in Key Vault (Client ID)
 
 resource "azurerm_key_vault_secret" "client_id" {
-  name = "databricks-sp-client-id"
-  value = data.azurerm_client_config.current.client_id
+  name         = "databricks-sp-client-id"
+  value        = data.azurerm_client_config.current.client_id
   key_vault_id = var.ingest00-meta002-sbox_kv_id
 }
 
@@ -26,7 +26,7 @@ resource "azurerm_key_vault_secret" "tenant_id" {
 
 # Store secrets in Databricks
 resource "databricks_secret_scope" "key-vault-secrets" {
-  name = "key-vault-secrets"
+  name       = "key-vault-secrets"
   depends_on = [var.databricks_workspace_id]
 }
 
@@ -53,9 +53,9 @@ resource "databricks_secret" "tenant_id" {
 
 # Create Databricks token
 resource "azurerm_key_vault_secret" "databricks_token" {
-  name                = "databricks-token"
-  value               = var.databricks_token
-  key_vault_id        = azurerm_key_vault.ingest00-meta002-sbox.id
+  name         = "databricks-token"
+  value        = var.databricks_token
+  key_vault_id = azurerm_key_vault.ingest00-meta002-sbox.id
 }
 
 # Use outputs of the relevant endpoints as the secret value for each resource below

@@ -23,5 +23,5 @@ variable "client_id" {
 variable "client_secret" {
   type        = string
   description = "The Azure client secret (service principal secret)"
-  sensitive   = true  
+  sensitive   = true
 }
