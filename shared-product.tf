@@ -1,7 +1,9 @@
 module "shared_product_databricks" {
   source = "github.com/hmcts/terraform-module-databricks?ref=main"
 
-  providers = {databricks = databricks}
+  providers = {
+    databricks = databricks
+    }
 
   env                          = var.env
   product                      = "data-landing"

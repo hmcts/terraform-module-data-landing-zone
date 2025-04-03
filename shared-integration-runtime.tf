@@ -3,7 +3,9 @@ module "shared_integration_databricks" {
 
   depends_on = [module.vnet_peer_hub]
 
-  providers = {databricks = databricks}
+  providers = {
+    databricks = databricks
+    }
 
   env                          = var.env
   product                      = "data-landing"
