@@ -109,8 +109,8 @@ module "data_landing_zone" {
 | <a name="module_storage"></a> [storage](#module\_storage) | github.com/hmcts/cnp-module-storage-account | feat%2Finfra-encryption-4.x |
 | <a name="module_storage_pe"></a> [storage\_pe](#module\_storage\_pe) | ./modules/azure-private-endpoint | n/a |
 | <a name="module_synapse_pe"></a> [synapse\_pe](#module\_synapse\_pe) | ./modules/azure-private-endpoint | n/a |
-| <a name="module_vnet_peer_f5"></a> [vnet\_peer\_f5](#module\_vnet\_peer\_f5) | github.com/hmcts/terraform-module-vnet-peering | feat%2Ftweak-to-enable-planning-in-a-clean-env |
-| <a name="module_vnet_peer_hub"></a> [vnet\_peer\_hub](#module\_vnet\_peer\_hub) | github.com/hmcts/terraform-module-vnet-peering | feat%2Ftweak-to-enable-planning-in-a-clean-env |
+| <a name="module_vnet_peer_f5"></a> [vnet\_peer\_f5](#module\_vnet\_peer\_f5) | github.com/hmcts/terraform-module-vnet-peering | master |
+| <a name="module_vnet_peer_hub"></a> [vnet\_peer\_hub](#module\_vnet\_peer\_hub) | github.com/hmcts/terraform-module-vnet-peering | master |
 
 ## Resources
 

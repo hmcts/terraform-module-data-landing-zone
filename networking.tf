@@ -245,7 +245,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "data_landing_link" {
 }
 
 module "vnet_peer_hub" {
-  source = "github.com/hmcts/terraform-module-vnet-peering?ref=feat%2Ftweak-to-enable-planning-in-a-clean-env"
+  source = "github.com/hmcts/terraform-module-vnet-peering?ref=master"
   peerings = {
     source = {
       name           = "${local.name}-vnet-${var.env}-to-hub"
@@ -267,7 +267,7 @@ module "vnet_peer_hub" {
 }
 
 module "vnet_peer_f5" {
-  source = "github.com/hmcts/terraform-module-vnet-peering?ref=feat%2Ftweak-to-enable-planning-in-a-clean-env"
+  source = "github.com/hmcts/terraform-module-vnet-peering?ref=master"
   peerings = {
     source = {
       name           = "${local.name}-vnet-${var.env}-to-f5"
