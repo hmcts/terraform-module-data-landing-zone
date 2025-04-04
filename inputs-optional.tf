@@ -180,3 +180,9 @@ variable "deploy_sftp_storage" {
   type        = bool
   default     = false
 }
+
+variable "f5_vpn_vnet_id" {
+  description = "The ID of the F5 VPN VNet."
+  type        = string
+  default     = "/subscriptions/ed302caf-ec27-4c64-a05e-85731c3ce90e/resourceGroups/mgmt-vpn-2-mgmt/providers/Microsoft.Network/virtualNetworks/mgmt-vpn-2-vnet"
+}
