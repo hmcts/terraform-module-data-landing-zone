@@ -1,5 +1,4 @@
 data "azurerm_subscription" "current" {}
-data "azurerm_client_config" "current" {}
 
 locals {
   is_prod                        = length(regexall(".*(prod).*", var.env)) > 0
