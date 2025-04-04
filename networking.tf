@@ -265,3 +265,22 @@ module "vnet_peer_hub" {
     azurerm.target    = azurerm.hub
   }
 }
+
+module "vnet_peer_f5" {
+  source = "github.com/hmcts/terraform-module-vnet-peering?ref=feat%2Ftweak-to-enable-planning-in-a-clean-env"
+  peerings = {
+    source = {
+      name    = "${local.name}-vnet-${var.env}-to-f5"
+      vnet_id = "/subscriptions/${data.azurerm_subscription.current.subscription_id}/resourceGroups/${module.networking.resource_group_name}/providers/Microsoft.Network/virtualNetworks/${module.networking.vnet_names["vnet"]}"
+    }
+    target = {
+      name    = "f5-to-${local.name}-vnet-${var.env}"
+      vnet_id = var.f5_vpn_vnet_id
+    }
+  }
+
+  providers = {
+    azurerm.initiator = azurerm
+    azurerm.target    = azurerm.f5
+  }
+}
