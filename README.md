@@ -109,6 +109,7 @@ module "data_landing_zone" {
 | <a name="module_storage"></a> [storage](#module\_storage) | github.com/hmcts/cnp-module-storage-account | feat%2Finfra-encryption-4.x |
 | <a name="module_storage_pe"></a> [storage\_pe](#module\_storage\_pe) | ./modules/azure-private-endpoint | n/a |
 | <a name="module_synapse_pe"></a> [synapse\_pe](#module\_synapse\_pe) | ./modules/azure-private-endpoint | n/a |
+| <a name="module_vnet_peer_f5"></a> [vnet\_peer\_f5](#module\_vnet\_peer\_f5) | github.com/hmcts/terraform-module-vnet-peering | feat%2Ftweak-to-enable-planning-in-a-clean-env |
 | <a name="module_vnet_peer_hub"></a> [vnet\_peer\_hub](#module\_vnet\_peer\_hub) | github.com/hmcts/terraform-module-vnet-peering | feat%2Ftweak-to-enable-planning-in-a-clean-env |
 
 ## Resources
@@ -185,6 +186,7 @@ module "data_landing_zone" {
 | <a name="input_env"></a> [env](#input\_env) | Environment value | `string` | n/a | yes |
 | <a name="input_existing_purview_account"></a> [existing\_purview\_account](#input\_existing\_purview\_account) | Details of an existing purview account to use, if not specified a new one will be created. | <pre>object({<br/>    resource_id                              = string<br/>    managed_storage_account_id               = optional(string)<br/>    managed_event_hub_namespace_id           = optional(string)<br/>    self_hosted_integration_runtime_auth_key = optional(string)<br/>    identity = object({<br/>      principal_id = string<br/>      tenant_id    = string<br/>    })<br/>  })</pre> | `null` | no |
 | <a name="input_existing_resource_group_name"></a> [existing\_resource\_group\_name](#input\_existing\_resource\_group\_name) | Name of existing resource group to deploy resources into | `string` | `null` | no |
+| <a name="input_f5_vpn_vnet_id"></a> [f5\_vpn\_vnet\_id](#input\_f5\_vpn\_vnet\_id) | The ID of the F5 VPN VNet. | `string` | `"/subscriptions/ed302caf-ec27-4c64-a05e-85731c3ce90e/resourceGroups/mgmt-vpn-2-mgmt/providers/Microsoft.Network/virtualNetworks/mgmt-vpn-2-vnet"` | no |
 | <a name="input_github_configuration"></a> [github\_configuration](#input\_github\_configuration) | Optional GitHub configuration settings for the Azure Data Factory. | <pre>map(object({<br/>    branch_name        = string<br/>    git_url            = string<br/>    repository_name    = string<br/>    root_folder        = string<br/>    publishing_enabled = bool<br/>  }))</pre> | `{}` | no |
 | <a name="input_hub_resource_group_name"></a> [hub\_resource\_group\_name](#input\_hub\_resource\_group\_name) | The name of the resource group containing the HUB virtual network. | `string` | n/a | yes |
 | <a name="input_hub_vnet_name"></a> [hub\_vnet\_name](#input\_hub\_vnet\_name) | The name of the HUB virtual network. | `string` | n/a | yes |
