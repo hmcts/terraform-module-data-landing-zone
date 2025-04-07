@@ -1,9 +1,3 @@
-variable "resource_group_name" {
-  description = "ARIA Sandbox resource group name"
-  type        = string
-  default     = "ingest00-main-sbox"
-}
-
 variable "databricks_token" {
   description = "Databricks authentication token"
   type        = string
