@@ -1,9 +1,5 @@
 module "data_landing_zone" {
-  source          = "../."
-  tenant_id       = var.tenant_id
-  client_id       = var.client_id
-  client_secret   = var.client_secret
-  subscription_id = var.subscription_id
+  source = "../."
 
   providers = {
     azurerm        = azurerm
@@ -14,6 +10,7 @@ module "data_landing_zone" {
     azurerm.soc    = azurerm.soc
     azurerm.cnp    = azurerm.cnp
     azurerm.dcr    = azurerm.dcr
+    databricks     = databricks
   }
 
   env                                              = var.env

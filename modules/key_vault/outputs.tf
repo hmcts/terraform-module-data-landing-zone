@@ -1,11 +1,11 @@
 # Return key-vault id
 output "key_vault_id" {
-  value = azurerm_key_vault.ingest00-meta002-sbox.id
+  value = data.azurerm_key_vault.ingest00-meta002.id
 }
 
 # Return key-vault name
 output "key-vault-name" {
-  value = azurerm_key_vault.ingest00-meta002-sbox.name
+  value = data.azurerm_key_vault.ingest00-meta002.name
 }
 
 # Return databricks secret (PAT) value

@@ -1,15 +1,8 @@
-variable "resource_group_name" {
-  description = "ARIA Sandbox resource group name"
-  type        = string
-  default     = "ingest00-main-sbox"
-}
-
 variable "location" {
   description = "Azure region"
   type        = string
   default     = "UK South"
 }
-
 
 variable "databricks_token" {
   description = "Databricks authentication token"
@@ -29,7 +22,7 @@ variable "databricks_workspace_id" {
   description = "The ID of the Databricks workspace."
 }
 
-variable "ingest00-meta002-sbox_kv_id" {
+variable "env" {
+  description = "Environment name"
   type        = string
-  description = "Ingest00-meta-02-sbox key vault ID"
 }

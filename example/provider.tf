@@ -49,3 +49,35 @@ provider "azurerm" {
   features {}
   subscription_id = var.env == "prod" || var.env == "production" ? "8999dec3-0104-4a27-94ee-6588559729d1" : var.env == "sbox" || var.env == "sandbox" ? "bf308a5c-0624-4334-8ff8-8dca9fd43783" : "1c4f0704-a29e-403d-b719-b90c34ef14c9"
 }
+
+provider "databricks" {
+  alias = "databricks"
+  host  = "https://adb-1879076228317698.18.azuredatabricks.net"
+}
+
+terraform {
+  required_providers {
+    azurerm = {
+      source                = "hashicorp/azurerm"
+      version               = ">= 3.116.0"
+      configuration_aliases = [azurerm.hub, azurerm.ssptl, azurerm.cftptl, azurerm.soc, azurerm.cnp, azurerm.dcr]
+    }
+    azuread = {
+      source  = "hashicorp/azuread"
+      version = ">= 2.43.0"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = ">= 3.1.0"
+    }
+    tls = {
+      source  = "hashicorp/tls"
+      version = "4.0.6"
+    }
+    databricks = {
+      source                = "databricks/databricks"
+      version               = ">= 1.69.0"
+      configuration_aliases = [databricks]
+    }
+  }
+}
