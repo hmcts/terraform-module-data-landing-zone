@@ -1,7 +1,7 @@
 variable "resource_group_name" {
   description = "ARIA Sandbox resource group name"
   type        = string
-  default     = "ingest00-main-sbox"
+  default     = "ingest00-main-${var.env}"
 }
 
 variable "location" {

@@ -19,6 +19,6 @@ output "metadata_mssql" {
   }
 }
 
-output "ingest00-meta002-sbox_kv_id" {
-  value = data.azurerm_key_vault.ingest00-meta002-sbox.id
+output "ingest00-meta002_kv_id" {
+  value = data.azurerm_key_vault.ingest00-meta002.id
 }

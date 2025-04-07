@@ -29,7 +29,7 @@ variable "databricks_workspace_id" {
   description = "The ID of the Databricks workspace."
 }
 
-variable "ingest00-meta002-sbox_kv_id" {
+variable "env" {
+  description = "Environment name"
   type        = string
-  description = "Ingest00-meta-02-sbox key vault ID"
 }

@@ -9,3 +9,8 @@ variable "initialization_complete" {
   type        = string
   default     = null
 }
+
+variable "env" {
+  description = "Environment name"
+  type        = string
+}

@@ -4,7 +4,7 @@
 resource "azurerm_key_vault_secret" "client_id" {
   name         = "databricks-sp-client-id"
   value        = data.azurerm_client_config.current.client_id
-  key_vault_id = var.ingest00-meta002-sbox_kv_id
+  key_vault_id = "ingest00-meta002-${var.env}"
 }
 
 # Store Service Principal credentials in Key Vault (Client Secret)
@@ -12,7 +12,7 @@ resource "azurerm_key_vault_secret" "client_id" {
 resource "azurerm_key_vault_secret" "client_secret" {
   name         = "databricks-sp-client-secret"
   value        = var.client_secret
-  key_vault_id = var.ingest00-meta002-sbox_kv_id
+  key_vault_id = "ingest00-meta002-${var.env}"
 }
 
 # Store Service Principal credentials in Key Vault (Tenant ID)
@@ -20,7 +20,7 @@ resource "azurerm_key_vault_secret" "client_secret" {
 resource "azurerm_key_vault_secret" "tenant_id" {
   name         = "databricks-sp-tenant-id"
   value        = data.azurerm_client_config.current.tenant_id
-  key_vault_id = var.ingest00-meta002-sbox_kv_id
+  key_vault_id = "ingest00-meta002-${var.env}"
 }
 
 # Store secrets in Databricks
@@ -54,5 +54,5 @@ resource "databricks_secret" "tenant_id" {
 resource "azurerm_key_vault_secret" "databricks_token" {
   name         = "databricks-token"
   value        = var.databricks_token
-  key_vault_id = azurerm_key_vault.ingest00-meta002-sbox.id
+  key_vault_id = azurerm_key_vault.ingest00-meta002.id
 }
