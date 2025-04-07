@@ -14,6 +14,7 @@ module "data_landing_zone" {
     azurerm.soc    = azurerm.soc
     azurerm.cnp    = azurerm.cnp
     azurerm.dcr    = azurerm.dcr
+    databricks     = databricks
   }
 
   env                                              = var.env
