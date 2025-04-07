@@ -31,11 +31,6 @@ resource "databricks_cluster" "interactive" {
     "spark.conf.set('fs.azure.account.oauth2.client.endpoint.ingest02externalsbox.dfs.core.windows.net', 'https://login.microsoftonline.com/{{secrets/key-vault-secrets/tenant-id}}/oauth2/token')" = "true"
 
   }
-  depends_on = [
-    var.client_id,
-    var.client_secret,
-    var.tenant_id
-  ]
 }
 
 # Create Serverless SQL Warehouse with OAuth Authentication
@@ -45,12 +40,6 @@ resource "databricks_sql_endpoint" "serverless_warehouse" {
   cluster_size              = "Small"
   enable_serverless_compute = true
   max_num_clusters          = 1
-
-  depends_on = [
-    var.client_id,
-    var.client_secret,
-    var.tenant_id
-  ]
   tags {
     custom_tags {
       key   = "ResourceClass"
