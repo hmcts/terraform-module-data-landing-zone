@@ -20,6 +20,7 @@ terraform {
     databricks = {
       source  = "databricks/databricks"
       version = ">= 1.69.0"
+      configuration_aliases = [databricks]
     }
   }
 }
