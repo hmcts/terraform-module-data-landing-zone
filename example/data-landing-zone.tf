@@ -1,5 +1,5 @@
 module "data_landing_zone" {
-  source          = "../."
+  source = "../."
 
   providers = {
     azurerm        = azurerm
