@@ -18,7 +18,3 @@ output "metadata_mssql" {
     database_ids = module.metadata_mssql.mssql_database_ids
   }
 }
-
-output "ingest00-meta002-sbox_kv_id" {
-  value = data.azurerm_key_vault.ingest00-meta002-sbox.id
-}
