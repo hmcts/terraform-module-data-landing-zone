@@ -181,7 +181,7 @@ module "legacy_database" {
   vm_admin_name        = "admin_${random_string.legacy_database_username[each.key].result}"
   vm_admin_password    = random_password.legacy_database_password[each.key].result
   vm_availabilty_zones = "1"
-  os_disk_size_gb      = 127
+  os_disk_size_gb      = each.value.os_disk_size_gb
   vm_resource_group    = azurerm_resource_group.this[local.metadata_resource_group].name
   vm_subnet_id         = module.networking.subnet_ids["vnet-services"]
   nic_name             = "${local.name}-${each.key}-nic-${var.env}"
