@@ -23,7 +23,6 @@ resource "azurerm_eventhub_namespace" "this" {
   resource_group_name      = azurerm_resource_group.this[local.shared_integration_resource_group].name
   sku                      = "Premium"
   capacity                 = 1
-  maximum_throughput_units = 2
   auto_inflate_enabled     = false
 
 
