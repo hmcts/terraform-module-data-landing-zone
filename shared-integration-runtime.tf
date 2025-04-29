@@ -24,7 +24,7 @@ resource "azurerm_eventhub_namespace" "this" {
   sku                      = "Premium"
   capacity                 = 1
   maximum_throughput_units = 2
-  auto_inflate_enabled     = true
+  auto_inflate_enabled     = false
 
 
   identity {
