@@ -172,7 +172,7 @@ module "legacy_database" {
     azurerm.dcr = azurerm.dcr
   }
 
-  source               = "github.com/hmcts/terraform-module-virtual-machine.git?ref=master"
+  source               = "github.com/hmcts/terraform-module-virtual-machine.git?ref=feat%2Fsupport-custom-image"
   vm_type              = each.value.type
   vm_name              = "${local.name}-${each.key}-${var.env}"
   computer_name        = each.value.computer_name == null ? "${each.key}-${var.env}" : each.value.computer_name
@@ -200,6 +200,7 @@ module "legacy_database" {
   vm_offer          = each.value.offer
   vm_sku            = each.value.sku
   vm_version        = each.value.version
+  source_image_id   = each.value.source_image_id
 
   env  = var.env
   tags = var.common_tags
