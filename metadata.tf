@@ -202,6 +202,8 @@ module "legacy_database" {
   vm_version        = each.value.version
   source_image_id   = each.value.source_image_id
 
+  secure_boot_enabled = each.value.secure_boot_enabled
+
   env  = var.env
   tags = var.common_tags
 }
