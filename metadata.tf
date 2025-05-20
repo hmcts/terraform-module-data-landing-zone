@@ -34,6 +34,21 @@ resource "azurerm_key_vault_access_policy" "metadata_vault_reders" {
   ]
 }
 
+
+resource "azurerm_key_vault_access_policy" "arm_secret_access" {
+  for_each     = toset(local.metadata_vaults)
+  key_vault_id = module.metadata_vault[each.key].key_vault_id
+
+  object_id = var.arm_object_id
+  tenant_id = data.azurerm_client_config.current.tenant_id
+
+  secret_permissions = [
+    "Get",
+    "List",
+    "Set"
+  ]
+}
+
 module "metadata_vault_pe" {
   for_each = toset(local.metadata_vaults)
   source   = "./modules/azure-private-endpoint"
