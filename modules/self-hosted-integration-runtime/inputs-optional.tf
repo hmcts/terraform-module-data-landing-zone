@@ -10,7 +10,7 @@ variable "short_name" {
   default     = null
 }
 
-variable "sku" {
+variable "size" {
   description = "The SKU of the VMSS instance."
   type        = string
   default     = "Standard_D4ds_v5"
