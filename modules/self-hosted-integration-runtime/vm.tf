@@ -34,7 +34,7 @@ module "shir_vm" {
   vm_version           = "latest"
   vm_size              = var.size
   env                  = var.env
-  vm_availabilty_zones = var.availability_zones
+  vm_availabilty_zones = var.availability_zone
   tags                 = var.common_tags
 }
 

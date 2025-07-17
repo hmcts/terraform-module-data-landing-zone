@@ -16,14 +16,8 @@ variable "size" {
   default     = "Standard_D4ds_v5"
 }
 
-variable "availability_zones" {
-  description = "List of availability zones VMSS instances should be deployed over."
-  type        = list(string)
-  default     = ["1"]
-}
-
-variable "instances" {
-  description = "The number of instances the VMSS should deploy."
-  type        = number
-  default     = 1
+variable "availability_zone" {
+  description = "The availability zones the VM should be deployed into."
+  type        = string
+  default     = "1"
 }
