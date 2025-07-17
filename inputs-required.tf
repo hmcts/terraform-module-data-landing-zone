@@ -77,3 +77,8 @@ variable "hub_resource_group_name" {
   description = "The name of the resource group containing the HUB virtual network."
   type        = string
 }
+
+variable "arm_object_id" {
+  description = "The object id of the Archiving with Records Management service principal."
+  type        = string
+}

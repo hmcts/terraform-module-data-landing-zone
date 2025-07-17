@@ -84,17 +84,27 @@ variable "additional_subnets" {
 variable "legacy_databases" {
   description = "Map of legacy databases to create as IaaS VMs."
   type = map(object({
-    size            = optional(string, "Standard_D4ds_v5")
-    type            = optional(string, "windows")
-    public_ip       = optional(bool, false)
-    computer_name   = optional(string)
-    publisher_name  = string
-    offer           = string
-    os_disk_size_gb = optional(number, 127)
-    sku             = string
-    version         = string
+    size                = optional(string, "Standard_D4ds_v5")
+    type                = optional(string, "windows")
+    public_ip           = optional(bool, false)
+    computer_name       = optional(string)
+    publisher_name      = optional(string)
+    offer               = optional(string)
+    sku                 = optional(string)
+    version             = optional(string)
+    source_image_id     = optional(string)
+    os_disk_size_gb     = optional(number, 127)
+    secure_boot_enabled = optional(bool, true)
   }))
   default = {}
+  validation {
+    condition = alltrue(
+      [for k, v in var.legacy_databases : (
+        (v.publisher_name != null && v.offer != null && v.sku != null && v.version != null) || v.source_image_id != null
+      )]
+    )
+    error_message = "All legacy databases must either provide a image publisher name, offer sku and version or a source image id."
+  }
 }
 
 variable "use_microsoft_ip_kit_structure" {
