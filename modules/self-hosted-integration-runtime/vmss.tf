@@ -33,7 +33,7 @@ module "shir_vmss" {
   vm_availabilty_zones    = var.availability_zones
   vm_publisher_name       = "MicrosoftWindowsServer"
   vm_offer                = "WindowsServer"
-  vm_image_sku            = "2022-datacenter-azure-edition"
+  vm_image_sku            = "2025-Datacenter"
   vm_version              = "latest"
   vm_instances            = var.instances
   upgrade_mode            = "Automatic"
