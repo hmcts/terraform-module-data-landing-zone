@@ -23,17 +23,19 @@ module "shir_vm" {
     azurerm.dcr = azurerm.dcr
   }
 
-  vm_type           = "windows"
-  vm_name           = "${var.name}-vm-${var.env}"
-  vm_resource_group = var.resource_group
-  vm_admin_password = random_password.shir_password.result
-  vm_subnet_id      = var.subnet_id
-  vm_publisher_name = "MicrosoftWindowsServer"
-  vm_offer          = "WindowsServer"
-  vm_sku            = "2025-Datacenter"
-  vm_version        = "latest"
-  vm_size           = var.size
-  tags              = var.common_tags
+  vm_type              = "windows"
+  vm_name              = "${var.name}-vm-${var.env}"
+  vm_resource_group    = var.resource_group
+  vm_admin_password    = random_password.shir_password.result
+  vm_subnet_id         = var.subnet_id
+  vm_publisher_name    = "MicrosoftWindowsServer"
+  vm_offer             = "WindowsServer"
+  vm_sku               = "2025-Datacenter"
+  vm_version           = "latest"
+  vm_size              = var.size
+  env                  = var.env
+  vm_availabilty_zones = var.availability_zones
+  tags                 = var.common_tags
 }
 
 resource "azurerm_virtual_machine_extension" "shir_install" {
