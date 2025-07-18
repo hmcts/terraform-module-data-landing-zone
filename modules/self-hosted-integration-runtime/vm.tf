@@ -35,6 +35,9 @@ module "shir_vm" {
   vm_size              = var.size
   env                  = var.env
   vm_availabilty_zones = var.availability_zone
+  nic_name             = "${var.name}-nic-${var.env}"
+  ipconfig_name        = "${var.name}-ipconfig-${var.env}"
+  privateip_allocation = "Dynamic"
   tags                 = var.common_tags
 }
 
