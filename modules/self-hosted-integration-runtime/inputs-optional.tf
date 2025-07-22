@@ -13,7 +13,7 @@ variable "short_name" {
 variable "size" {
   description = "The SKU of the VMSS instance."
   type        = string
-  default     = "Standard_D16lds_v5"
+  default     = "D16ds_v5"
 }
 
 variable "availability_zone" {
