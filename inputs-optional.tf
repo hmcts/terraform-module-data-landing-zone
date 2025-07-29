@@ -197,3 +197,9 @@ variable "f5_vpn_vnet_id" {
   type        = string
   default     = "/subscriptions/ed302caf-ec27-4c64-a05e-85731c3ce90e/resourceGroups/mgmt-vpn-2-mgmt/providers/Microsoft.Network/virtualNetworks/mgmt-vpn-2-vnet"
 }
+
+variable "deploy_shir" {
+  description = "Whether to deploy a self-hosted integration runtime. Defaults to false."
+  type        = bool
+  default     = false
+}

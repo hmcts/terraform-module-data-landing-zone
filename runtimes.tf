@@ -77,6 +77,8 @@ resource "azurerm_role_assignment" "runtimes_datafactory_storage" {
 module "shir001" {
   source = "./modules/self-hosted-integration-runtime"
 
+  count = var.deploy_shir == true ? 1 : 0
+
   depends_on = [module.vnet_peer_hub, module.metadata_vault, module.metadata_vault_pe]
 
   providers = {

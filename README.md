@@ -183,6 +183,7 @@ module "data_landing_zone" {
 | <a name="input_data_product_002_subnet_address_space"></a> [data\_product\_002\_subnet\_address\_space](#input\_data\_product\_002\_subnet\_address\_space) | The address space covered by the data product 002 subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
 | <a name="input_default_route_next_hop_ip"></a> [default\_route\_next\_hop\_ip](#input\_default\_route\_next\_hop\_ip) | The IP address of the private ip configuration of the Hub Palo load balancer. | `string` | n/a | yes |
 | <a name="input_deploy_sftp_storage"></a> [deploy\_sftp\_storage](#input\_deploy\_sftp\_storage) | Whether to deploy an SFTP storage account. Defaults to false. | `bool` | `false` | no |
+| <a name="input_deploy_shir"></a> [deploy\_shir](#input\_deploy\_shir) | Whether to deploy a self-hosted integration runtime. Defaults to false. | `bool` | `false` | no |
 | <a name="input_enable_synapse_spark_pool"></a> [enable\_synapse\_spark\_pool](#input\_enable\_synapse\_spark\_pool) | Whether to deploy a Synapse Spark pool. Defaults to false. | `bool` | `false` | no |
 | <a name="input_enable_synapse_sql_pool"></a> [enable\_synapse\_sql\_pool](#input\_enable\_synapse\_sql\_pool) | Whether to deploy a Synapse SQL pool. Defaults to false. | `bool` | `false` | no |
 | <a name="input_env"></a> [env](#input\_env) | Environment value | `string` | n/a | yes |
