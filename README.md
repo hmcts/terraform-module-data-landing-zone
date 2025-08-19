@@ -91,7 +91,7 @@ module "data_landing_zone" {
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_legacy_database"></a> [legacy\_database](#module\_legacy\_database) | github.com/hmcts/terraform-module-virtual-machine.git | feat%2Fsupport-custom-image |
+| <a name="module_legacy_database"></a> [legacy\_database](#module\_legacy\_database) | github.com/hmcts/terraform-module-virtual-machine.git | feat%2Fcustom-image |
 | <a name="module_logging_vault"></a> [logging\_vault](#module\_logging\_vault) | github.com/hmcts/cnp-module-key-vault | master |
 | <a name="module_logging_vault_pe"></a> [logging\_vault\_pe](#module\_logging\_vault\_pe) | ./modules/azure-private-endpoint | n/a |
 | <a name="module_metadata_mssql"></a> [metadata\_mssql](#module\_metadata\_mssql) | github.com/hmcts/terraform-module-mssql | main |
