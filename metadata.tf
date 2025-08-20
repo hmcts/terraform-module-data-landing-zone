@@ -219,6 +219,9 @@ module "legacy_database" {
 
   secure_boot_enabled = each.value.secure_boot_enabled
 
+  vm_patch_assessment_mode = null
+  vm_patch_mode            = null
+
   env  = var.env
   tags = var.common_tags
 }
