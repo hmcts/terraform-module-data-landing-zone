@@ -221,6 +221,7 @@ module "legacy_database" {
 
   vm_patch_assessment_mode = null
   vm_patch_mode            = null
+  aum_schedule_enable      = false
 
   env  = var.env
   tags = var.common_tags
