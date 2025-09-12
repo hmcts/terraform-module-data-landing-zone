@@ -176,6 +176,19 @@ module "shared_integration_datafactory" {
   }
 }
 
+resource "azurerm_key_vault_access_policy" "shared_integration_datafactory" {
+  for_each     = toset(local.metadata_vaults)
+  key_vault_id = module.metadata_vault[each.key].key_vault_id
+
+  object_id = module.shared_integration_datafactory.identity.principal_id
+  tenant_id = data.azurerm_client_config.current.tenant_id
+
+  secret_permissions = [
+    "Get",
+    "List",
+  ]
+}
+
 resource "azurerm_monitor_diagnostic_setting" "shared_integration_datafactory" {
   name                       = "shared-integration-datafactory-diag"
   target_resource_id         = module.shared_integration_datafactory.id
