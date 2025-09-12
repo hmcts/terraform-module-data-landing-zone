@@ -215,6 +215,12 @@ locals {
   runtimes_resource_group           = var.use_microsoft_ip_kit_structure ? "main" : "runtimes"
   shared_integration_resource_group = var.use_microsoft_ip_kit_structure ? "main" : "shared-integration"
   shared_product_resource_group     = var.use_microsoft_ip_kit_structure ? "main" : "shared-product"
+
+  long_environment_name = {
+    "sbox" = "sandbox"
+    "stg"  = "staging"
+    "prod" = "production"
+  }
 }
 
 data "azuread_group" "admin_group" {

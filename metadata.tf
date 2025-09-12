@@ -77,7 +77,7 @@ module "metadata_mssql" {
   private_endpoint_subnet_id      = module.networking.subnet_ids["vnet-services"]
   common_tags                     = var.common_tags
   existing_resource_group_name    = azurerm_resource_group.this[local.metadata_resource_group].name
-  admin_group                     = "DTS Owners (sub:dts-dataingest-${var.env})"
+  admin_group                     = "DTS DLRM Data Ingestion Admin (env:${local.long_environment_name[var.env]})"
 
   mssql_databases = {
     "${local.metadata_mssql_db_name}" = {
