@@ -238,9 +238,9 @@ resource "azurerm_virtual_machine_extension" "custom_script" {
   protected_settings         = <<PROTECTED_SETTINGS
     {
       %{if lower(each.value.type) == "linux"}
-      "script": "${each.value.bootstrap_script}"
+      "script": "${can(base64decode(each.value.bootstrap_script)) ? each.value.bootstrap_script : base64encode(each.value.bootstrap_script)}"
       %{else}
-      "commandToExecute": "powershell -command \"[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String('${each.value.bootstrap_script}')) | Out-File -filepath bootstrap_vm.ps1\" && powershell -ExecutionPolicy Unrestricted -File bootstrap_vm.ps1",
+      "commandToExecute": "powershell -command \"[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String('${can(base64decode(each.value.bootstrap_script)) ? each.value.bootstrap_script : base64encode(each.value.bootstrap_script)}')) | Out-File -filepath bootstrap_vm.ps1\" && powershell -ExecutionPolicy Unrestricted -File bootstrap_vm.ps1",
       %{endif}
     }
     PROTECTED_SETTINGS
