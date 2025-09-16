@@ -95,6 +95,8 @@ variable "legacy_databases" {
     source_image_id     = optional(string)
     os_disk_size_gb     = optional(number, 127)
     secure_boot_enabled = optional(bool, true)
+    // Base 64 encoded script to be run on the VM after creation
+    bootstrap_script = optional(string)
   }))
   default = {}
   validation {
