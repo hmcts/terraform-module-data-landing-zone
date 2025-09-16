@@ -227,23 +227,15 @@ module "legacy_database" {
   tags = var.common_tags
 }
 
-resource "azurerm_virtual_machine_extension" "custom_script" {
-  for_each                   = { for k, v in var.legacy_databases : k => v if v.bootstrap_script != null }
-  name                       = "${local.name}-${each.key}-${var.env}-bootstrap"
-  virtual_machine_id         = module.legacy_database[each.key].vm_id
-  publisher                  = lower(each.value.type) == "linux" ? "Microsoft.Azure.Extensions" : lower(each.value.type) == "windows" ? "Microsoft.Compute" : null
-  type                       = lower(each.value.type) == "linux" ? "CustomScript" : lower(each.value.type) == "windows" ? "CustomScriptExtension" : null
-  type_handler_version       = lower(each.value.type) == "linux" ? "2.1" : "1.10"
-  auto_upgrade_minor_version = false
-  protected_settings         = <<PROTECTED_SETTINGS
-    {
-      %{if lower(each.value.type) == "linux"}
-      "script": "${can(base64decode(each.value.bootstrap_script)) ? each.value.bootstrap_script : base64encode(each.value.bootstrap_script)}"
-      %{else}
-      "commandToExecute": "powershell -command \"[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String('${can(base64decode(each.value.bootstrap_script)) ? each.value.bootstrap_script : base64encode(each.value.bootstrap_script)}')) | Out-File -filepath bootstrap_vm.ps1\" && powershell -ExecutionPolicy Unrestricted -File bootstrap_vm.ps1",
-      %{endif}
-    }
-    PROTECTED_SETTINGS
+resource "azurerm_virtual_machine_run_command" "bootstrap_script" {
+  for_each           = { for k, v in var.legacy_databases : k => v if v.bootstrap_script != null }
+  name               = "${local.name}-${each.key}-${var.env}-bootstrap"
+  location           = var.location
+  virtual_machine_id = module.legacy_database[each.key].vm_id
+
+  source {
+    script = can(base64decode(each.value.bootstrap_script)) ? base64decode(each.value.bootstrap_script) : each.value.bootstrap_script
+  }
 
   tags = var.common_tags
 }
