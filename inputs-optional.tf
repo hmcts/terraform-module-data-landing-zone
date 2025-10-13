@@ -205,3 +205,15 @@ variable "deploy_shir" {
   type        = bool
   default     = false
 }
+
+variable "ssptl_vnet_name" {
+  description = "The name of the SSPTL virtual network. Defaults to 'ss-ptlsbox-vnet' for sandbox environments and 'ss-ptl-vnet' for others."
+  type        = string
+  default     = null
+}
+
+variable "ssptl_vnet_resource_group" {
+  description = "The resource group name of the SSPTL virtual network. Defaults to 'ss-ptlsbox-network-rg' for sandbox environments and 'ss-ptl-network-rg' for others."
+  type        = string
+  default     = null
+}

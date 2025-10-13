@@ -79,8 +79,8 @@ locals {
   metadata_vaults        = ["meta001", "meta002"]
   metadata_mssql_db_name = "MetadataControl"
 
-  ssptl_vnet_name                  = local.is_sbox ? "ss-ptlsbox-vnet" : "ss-ptl-vnet"
-  ssptl_vnet_resource_group        = local.is_sbox ? "ss-ptlsbox-network-rg" : "ss-ptl-network-rg"
+  ssptl_vnet_name                  = var.ssptl_vnet_name != null ? var.ssptl_vnet_name : (local.is_sbox ? "ss-ptlsbox-vnet" : "ss-ptl-vnet")
+  ssptl_vnet_resource_group        = var.ssptl_vnet_resource_group != null ? var.ssptl_vnet_resource_group : (local.is_sbox ? "ss-ptlsbox-network-rg" : "ss-ptl-network-rg")
   cftptl_core_infra_resource_group = "core-infra-intsvc-rg"
 
   privatelink_dns_zone_names = [
