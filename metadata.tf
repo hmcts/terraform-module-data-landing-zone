@@ -66,7 +66,7 @@ module "metadata_vault_pe" {
 }
 
 module "metadata_mssql" {
-  source = "github.com/hmcts/terraform-module-mssql?ref=main"
+  source = "github.com/hmcts/terraform-module-mssql?ref=dtspo-27588-set-autoPauseDelayInMinutes-ServerLess-only"
 
   name                            = "${local.name}-metadata-mssql"
   env                             = var.env
@@ -87,9 +87,8 @@ module "metadata_mssql" {
       sku_name                    = "Basic"
       zone_redundant              = false
       create_mode                 = "Default"
-      min_capacity                = 0
+      compute_model               = "Provisioned"
       geo_backup_enabled          = true
-      auto_pause_delay_in_minutes = -1
     }
   }
 
