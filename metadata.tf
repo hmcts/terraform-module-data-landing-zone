@@ -66,7 +66,7 @@ module "metadata_vault_pe" {
 }
 
 module "metadata_mssql" {
-  source = "github.com/hmcts/terraform-module-mssql?ref=dtspo-27588-set-autoPauseDelayInMinutes-ServerLess-only"
+  source = "github.com/hmcts/terraform-module-mssql?ref=main"
 
   name                            = "${local.name}-metadata-mssql"
   env                             = var.env
