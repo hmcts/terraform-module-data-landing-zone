@@ -97,6 +97,14 @@ variable "legacy_databases" {
     secure_boot_enabled = optional(bool, true)
     // Base 64 encoded script to be run on the VM after creation
     bootstrap_script = optional(string)
+    // Additional data disks to attach to the VM
+    data_disks = optional(list(object({
+      name                 = string
+      disk_size_gb         = number
+      lun                  = number
+      caching              = optional(string, "ReadWrite")
+      storage_account_type = optional(string, "StandardSSD_LRS")
+    })), [])
   }))
   default = {}
   validation {

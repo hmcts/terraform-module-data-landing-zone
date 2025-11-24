@@ -222,6 +222,27 @@ module "legacy_database" {
   vm_patch_mode            = null
   aum_schedule_enable      = false
 
+  # Map data_disks to the format expected by terraform-module-virtual-machine
+  managed_disks = {
+    for idx, disk in each.value.data_disks : "${disk.name}" => {
+      name                     = disk.name
+      location                 = var.location
+      resource_group_name      = azurerm_resource_group.this[local.metadata_resource_group].name
+      storage_account_type     = disk.storage_account_type
+      disk_create_option       = "Empty"
+      disk_size_gb             = tostring(disk.disk_size_gb)
+      disk_tier                = null
+      disk_zone                = "1"
+      source_resource_id       = null
+      storage_account_id       = null
+      hyper_v_generation       = null
+      os_type                  = null
+      disk_lun                 = tostring(disk.lun)
+      disk_caching             = disk.caching
+      attachment_create_option = "Attach"
+    }
+  }
+
   env  = var.env
   tags = var.common_tags
 }
