@@ -225,3 +225,15 @@ variable "ssptl_vnet_resource_group" {
   type        = string
   default     = null
 }
+
+variable "eventhub_namespace_sku" {
+  description = "The SKU of the Event Hub Namespace."
+  type        = string
+  default     = "Premium"
+}
+
+variable "eventhub_namespace_capacity" {
+  description = "The capacity of the Event Hub Namespace."
+  type        = number
+  default     = 1
+}
