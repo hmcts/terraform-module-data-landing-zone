@@ -131,17 +131,6 @@ locals {
       address_prefixes  = var.services_subnet_address_space
       service_endpoints = ["Microsoft.CognitiveServices"]
     }
-    services-mysql = {
-      address_prefixes = var.services_mysql_subnet_address_space
-      delegations = {
-        mysql-flexible-delegation = {
-          service_name = "Microsoft.DBforMySQL/flexibleServers"
-          actions = [
-            "Microsoft.Network/virtualNetworks/subnets/join/action"
-          ]
-        }
-      }
-    }
     data-bricks-public = {
       address_prefixes = var.data_bricks_public_subnet_address_space
       delegations = {

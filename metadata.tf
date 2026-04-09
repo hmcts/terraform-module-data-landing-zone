@@ -34,7 +34,6 @@ resource "azurerm_key_vault_access_policy" "metadata_vault_reders" {
   ]
 }
 
-
 resource "azurerm_key_vault_access_policy" "arm_secret_access" {
   for_each     = toset(local.metadata_vaults)
   key_vault_id = module.metadata_vault[each.key].key_vault_id
@@ -105,46 +104,6 @@ resource "azurerm_key_vault_secret" "mssql_username" {
 resource "azurerm_key_vault_secret" "mssql_password" {
   name         = "${local.name}-metadata-mssql-password-${var.env}"
   value        = module.metadata_mssql.mssql_admin_password
-  key_vault_id = module.metadata_vault["meta002"].key_vault_id
-  depends_on   = [module.metadata_vault, module.metadata_vault_pe]
-}
-
-module "metadata_mysql" {
-  source                       = "github.com/hmcts/terraform-module-mysql-flexible?ref=main"
-  name                         = "${local.name}-metadata-mysql"
-  env                          = var.env
-  product                      = "data-landing"
-  component                    = "metadata"
-  common_tags                  = var.common_tags
-  existing_resource_group_name = azurerm_resource_group.this[local.metadata_resource_group].name
-  delegated_subnet_id          = module.networking.subnet_ids["vnet-services-mysql"]
-  storage_size_gb              = 20
-
-  mysql_version = "5.7"
-  mysql_databases = {
-    "${local.name}-HiveMetastoreDb-${var.env}" = {}
-  }
-
-  depends_on = [azurerm_private_dns_zone_virtual_network_link.data_landing_link, module.vnet_peer_hub]
-}
-
-resource "azurerm_key_vault_secret" "mysql_username" {
-  name         = "${local.name}-metadata-mysql-username-${var.env}"
-  value        = module.metadata_mysql.username
-  key_vault_id = module.metadata_vault["meta002"].key_vault_id
-  depends_on   = [module.metadata_vault, module.metadata_vault_pe]
-}
-
-resource "azurerm_key_vault_secret" "mysql_password" {
-  name         = "${local.name}-metadata-mysql-password-${var.env}"
-  value        = module.metadata_mysql.password
-  key_vault_id = module.metadata_vault["meta002"].key_vault_id
-  depends_on   = [module.metadata_vault, module.metadata_vault_pe]
-}
-
-resource "azurerm_key_vault_secret" "mysql_connection_string" {
-  name         = "${local.name}-metadata-mysql-connection-string-${var.env}"
-  value        = "jdbc:mysql://${module.metadata_mysql.fqdn}/${local.name}-HiveMetastoreDb-${var.env}?useSSL=true&requireSSL=false&enabledSslProtocolSuites=TLSv1.2"
   key_vault_id = module.metadata_vault["meta002"].key_vault_id
   depends_on   = [module.metadata_vault, module.metadata_vault_pe]
 }
