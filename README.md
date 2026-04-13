@@ -53,7 +53,7 @@ module "data_landing_zone" {
   default_route_next_hop_ip                        = var.default_route_next_hop_ip
   vnet_address_space                               = ["10.10.0.0/20"]
   services_subnet_address_space                    = ["10.10.1.0/24"]
-  services_mysql_subnet_address_space              = ["10.10.2.0/24"]
+  services_paas_database_subnet_address_space      = ["10.10.2.0/24"]
   data_bricks_public_subnet_address_space          = ["10.10.3.0/24"]
   data_bricks_private_subnet_address_space         = ["10.10.4.0/24"]
   data_bricks_product_public_subnet_address_space  = ["10.10.5.0/24"]
