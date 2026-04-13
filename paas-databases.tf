@@ -63,8 +63,9 @@ resource "azurerm_postgresql_flexible_server" "this" {
   administrator_login    = "psqladmin${random_string.paas_db_username[each.key].result}"
   administrator_password = random_password.paas_db_password[each.key].result
 
-  delegated_subnet_id = module.networking.subnet_ids["vnet-services-paasdb-postgresql"]
-  private_dns_zone_id = azurerm_private_dns_zone.paas_postgresql[0].id
+  delegated_subnet_id           = module.networking.subnet_ids["vnet-services-paasdb-postgresql"]
+  private_dns_zone_id           = azurerm_private_dns_zone.paas_postgresql[0].id
+  public_network_access_enabled = false
 
   geo_redundant_backup_enabled = each.value.geo_redundant_backup_enabled
 
