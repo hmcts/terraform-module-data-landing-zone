@@ -17,7 +17,7 @@ module "data_landing_zone" {
   default_route_next_hop_ip                        = var.default_route_next_hop_ip
   vnet_address_space                               = ["10.10.0.0/20"]
   services_subnet_address_space                    = ["10.10.1.0/24"]
-  services_paas_database_subnet_address_space              = ["10.10.2.0/24"]
+  services_paas_database_subnet_address_space      = ["10.10.2.0/24"]
   data_bricks_public_subnet_address_space          = ["10.10.3.0/24"]
   data_bricks_private_subnet_address_space         = ["10.10.4.0/24"]
   data_bricks_product_public_subnet_address_space  = ["10.10.5.0/24"]
@@ -37,4 +37,6 @@ module "data_landing_zone" {
       version        = "9600.19431.1908092124"
     }
   }
+
+  arm_object_id = "fd6e5281-058b-490f-8c90-186c7f057502"
 }
