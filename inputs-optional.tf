@@ -237,3 +237,31 @@ variable "eventhub_namespace_capacity" {
   type        = number
   default     = 1
 }
+
+variable "services_paas_database_subnet_address_space" {
+  type        = list(string)
+  description = "The address space covered by the services-database subnet, must be included in vnet_address_space. This is optional."
+  default     = []
+}
+
+variable "additional_paas_databases" {
+  description = "Map of additional PaaS databases to create, keyed by the database name. Supported types: postgresql, mysql, mssql."
+  type = map(object({
+    sku_name                     = string
+    tier                         = optional(string)
+    capacity                     = optional(number)
+    family                       = optional(string)
+    version                      = string
+    storage_mb                   = optional(number, 32768)
+    type                         = string
+    collation                    = optional(string)
+    max_size_gb                  = optional(number)
+    geo_redundant_backup_enabled = optional(bool, false)
+  }))
+  default = {}
+
+  validation {
+    condition     = alltrue([for k, v in var.additional_paas_databases : contains(["postgresql", "mysql", "mssql"], v.type)])
+    error_message = "Each database type must be one of: postgresql, mysql, mssql."
+  }
+}

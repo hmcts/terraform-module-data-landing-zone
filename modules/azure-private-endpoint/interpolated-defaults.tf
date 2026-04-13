@@ -9,6 +9,7 @@ locals {
     portal      = "${local.dns_zone_id_prefix}privatelink.adf.azure.com"
     sql         = "${local.dns_zone_id_prefix}privatelink.sql.azuresynapse.net"
     sqlOnDemand = "${local.dns_zone_id_prefix}privatelink.sql.azuresynapse.net"
+    sqlServer   = "${local.dns_zone_id_prefix}privatelink.database.windows.net"
     dev         = "${local.dns_zone_id_prefix}privatelink.dev.azuresynapse.net"
   }
 }

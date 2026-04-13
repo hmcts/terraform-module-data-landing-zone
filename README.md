@@ -95,10 +95,10 @@ module "data_landing_zone" {
 | <a name="module_logging_vault"></a> [logging\_vault](#module\_logging\_vault) | github.com/hmcts/cnp-module-key-vault | master |
 | <a name="module_logging_vault_pe"></a> [logging\_vault\_pe](#module\_logging\_vault\_pe) | ./modules/azure-private-endpoint | n/a |
 | <a name="module_metadata_mssql"></a> [metadata\_mssql](#module\_metadata\_mssql) | github.com/hmcts/terraform-module-mssql | main |
-| <a name="module_metadata_mysql"></a> [metadata\_mysql](#module\_metadata\_mysql) | github.com/hmcts/terraform-module-mysql-flexible | main |
 | <a name="module_metadata_vault"></a> [metadata\_vault](#module\_metadata\_vault) | github.com/hmcts/cnp-module-key-vault | master |
 | <a name="module_metadata_vault_pe"></a> [metadata\_vault\_pe](#module\_metadata\_vault\_pe) | ./modules/azure-private-endpoint | n/a |
 | <a name="module_networking"></a> [networking](#module\_networking) | github.com/hmcts/terraform-module-azure-virtual-networking | 4.x |
+| <a name="module_paas_mssql_pe"></a> [paas\_mssql\_pe](#module\_paas\_mssql\_pe) | ./modules/azure-private-endpoint | n/a |
 | <a name="module_runtimes_datafactory"></a> [runtimes\_datafactory](#module\_runtimes\_datafactory) | github.com/hmcts/terraform-module-azure-datafactory | main |
 | <a name="module_shared_integration_databricks"></a> [shared\_integration\_databricks](#module\_shared\_integration\_databricks) | github.com/hmcts/terraform-module-databricks | main |
 | <a name="module_shared_integration_datafactory"></a> [shared\_integration\_datafactory](#module\_shared\_integration\_datafactory) | github.com/hmcts/terraform-module-azure-datafactory | main |
@@ -130,16 +130,23 @@ module "data_landing_zone" {
 | [azurerm_key_vault_secret.log_analytics_workspace_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.mssql_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.mssql_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.mysql_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.mysql_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.mysql_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.paas_db_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.paas_db_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.sftpkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.synapse_sql_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.synapse_sql_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_log_analytics_workspace.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) | resource |
 | [azurerm_monitor_diagnostic_setting.runtimes_datafactory](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_diagnostic_setting) | resource |
 | [azurerm_monitor_diagnostic_setting.shared_integration_datafactory](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_diagnostic_setting) | resource |
+| [azurerm_mssql_database.paas](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mssql_database) | resource |
+| [azurerm_mssql_server.paas](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mssql_server) | resource |
+| [azurerm_mysql_flexible_server.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mysql_flexible_server) | resource |
+| [azurerm_postgresql_flexible_server.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server) | resource |
+| [azurerm_private_dns_zone.paas_mysql](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone) | resource |
+| [azurerm_private_dns_zone.paas_postgresql](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone) | resource |
 | [azurerm_private_dns_zone_virtual_network_link.data_landing_link](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone_virtual_network_link) | resource |
+| [azurerm_private_dns_zone_virtual_network_link.paas_mysql](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone_virtual_network_link) | resource |
+| [azurerm_private_dns_zone_virtual_network_link.paas_postgresql](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone_virtual_network_link) | resource |
 | [azurerm_public_ip.bastion](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) | resource |
 | [azurerm_public_ip.legacy_pip](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) | resource |
 | [azurerm_resource_group.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
@@ -155,8 +162,10 @@ module "data_landing_zone" {
 | [azurerm_synapse_workspace_aad_admin.aad](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/synapse_workspace_aad_admin) | resource |
 | [azurerm_virtual_machine_run_command.bootstrap_script](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_run_command) | resource |
 | [random_password.legacy_database_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
+| [random_password.paas_db_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [random_password.synapse_sql_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [random_string.legacy_database_username](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
+| [random_string.paas_db_username](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
 | [tls_private_key.sftpkey](https://registry.terraform.io/providers/hashicorp/tls/4.0.6/docs/resources/private_key) | resource |
 | [azuread_group.admin_group](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
@@ -170,6 +179,7 @@ module "data_landing_zone" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_additional_nsg_rules"></a> [additional\_nsg\_rules](#input\_additional\_nsg\_rules) | Map of additional NSG rules to create, keyed by the rule name. | <pre>map(object({<br/>    name_override                              = optional(string)<br/>    priority                                   = number<br/>    direction                                  = string<br/>    access                                     = string<br/>    protocol                                   = string<br/>    source_port_range                          = optional(string)<br/>    source_port_ranges                         = optional(list(string))<br/>    destination_port_range                     = optional(string)<br/>    destination_port_ranges                    = optional(list(string))<br/>    source_address_prefix                      = optional(string)<br/>    source_address_prefixes                    = optional(list(string))<br/>    source_application_security_group_ids      = optional(list(string))<br/>    destination_address_prefix                 = optional(string)<br/>    destination_address_prefixes               = optional(list(string))<br/>    destination_application_security_group_ids = optional(list(string))<br/>    description                                = optional(string)<br/>  }))</pre> | `{}` | no |
+| <a name="input_additional_paas_databases"></a> [additional\_paas\_databases](#input\_additional\_paas\_databases) | Map of additional PaaS databases to create, keyed by the database name. Supported types: postgresql, mysql, mssql. | <pre>map(object({<br/>    sku_name                     = string<br/>    tier                         = optional(string)<br/>    capacity                     = optional(number)<br/>    family                       = optional(string)<br/>    version                      = string<br/>    storage_mb                   = optional(number, 32768)<br/>    type                         = string<br/>    collation                    = optional(string)<br/>    max_size_gb                  = optional(number)<br/>    geo_redundant_backup_enabled = optional(bool, false)<br/>  }))</pre> | `{}` | no |
 | <a name="input_additional_subnets"></a> [additional\_subnets](#input\_additional\_subnets) | Map of additional subnets to create, keyed by the subnet name. | <pre>map(object({<br/>    name_override     = optional(string)<br/>    address_prefixes  = list(string)<br/>    service_endpoints = optional(list(string), [])<br/>    delegations = optional(map(object({<br/>      service_name = string,<br/>      actions      = optional(list(string), [])<br/>    })))<br/>  }))</pre> | `{}` | no |
 | <a name="input_adf_deploy_purview_private_endpoints"></a> [adf\_deploy\_purview\_private\_endpoints](#input\_adf\_deploy\_purview\_private\_endpoints) | Whether to deploy a private endpoint for the ADF to Purview connection. Defaults to false. | `bool` | `true` | no |
 | <a name="input_arm_object_id"></a> [arm\_object\_id](#input\_arm\_object\_id) | The object id of the Archiving with Records Management service principal. | `string` | n/a | yes |
@@ -204,7 +214,7 @@ module "data_landing_zone" {
 | <a name="input_location"></a> [location](#input\_location) | Target Azure location to deploy the resource | `string` | `"UK South"` | no |
 | <a name="input_log_analytics_sku"></a> [log\_analytics\_sku](#input\_log\_analytics\_sku) | The sku of the log analytics workspace, will default to PerGB2018. | `string` | `"PerGB2018"` | no |
 | <a name="input_name"></a> [name](#input\_name) | The default name will be data-landing+env, you can override the data-landing part by setting this | `string` | `null` | no |
-| <a name="input_services_mysql_subnet_address_space"></a> [services\_mysql\_subnet\_address\_space](#input\_services\_mysql\_subnet\_address\_space) | The address space covered by the services-mysql subnet, must be included in vnet\_address\_space. This is delegated to MySQL Flexible Server. | `list(string)` | n/a | yes |
+| <a name="input_services_paas_database_subnet_address_space"></a> [services\_paas\_database\_subnet\_address\_space](#input\_services\_paas\_database\_subnet\_address\_space) | The address space covered by the services-database subnet, must be included in vnet\_address\_space. This is optional. | `list(string)` | `[]` | no |
 | <a name="input_services_subnet_address_space"></a> [services\_subnet\_address\_space](#input\_services\_subnet\_address\_space) | The address space covered by the services subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
 | <a name="input_ssptl_vnet_name"></a> [ssptl\_vnet\_name](#input\_ssptl\_vnet\_name) | The name of the SSPTL virtual network. Defaults to 'ss-ptlsbox-vnet' for sandbox environments and 'ss-ptl-vnet' for others. | `string` | `null` | no |
 | <a name="input_ssptl_vnet_resource_group"></a> [ssptl\_vnet\_resource\_group](#input\_ssptl\_vnet\_resource\_group) | The resource group name of the SSPTL virtual network. Defaults to 'ss-ptlsbox-network-rg' for sandbox environments and 'ss-ptl-network-rg' for others. | `string` | `null` | no |
@@ -219,6 +229,7 @@ module "data_landing_zone" {
 
 | Name | Description |
 |------|-------------|
+| <a name="output_additional_paas_databases"></a> [additional\_paas\_databases](#output\_additional\_paas\_databases) | Details of the additional PaaS databases created. |
 | <a name="output_metadata_mssql"></a> [metadata\_mssql](#output\_metadata\_mssql) | n/a |
 | <a name="output_resource_groups"></a> [resource\_groups](#output\_resource\_groups) | n/a |
 | <a name="output_subnet_ids"></a> [subnet\_ids](#output\_subnet\_ids) | n/a |
