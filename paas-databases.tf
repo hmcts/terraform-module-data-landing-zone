@@ -15,39 +15,6 @@ resource "random_password" "paas_db_password" {
   min_numeric      = 1
 }
 
-# --- Private DNS Zones for Flexible Servers --------------------------------
-resource "azurerm_private_dns_zone" "paas_postgresql" {
-  count               = length(local.paas_db_postgresql) > 0 ? 1 : 0
-  name                = "${local.name}.postgres.database.azure.com"
-  resource_group_name = azurerm_resource_group.this[local.metadata_resource_group].name
-  tags                = var.common_tags
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "paas_postgresql" {
-  count                 = length(local.paas_db_postgresql) > 0 ? 1 : 0
-  name                  = "${local.name}-postgresql-dns-link-${var.env}"
-  private_dns_zone_name = azurerm_private_dns_zone.paas_postgresql[0].name
-  virtual_network_id    = module.networking.vnet_ids["vnet"]
-  resource_group_name   = azurerm_resource_group.this[local.metadata_resource_group].name
-  tags                  = var.common_tags
-}
-
-resource "azurerm_private_dns_zone" "paas_mysql" {
-  count               = length(local.paas_db_mysql) > 0 ? 1 : 0
-  name                = "${local.name}.mysql.database.azure.com"
-  resource_group_name = azurerm_resource_group.this[local.metadata_resource_group].name
-  tags                = var.common_tags
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "paas_mysql" {
-  count                 = length(local.paas_db_mysql) > 0 ? 1 : 0
-  name                  = "${local.name}-mysql-dns-link-${var.env}"
-  private_dns_zone_name = azurerm_private_dns_zone.paas_mysql[0].name
-  virtual_network_id    = module.networking.vnet_ids["vnet"]
-  resource_group_name   = azurerm_resource_group.this[local.metadata_resource_group].name
-  tags                  = var.common_tags
-}
-
 # --- PostgreSQL Flexible Servers -------------------------------------------
 resource "azurerm_postgresql_flexible_server" "this" {
   for_each = local.paas_db_postgresql
@@ -64,14 +31,12 @@ resource "azurerm_postgresql_flexible_server" "this" {
   administrator_password = random_password.paas_db_password[each.key].result
 
   delegated_subnet_id           = module.networking.subnet_ids["vnet-services-paasdb-postgresql"]
-  private_dns_zone_id           = azurerm_private_dns_zone.paas_postgresql[0].id
+  private_dns_zone_id           = data.azurerm_private_dns_zone.cftptl["privatelink.postgres.database.azure.com"].id
   public_network_access_enabled = false
 
   geo_redundant_backup_enabled = each.value.geo_redundant_backup_enabled
 
   tags = var.common_tags
-
-  depends_on = [azurerm_private_dns_zone_virtual_network_link.paas_postgresql]
 }
 
 # --- MySQL Flexible Servers ------------------------------------------------
@@ -89,7 +54,7 @@ resource "azurerm_mysql_flexible_server" "this" {
   administrator_password = random_password.paas_db_password[each.key].result
 
   delegated_subnet_id = module.networking.subnet_ids["vnet-services-paasdb-mysql"]
-  private_dns_zone_id = azurerm_private_dns_zone.paas_mysql[0].id
+  private_dns_zone_id = data.azurerm_private_dns_zone.cftptl["privatelink.mysql.database.azure.com"].id
 
   geo_redundant_backup_enabled = each.value.geo_redundant_backup_enabled
 
@@ -98,8 +63,6 @@ resource "azurerm_mysql_flexible_server" "this" {
   }
 
   tags = var.common_tags
-
-  depends_on = [azurerm_private_dns_zone_virtual_network_link.paas_mysql]
 }
 
 # --- Azure SQL (MSSQL) Servers and Databases --------------------------------

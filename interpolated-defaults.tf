@@ -85,6 +85,7 @@ locals {
 
   privatelink_dns_zone_names = [
     "privatelink.database.windows.net",
+    "privatelink.postgres.database.azure.com",
     "privatelink.mysql.database.azure.com",
     "privatelink.blob.core.windows.net",
     "privatelink.dfs.core.windows.net",
