@@ -33,6 +33,7 @@ resource "azurerm_postgresql_flexible_server" "this" {
   delegated_subnet_id           = module.networking.subnet_ids["vnet-services-paasdb-postgresql"]
   private_dns_zone_id           = data.azurerm_private_dns_zone.cftptl["privatelink.postgres.database.azure.com"].id
   public_network_access_enabled = false
+  zone                          = 1
 
   geo_redundant_backup_enabled = each.value.geo_redundant_backup_enabled
 
