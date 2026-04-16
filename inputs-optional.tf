@@ -265,3 +265,9 @@ variable "additional_paas_databases" {
     error_message = "Each database type must be one of: postgresql, mysql, mssql."
   }
 }
+
+variable "storage_account_ip_rules" {
+  description = "Map of storage account names to lists of IP address rules. Each rule should be in CIDR notation."
+  type        = map(list(string))
+  default     = {}
+}
