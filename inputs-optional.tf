@@ -106,6 +106,7 @@ variable "legacy_databases" {
       caching              = optional(string, "ReadWrite")
       storage_account_type = optional(string, "StandardSSD_LRS")
     })), [])
+    deploy_AADSSHLoginForLinux = optional(bool, false)
   }))
   default = {}
   validation {

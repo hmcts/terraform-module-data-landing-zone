@@ -219,6 +219,17 @@ resource "azurerm_virtual_machine_run_command" "bootstrap_script" {
   tags = var.common_tags
 }
 
+resource "azurerm_virtual_machine_extension" "AADSSHLoginForLinux" {
+  for_each                   = { for k, v in var.legacy_databases : k => v if v.deploy_AADSSHLoginForLinux == true }
+  name                       = "AADSSHLoginForLinux"
+  virtual_machine_id         = module.legacy_database[each.key].vm_id
+  publisher                  = "Microsoft.Azure.ActiveDirectory"
+  type                       = "AADSSHLoginForLinux"
+  type_handler_version       = "1.0"
+  auto_upgrade_minor_version = true
+  tags                       = var.common_tags
+}
+
 resource "azurerm_key_vault_secret" "legacy_database_username" {
   for_each     = var.legacy_databases
   name         = "${local.name}-${each.key}-username-${var.env}"
