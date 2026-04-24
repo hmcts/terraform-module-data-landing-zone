@@ -156,7 +156,7 @@ module "legacy_database" {
   vm_availabilty_zones = "1"
   os_disk_size_gb      = each.value.os_disk_size_gb
   vm_resource_group    = azurerm_resource_group.this[local.metadata_resource_group].name
-  vm_subnet_id         = module.networking.subnet_ids["vnet-services"]
+  vm_subnet_id         = each.value.subnet_key != null ? module.networking.subnet_ids[each.value.subnet_key] : module.networking.subnet_ids["vnet-services"]
   nic_name             = "${local.name}-${each.key}-nic-${var.env}"
   ipconfig_name        = "${local.name}-${each.key}-ipconfig-${var.env}"
   privateip_allocation = "Dynamic"
