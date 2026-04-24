@@ -230,6 +230,24 @@ resource "azurerm_virtual_machine_extension" "AADSSHLoginForLinux" {
   tags                       = var.common_tags
 }
 
+
+resource "azurerm_role_assignment" "legacy_database_admin" {
+  for_each = {
+    for item in flatten([
+      for k, v in var.legacy_databases : [
+        for group_id in v.vm_admin_group_ids : {
+          db_key   = k
+          group_id = group_id
+        }
+      ]
+    ]) : "${item.db_key}-${item.group_id}" => item
+  }
+
+  scope                = module.legacy_database[each.value.db_key].vm_id
+  role_definition_name = "Virtual Machine Administrator Login"
+  principal_id         = each.value.group_id
+}
+
 resource "azurerm_key_vault_secret" "legacy_database_username" {
   for_each     = var.legacy_databases
   name         = "${local.name}-${each.key}-username-${var.env}"

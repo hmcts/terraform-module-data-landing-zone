@@ -107,6 +107,7 @@ variable "legacy_databases" {
       storage_account_type = optional(string, "StandardSSD_LRS")
     })), [])
     deploy_AADSSHLoginForLinux = optional(bool, false)
+    vm_admin_group_ids         = optional(list(string), [])
   }))
   default = {}
   validation {
