@@ -95,7 +95,6 @@ module "data_landing_zone" {
 | <a name="module_logging_vault"></a> [logging\_vault](#module\_logging\_vault) | github.com/hmcts/cnp-module-key-vault | master |
 | <a name="module_logging_vault_pe"></a> [logging\_vault\_pe](#module\_logging\_vault\_pe) | ./modules/azure-private-endpoint | n/a |
 | <a name="module_metadata_mssql"></a> [metadata\_mssql](#module\_metadata\_mssql) | github.com/hmcts/terraform-module-mssql | main |
-| <a name="module_metadata_mysql"></a> [metadata\_mysql](#module\_metadata\_mysql) | github.com/hmcts/terraform-module-mysql-flexible | main |
 | <a name="module_metadata_vault"></a> [metadata\_vault](#module\_metadata\_vault) | github.com/hmcts/cnp-module-key-vault | master |
 | <a name="module_metadata_vault_pe"></a> [metadata\_vault\_pe](#module\_metadata\_vault\_pe) | ./modules/azure-private-endpoint | n/a |
 | <a name="module_networking"></a> [networking](#module\_networking) | github.com/hmcts/terraform-module-azure-virtual-networking | 4.x |
@@ -130,9 +129,6 @@ module "data_landing_zone" {
 | [azurerm_key_vault_secret.log_analytics_workspace_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.mssql_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.mssql_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.mysql_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.mysql_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.mysql_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.sftpkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.synapse_sql_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.synapse_sql_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
@@ -204,7 +200,6 @@ module "data_landing_zone" {
 | <a name="input_location"></a> [location](#input\_location) | Target Azure location to deploy the resource | `string` | `"UK South"` | no |
 | <a name="input_log_analytics_sku"></a> [log\_analytics\_sku](#input\_log\_analytics\_sku) | The sku of the log analytics workspace, will default to PerGB2018. | `string` | `"PerGB2018"` | no |
 | <a name="input_name"></a> [name](#input\_name) | The default name will be data-landing+env, you can override the data-landing part by setting this | `string` | `null` | no |
-| <a name="input_services_mysql_subnet_address_space"></a> [services\_mysql\_subnet\_address\_space](#input\_services\_mysql\_subnet\_address\_space) | The address space covered by the services-mysql subnet, must be included in vnet\_address\_space. This is delegated to MySQL Flexible Server. | `list(string)` | n/a | yes |
 | <a name="input_services_subnet_address_space"></a> [services\_subnet\_address\_space](#input\_services\_subnet\_address\_space) | The address space covered by the services subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
 | <a name="input_ssptl_vnet_name"></a> [ssptl\_vnet\_name](#input\_ssptl\_vnet\_name) | The name of the SSPTL virtual network. Defaults to 'ss-ptlsbox-vnet' for sandbox environments and 'ss-ptl-vnet' for others. | `string` | `null` | no |
 | <a name="input_ssptl_vnet_resource_group"></a> [ssptl\_vnet\_resource\_group](#input\_ssptl\_vnet\_resource\_group) | The resource group name of the SSPTL virtual network. Defaults to 'ss-ptlsbox-network-rg' for sandbox environments and 'ss-ptl-network-rg' for others. | `string` | `null` | no |
