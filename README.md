@@ -70,7 +70,7 @@ module "data_landing_zone" {
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >= 2.43.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.116.0 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.1.0 |
@@ -79,18 +79,19 @@ module "data_landing_zone" {
 ## Providers
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | >= 2.43.0 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.116.0 |
 | <a name="provider_azurerm.cftptl"></a> [azurerm.cftptl](#provider\_azurerm.cftptl) | >= 3.116.0 |
 | <a name="provider_azurerm.ssptl"></a> [azurerm.ssptl](#provider\_azurerm.ssptl) | >= 3.116.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | >= 3.1.0 |
+| <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.6 |
 
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | <a name="module_legacy_database"></a> [legacy\_database](#module\_legacy\_database) | github.com/hmcts/terraform-module-virtual-machine.git | feat%2Fcustom-image |
 | <a name="module_logging_vault"></a> [logging\_vault](#module\_logging\_vault) | github.com/hmcts/cnp-module-key-vault | master |
 | <a name="module_logging_vault_pe"></a> [logging\_vault\_pe](#module\_logging\_vault\_pe) | ./modules/azure-private-endpoint | n/a |
@@ -115,7 +116,7 @@ module "data_landing_zone" {
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [azurerm_bastion_host.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/bastion_host) | resource |
 | [azurerm_data_factory_integration_runtime_self_hosted.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_integration_runtime_self_hosted) | resource |
 | [azurerm_eventhub_namespace.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/eventhub_namespace) | resource |
@@ -164,6 +165,7 @@ module "data_landing_zone" {
 | [random_password.synapse_sql_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [random_string.legacy_database_username](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
 | [random_string.paas_db_username](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
+| [terraform_data.bootstrap_replace](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [tls_private_key.sftpkey](https://registry.terraform.io/providers/hashicorp/tls/4.0.6/docs/resources/private_key) | resource |
 | [azuread_group.admin_group](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
@@ -175,7 +177,7 @@ module "data_landing_zone" {
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_additional_nsg_rules"></a> [additional\_nsg\_rules](#input\_additional\_nsg\_rules) | Map of additional NSG rules to create, keyed by the rule name. | <pre>map(object({<br/>    name_override                              = optional(string)<br/>    priority                                   = number<br/>    direction                                  = string<br/>    access                                     = string<br/>    protocol                                   = string<br/>    source_port_range                          = optional(string)<br/>    source_port_ranges                         = optional(list(string))<br/>    destination_port_range                     = optional(string)<br/>    destination_port_ranges                    = optional(list(string))<br/>    source_address_prefix                      = optional(string)<br/>    source_address_prefixes                    = optional(list(string))<br/>    source_application_security_group_ids      = optional(list(string))<br/>    destination_address_prefix                 = optional(string)<br/>    destination_address_prefixes               = optional(list(string))<br/>    destination_application_security_group_ids = optional(list(string))<br/>    description                                = optional(string)<br/>  }))</pre> | `{}` | no |
 | <a name="input_additional_paas_databases"></a> [additional\_paas\_databases](#input\_additional\_paas\_databases) | Map of additional PaaS databases to create, keyed by the database name. Supported types: postgresql, mysql, mssql. | <pre>map(object({<br/>    sku_name                     = string<br/>    tier                         = optional(string)<br/>    capacity                     = optional(number)<br/>    family                       = optional(string)<br/>    version                      = string<br/>    storage_mb                   = optional(number, 32768)<br/>    type                         = string<br/>    collation                    = optional(string)<br/>    max_size_gb                  = optional(number)<br/>    geo_redundant_backup_enabled = optional(bool, false)<br/>  }))</pre> | `{}` | no |
 | <a name="input_additional_subnets"></a> [additional\_subnets](#input\_additional\_subnets) | Map of additional subnets to create, keyed by the subnet name. | <pre>map(object({<br/>    name_override     = optional(string)<br/>    address_prefixes  = list(string)<br/>    service_endpoints = optional(list(string), [])<br/>    delegations = optional(map(object({<br/>      service_name = string,<br/>      actions      = optional(list(string), [])<br/>    })))<br/>  }))</pre> | `{}` | no |
@@ -209,7 +211,7 @@ module "data_landing_zone" {
 | <a name="input_hub_vnet_name"></a> [hub\_vnet\_name](#input\_hub\_vnet\_name) | The name of the HUB virtual network. | `string` | n/a | yes |
 | <a name="input_install_azure_monitor"></a> [install\_azure\_monitor](#input\_install\_azure\_monitor) | Install Azure Monitor Agent. | `bool` | `false` | no |
 | <a name="input_key_vault_readers"></a> [key\_vault\_readers](#input\_key\_vault\_readers) | List of strings representing the object ids of the users or groups that should have read access to the key vault. | `list(string)` | `[]` | no |
-| <a name="input_legacy_databases"></a> [legacy\_databases](#input\_legacy\_databases) | Map of legacy databases to create as IaaS VMs. | <pre>map(object({<br/>    size                = optional(string, "Standard_D4ds_v5")<br/>    type                = optional(string, "windows")<br/>    public_ip           = optional(bool, false)<br/>    subnet_key          = optional(string)<br/>    computer_name       = optional(string)<br/>    publisher_name      = optional(string)<br/>    offer               = optional(string)<br/>    sku                 = optional(string)<br/>    version             = optional(string)<br/>    source_image_id     = optional(string)<br/>    os_disk_size_gb     = optional(number, 127)<br/>    secure_boot_enabled = optional(bool, true)<br/>    // Base 64 encoded script to be run on the VM after creation<br/>    bootstrap_script = optional(string)<br/>    // Additional data disks to attach to the VM<br/>    data_disks = optional(list(object({<br/>      name                 = string<br/>      disk_size_gb         = number<br/>      lun                  = number<br/>      caching              = optional(string, "ReadWrite")<br/>      storage_account_type = optional(string, "StandardSSD_LRS")<br/>    })), [])<br/>    deploy_AADSSHLoginForLinux = optional(bool, false)<br/>    vm_admin_group_ids         = optional(list(string), [])<br/>  }))</pre> | `{}` | no |
+| <a name="input_legacy_databases"></a> [legacy\_databases](#input\_legacy\_databases) | Map of legacy databases to create as IaaS VMs. | <pre>map(object({<br/>    size                = optional(string, "Standard_D4ds_v5")<br/>    type                = optional(string, "windows")<br/>    public_ip           = optional(bool, false)<br/>    subnet_key          = optional(string)<br/>    computer_name       = optional(string)<br/>    publisher_name      = optional(string)<br/>    offer               = optional(string)<br/>    sku                 = optional(string)<br/>    version             = optional(string)<br/>    source_image_id     = optional(string)<br/>    os_disk_size_gb     = optional(number, 127)<br/>    secure_boot_enabled = optional(bool, true)<br/>    // Base 64 encoded script to be run on the VM after creation<br/>    bootstrap_script  = optional(string)<br/>    trigger_bootstrap = optional(string)<br/>    // Additional data disks to attach to the VM<br/>    data_disks = optional(list(object({<br/>      name                 = string<br/>      disk_size_gb         = number<br/>      lun                  = number<br/>      caching              = optional(string, "ReadWrite")<br/>      storage_account_type = optional(string, "StandardSSD_LRS")<br/>    })), [])<br/>    deploy_AADSSHLoginForLinux = optional(bool, false)<br/>    vm_admin_group_ids         = optional(list(string), [])<br/>  }))</pre> | `{}` | no |
 | <a name="input_location"></a> [location](#input\_location) | Target Azure location to deploy the resource | `string` | `"UK South"` | no |
 | <a name="input_log_analytics_sku"></a> [log\_analytics\_sku](#input\_log\_analytics\_sku) | The sku of the log analytics workspace, will default to PerGB2018. | `string` | `"PerGB2018"` | no |
 | <a name="input_name"></a> [name](#input\_name) | The default name will be data-landing+env, you can override the data-landing part by setting this | `string` | `null` | no |
@@ -228,7 +230,7 @@ module "data_landing_zone" {
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_additional_paas_databases"></a> [additional\_paas\_databases](#output\_additional\_paas\_databases) | Details of the additional PaaS databases created. |
 | <a name="output_metadata_mssql"></a> [metadata\_mssql](#output\_metadata\_mssql) | n/a |
 | <a name="output_resource_groups"></a> [resource\_groups](#output\_resource\_groups) | n/a |

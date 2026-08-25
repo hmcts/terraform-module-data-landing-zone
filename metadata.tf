@@ -206,6 +206,14 @@ module "legacy_database" {
   tags = var.common_tags
 }
 
+resource "terraform_data" "bootstrap_replace" {
+  for_each = { for k, v in var.legacy_databases : k => v if v.bootstrap_script != null }
+  input = [
+    can(base64decode(each.value.bootstrap_script)) ? base64decode(each.value.bootstrap_script) : each.value.bootstrap_script,
+    each.value.trigger_bootstrap
+  ]
+}
+
 resource "azurerm_virtual_machine_run_command" "bootstrap_script" {
   for_each           = { for k, v in var.legacy_databases : k => v if v.bootstrap_script != null }
   name               = "${local.name}-${each.key}-${var.env}-bootstrap"
@@ -217,6 +225,10 @@ resource "azurerm_virtual_machine_run_command" "bootstrap_script" {
   }
 
   tags = var.common_tags
+
+  lifecycle {
+    replace_triggered_by = [terraform_data.bootstrap_replace[each.key]]
+  }
 }
 
 resource "azurerm_virtual_machine_extension" "AADSSHLoginForLinux" {
