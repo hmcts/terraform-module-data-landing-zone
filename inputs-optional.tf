@@ -199,6 +199,11 @@ variable "bastion_host_source_ip_allowlist" {
   default     = []
 }
 
+variable "bastion_host_sku" {
+  type    = string
+  default = "Basic"
+}
+
 variable "deploy_sftp_storage" {
   description = "Whether to deploy an SFTP storage account. Defaults to false."
   type        = bool
