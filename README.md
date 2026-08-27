@@ -232,6 +232,7 @@ module "data_landing_zone" {
 | Name | Description |
 |------|-------------|
 | <a name="output_additional_paas_databases"></a> [additional\_paas\_databases](#output\_additional\_paas\_databases) | Details of the additional PaaS databases created. |
+| <a name="output_log_analytics_workspace"></a> [log\_analytics\_workspace](#output\_log\_analytics\_workspace) | Details of the Log Analytics workspace used by the data landing zone. |
 | <a name="output_metadata_mssql"></a> [metadata\_mssql](#output\_metadata\_mssql) | n/a |
 | <a name="output_resource_groups"></a> [resource\_groups](#output\_resource\_groups) | n/a |
 | <a name="output_subnet_ids"></a> [subnet\_ids](#output\_subnet\_ids) | n/a |
