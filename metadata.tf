@@ -156,7 +156,7 @@ module "legacy_database" {
   vm_availabilty_zones = "1"
   os_disk_size_gb      = each.value.os_disk_size_gb
   vm_resource_group    = azurerm_resource_group.this[local.metadata_resource_group].name
-  vm_subnet_id         = module.networking.subnet_ids["vnet-services"]
+  vm_subnet_id         = each.value.subnet_key != null ? module.networking.subnet_ids[each.value.subnet_key] : module.networking.subnet_ids["vnet-services"]
   nic_name             = "${local.name}-${each.key}-nic-${var.env}"
   ipconfig_name        = "${local.name}-${each.key}-ipconfig-${var.env}"
   privateip_allocation = "Dynamic"
@@ -206,6 +206,14 @@ module "legacy_database" {
   tags = var.common_tags
 }
 
+resource "terraform_data" "bootstrap_replace" {
+  for_each = { for k, v in var.legacy_databases : k => v if v.bootstrap_script != null }
+  input = [
+    can(base64decode(each.value.bootstrap_script)) ? base64decode(each.value.bootstrap_script) : each.value.bootstrap_script,
+    each.value.trigger_bootstrap
+  ]
+}
+
 resource "azurerm_virtual_machine_run_command" "bootstrap_script" {
   for_each           = { for k, v in var.legacy_databases : k => v if v.bootstrap_script != null }
   name               = "${local.name}-${each.key}-${var.env}-bootstrap"
@@ -217,6 +225,39 @@ resource "azurerm_virtual_machine_run_command" "bootstrap_script" {
   }
 
   tags = var.common_tags
+
+  lifecycle {
+    replace_triggered_by = [terraform_data.bootstrap_replace[each.key]]
+  }
+}
+
+resource "azurerm_virtual_machine_extension" "AADSSHLoginForLinux" {
+  for_each                   = { for k, v in var.legacy_databases : k => v if v.deploy_AADSSHLoginForLinux == true }
+  name                       = "AADSSHLoginForLinux"
+  virtual_machine_id         = module.legacy_database[each.key].vm_id
+  publisher                  = "Microsoft.Azure.ActiveDirectory"
+  type                       = "AADSSHLoginForLinux"
+  type_handler_version       = "1.0"
+  auto_upgrade_minor_version = true
+  tags                       = var.common_tags
+}
+
+
+resource "azurerm_role_assignment" "legacy_database_admin" {
+  for_each = {
+    for item in flatten([
+      for k, v in var.legacy_databases : [
+        for group_id in v.vm_admin_group_ids : {
+          db_key   = k
+          group_id = group_id
+        }
+      ]
+    ]) : "${item.db_key}-${item.group_id}" => item
+  }
+
+  scope                = module.legacy_database[each.value.db_key].vm_id
+  role_definition_name = "Virtual Machine Administrator Login"
+  principal_id         = each.value.group_id
 }
 
 resource "azurerm_key_vault_secret" "legacy_database_username" {

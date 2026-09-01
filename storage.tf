@@ -19,6 +19,7 @@ module "storage" {
   enable_versioning                 = false
   pim_roles                         = {}
   infrastructure_encryption_enabled = true
+  ip_rules                          = lookup(var.storage_account_ip_rules, each.key, null)
 
   defender_enabled                  = true
   defender_malware_scanning_enabled = true
