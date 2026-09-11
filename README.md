@@ -92,10 +92,10 @@ module "data_landing_zone" {
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_legacy_database"></a> [legacy\_database](#module\_legacy\_database) | github.com/hmcts/terraform-module-virtual-machine.git | feat%2Fcustom-image |
-| <a name="module_logging_vault"></a> [logging\_vault](#module\_logging\_vault) | github.com/hmcts/cnp-module-key-vault | DTSPO-31695/remove-jenkins-ptl-access |
+| <a name="module_logging_vault"></a> [logging\_vault](#module\_logging\_vault) | github.com/hmcts/cnp-module-key-vault | DTSPO-31965/remove-jenkins-ptl-access |
 | <a name="module_logging_vault_pe"></a> [logging\_vault\_pe](#module\_logging\_vault\_pe) | ./modules/azure-private-endpoint | n/a |
 | <a name="module_metadata_mssql"></a> [metadata\_mssql](#module\_metadata\_mssql) | github.com/hmcts/terraform-module-mssql | main |
-| <a name="module_metadata_vault"></a> [metadata\_vault](#module\_metadata\_vault) | github.com/hmcts/cnp-module-key-vault | DTSPO-31695/remove-jenkins-ptl-access |
+| <a name="module_metadata_vault"></a> [metadata\_vault](#module\_metadata\_vault) | github.com/hmcts/cnp-module-key-vault | DTSPO-31965/remove-jenkins-ptl-access |
 | <a name="module_metadata_vault_pe"></a> [metadata\_vault\_pe](#module\_metadata\_vault\_pe) | ./modules/azure-private-endpoint | n/a |
 | <a name="module_networking"></a> [networking](#module\_networking) | github.com/hmcts/terraform-module-azure-virtual-networking | 4.x |
 | <a name="module_runtimes_datafactory"></a> [runtimes\_datafactory](#module\_runtimes\_datafactory) | github.com/hmcts/terraform-module-azure-datafactory | main |
