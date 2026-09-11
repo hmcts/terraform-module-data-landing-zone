@@ -1,5 +1,5 @@
 module "logging_vault" {
-  source              = "github.com/hmcts/cnp-module-key-vault?ref=DTSPO-31695/remove-jenkins-ptl-access"
+  source              = "github.com/hmcts/cnp-module-key-vault?ref=DTSPO-31965/remove-jenkins-ptl-access"
   name                = length("${local.name}-logging-${var.env}") > 24 ? "${local.short_name}-logging-${var.env}" : "${local.name}-logging-${var.env}"
   product             = "data-landing"
   env                 = var.env
