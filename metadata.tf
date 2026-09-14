@@ -80,14 +80,15 @@ module "metadata_mssql" {
 
   mssql_databases = {
     "${local.metadata_mssql_db_name}" = {
-      collation          = "SQL_Latin1_General_CP1_CI_AS"
-      license_type       = "LicenseIncluded"
-      max_size_gb        = 1
-      sku_name           = "Basic"
-      zone_redundant     = false
-      create_mode        = "Default"
-      compute_model      = "Provisioned"
-      geo_backup_enabled = true
+      collation                  = "SQL_Latin1_General_CP1_CI_AS"
+      license_type               = "LicenseIncluded"
+      max_size_gb                = 1
+      sku_name                   = "Basic"
+      zone_redundant             = false
+      create_mode                = "Default"
+      compute_model              = "Provisioned"
+      geo_backup_enabled         = true
+      long_term_retention_policy = var.metadata_mssql_long_term_retention_policy
     }
   }
 
