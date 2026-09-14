@@ -88,7 +88,7 @@ module "metadata_mssql" {
       create_mode                = "Default"
       compute_model              = "Provisioned"
       geo_backup_enabled         = true
-      long_term_retention_policy = var.metadata_mssql_long_term_retention_policy
+      long_term_retention_policy = var.metadata_mssql_long_term_retention_policy 
     }
   }
 
