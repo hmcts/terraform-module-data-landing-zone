@@ -280,3 +280,14 @@ variable "storage_account_ip_rules" {
   type        = map(list(string))
   default     = {}
 }
+
+variable "metadata_mssql_long_term_retention_policy" {
+  description = "Long term retention policy for the MetadataControl database. Defaults to null (no LTR policy managed)."
+  type = object({
+    weekly_retention  = optional(string, "PT0S")
+    monthly_retention = optional(string, "PT0S")
+    yearly_retention  = optional(string, "PT0S")
+    week_of_year      = optional(number, 1)
+  })
+  default = null
+}
