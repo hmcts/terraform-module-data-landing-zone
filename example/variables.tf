@@ -15,3 +15,7 @@ variable "common_tags" {
 variable "default_route_next_hop_ip" {
   default = "10.10.200.36"
 }
+
+variable "arm_object_id" {
+  default = "abcdef-123456"
+}
