@@ -4,7 +4,6 @@ module "data_landing_zone" {
   providers = {
     azurerm        = azurerm
     azurerm.hub    = azurerm.hub
-    azurerm.f5     = azurerm.f5
     azurerm.ssptl  = azurerm.ssptl
     azurerm.cftptl = azurerm.cftptl
     azurerm.soc    = azurerm.soc
