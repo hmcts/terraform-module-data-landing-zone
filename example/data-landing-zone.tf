@@ -9,6 +9,7 @@ module "data_landing_zone" {
     azurerm.soc    = azurerm.soc
     azurerm.cnp    = azurerm.cnp
     azurerm.dcr    = azurerm.dcr
+    azurerm.f5     = azurerm.f5
   }
 
   env                                              = var.env
