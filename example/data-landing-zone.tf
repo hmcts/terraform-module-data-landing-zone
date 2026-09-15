@@ -26,6 +26,7 @@ module "data_landing_zone" {
   data_product_002_subnet_address_space            = ["10.10.10.0/24"]
   hub_vnet_name                                    = "hmcts-hub-sbox-int"
   hub_resource_group_name                          = "hmcts-hub-sbox-int"
+  arm_object_id                                    = var.arm_object_id
 
   legacy_databases = {
     legacy-sql = {
