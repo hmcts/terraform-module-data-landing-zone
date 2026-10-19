@@ -43,3 +43,14 @@ output "additional_paas_databases" {
     } }
   )
 }
+
+output "log_analytics_workspace" {
+  description = "Details of the Log Analytics workspace used by the data landing zone."
+  value = {
+    id                  = azurerm_log_analytics_workspace.this.id
+    name                = azurerm_log_analytics_workspace.this.name
+    resource_group_name = azurerm_log_analytics_workspace.this.resource_group_name
+    location            = azurerm_log_analytics_workspace.this.location
+    workspace_id        = azurerm_log_analytics_workspace.this.workspace_id
+  }
+}
