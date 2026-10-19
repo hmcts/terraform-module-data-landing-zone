@@ -1,4 +1,20 @@
+moved {
+  from = module.shared_product_databricks
+  to   = module.shared_product_databricks[0]
+}
+
+moved {
+  from = azurerm_synapse_workspace.this
+  to   = azurerm_synapse_workspace.this[0]
+}
+
+moved {
+  from = azurerm_synapse_workspace_aad_admin.aad
+  to   = azurerm_synapse_workspace_aad_admin.aad[0]
+}
+
 module "shared_product_databricks" {
+  count  = var.deploy_databricks ? 1 : 0
   source = "github.com/hmcts/terraform-module-databricks?ref=main"
 
   env                          = var.env
@@ -39,6 +55,7 @@ resource "azurerm_key_vault_secret" "synapse_sql_username" {
 }
 
 resource "azurerm_synapse_workspace" "this" {
+  count                                = var.deploy_synapse ? 1 : 0
   name                                 = "${local.name}-product-synapse001-${var.env}"
   resource_group_name                  = azurerm_resource_group.this[local.shared_product_resource_group].name
   location                             = var.location
@@ -66,15 +83,16 @@ resource "azurerm_synapse_workspace" "this" {
 }
 
 resource "azurerm_synapse_workspace_aad_admin" "aad" {
-  synapse_workspace_id = azurerm_synapse_workspace.this.id
+  count                = var.deploy_synapse ? 1 : 0
+  synapse_workspace_id = azurerm_synapse_workspace.this[0].id
   login                = local.admin_group
   object_id            = data.azuread_group.admin_group.object_id
   tenant_id            = data.azurerm_client_config.current.tenant_id
 }
 resource "azurerm_synapse_sql_pool" "this" {
-  count                = var.enable_synapse_sql_pool ? 1 : 0
+  count                = var.deploy_synapse && var.enable_synapse_sql_pool ? 1 : 0
   name                 = "${local.name}-product-synapse001-sql001-${var.env}"
-  synapse_workspace_id = azurerm_synapse_workspace.this.id
+  synapse_workspace_id = azurerm_synapse_workspace.this[0].id
   sku_name             = "DW100c"
   create_mode          = "Default"
   storage_account_type = "GRS"
@@ -83,9 +101,9 @@ resource "azurerm_synapse_sql_pool" "this" {
 }
 
 resource "azurerm_synapse_spark_pool" "this" {
-  count                = var.enable_synapse_spark_pool ? 1 : 0
+  count                = var.deploy_synapse && var.enable_synapse_spark_pool ? 1 : 0
   name                 = "${local.name}-product-synapse001-spark001-${var.env}"
-  synapse_workspace_id = azurerm_synapse_workspace.this.id
+  synapse_workspace_id = azurerm_synapse_workspace.this[0].id
   node_size_family     = "MemoryOptimized"
   node_size            = "Small"
   cache_size           = 100
@@ -104,7 +122,7 @@ resource "azurerm_synapse_spark_pool" "this" {
 }
 
 module "synapse_pe" {
-  for_each = toset(["sql", "sqlOnDemand", "dev"])
+  for_each = var.deploy_synapse ? toset(["sql", "sqlOnDemand", "dev"]) : toset([])
   source   = "./modules/azure-private-endpoint"
 
   name             = "${local.name}-product-synapse001-${each.key}-pe-${var.env}"
@@ -112,7 +130,7 @@ module "synapse_pe" {
   location         = var.location
   subnet_id        = module.networking.subnet_ids["vnet-services"]
   common_tags      = var.common_tags
-  resource_name    = azurerm_synapse_workspace.this.name
-  resource_id      = azurerm_synapse_workspace.this.id
+  resource_name    = azurerm_synapse_workspace.this[0].name
+  resource_id      = azurerm_synapse_workspace.this[0].id
   subresource_name = each.value
 }

@@ -196,8 +196,12 @@ module "data_landing_zone" {
 | <a name="input_data_product_001_subnet_address_space"></a> [data\_product\_001\_subnet\_address\_space](#input\_data\_product\_001\_subnet\_address\_space) | The address space covered by the data product 001 subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
 | <a name="input_data_product_002_subnet_address_space"></a> [data\_product\_002\_subnet\_address\_space](#input\_data\_product\_002\_subnet\_address\_space) | The address space covered by the data product 002 subnet, must be included in vnet\_address\_space. | `list(string)` | n/a | yes |
 | <a name="input_default_route_next_hop_ip"></a> [default\_route\_next\_hop\_ip](#input\_default\_route\_next\_hop\_ip) | The IP address of the private ip configuration of the Hub Palo load balancer. | `string` | n/a | yes |
+| <a name="input_deploy_data_factory"></a> [deploy\_data\_factory](#input\_deploy\_data\_factory) | Whether to deploy the runtimes and shared integration Data Factories (and self-hosted integration runtimes). | `bool` | `true` | no |
+| <a name="input_deploy_databricks"></a> [deploy\_databricks](#input\_deploy\_databricks) | Whether to deploy the shared integration and shared product Databricks workspaces. | `bool` | `true` | no |
+| <a name="input_deploy_eventhub"></a> [deploy\_eventhub](#input\_deploy\_eventhub) | Whether to deploy the shared integration Event Hub namespace and its private endpoint. | `bool` | `true` | no |
 | <a name="input_deploy_sftp_storage"></a> [deploy\_sftp\_storage](#input\_deploy\_sftp\_storage) | Whether to deploy an SFTP storage account. Defaults to false. | `bool` | `false` | no |
 | <a name="input_deploy_shir"></a> [deploy\_shir](#input\_deploy\_shir) | Whether to deploy a self-hosted integration runtime. Defaults to false. | `bool` | `false` | no |
+| <a name="input_deploy_synapse"></a> [deploy\_synapse](#input\_deploy\_synapse) | Whether to deploy the Synapse workspace and its private endpoints. | `bool` | `true` | no |
 | <a name="input_enable_synapse_spark_pool"></a> [enable\_synapse\_spark\_pool](#input\_enable\_synapse\_spark\_pool) | Whether to deploy a Synapse Spark pool. Defaults to false. | `bool` | `false` | no |
 | <a name="input_enable_synapse_sql_pool"></a> [enable\_synapse\_sql\_pool](#input\_enable\_synapse\_sql\_pool) | Whether to deploy a Synapse SQL pool. Defaults to false. | `bool` | `false` | no |
 | <a name="input_env"></a> [env](#input\_env) | Environment value | `string` | n/a | yes |
