@@ -1,4 +1,35 @@
+moved {
+  from = module.shared_integration_databricks
+  to   = module.shared_integration_databricks[0]
+}
+
+moved {
+  from = azurerm_eventhub_namespace.this
+  to   = azurerm_eventhub_namespace.this[0]
+}
+
+moved {
+  from = module.shared_integration_eventhub_pe
+  to   = module.shared_integration_eventhub_pe[0]
+}
+
+moved {
+  from = module.shared_integration_datafactory
+  to   = module.shared_integration_datafactory[0]
+}
+
+moved {
+  from = azurerm_monitor_diagnostic_setting.shared_integration_datafactory
+  to   = azurerm_monitor_diagnostic_setting.shared_integration_datafactory[0]
+}
+
+moved {
+  from = azurerm_role_assignment.datafactory_databricks
+  to   = azurerm_role_assignment.datafactory_databricks[0]
+}
+
 module "shared_integration_databricks" {
+  count  = var.deploy_databricks ? 1 : 0
   source = "github.com/hmcts/terraform-module-databricks?ref=main"
 
   depends_on = [module.vnet_peer_hub]
@@ -18,6 +49,7 @@ module "shared_integration_databricks" {
 }
 
 resource "azurerm_eventhub_namespace" "this" {
+  count                = var.deploy_eventhub ? 1 : 0
   name                 = length("${local.name}-integration-eventHubNamespace001-${var.env}") > 50 ? "${local.short_name}-integration-eventHubNamespace001-${var.env}" : "${local.name}-integration-eventHubNamespace001-${var.env}"
   location             = var.location
   resource_group_name  = azurerm_resource_group.this[local.shared_integration_resource_group].name
@@ -34,6 +66,7 @@ resource "azurerm_eventhub_namespace" "this" {
 }
 
 module "shared_integration_eventhub_pe" {
+  count  = var.deploy_eventhub ? 1 : 0
   source = "./modules/azure-private-endpoint"
 
   depends_on = [module.vnet_peer_hub]
@@ -43,12 +76,13 @@ module "shared_integration_eventhub_pe" {
   location         = var.location
   subnet_id        = module.networking.subnet_ids["vnet-services"]
   common_tags      = var.common_tags
-  resource_name    = azurerm_eventhub_namespace.this.name
-  resource_id      = azurerm_eventhub_namespace.this.id
+  resource_name    = azurerm_eventhub_namespace.this[0].name
+  resource_id      = azurerm_eventhub_namespace.this[0].id
   subresource_name = "namespace"
 }
 
 module "shared_integration_datafactory" {
+  count  = var.deploy_data_factory ? 1 : 0
   source = "github.com/hmcts/terraform-module-azure-datafactory?ref=main"
 
   depends_on = [module.vnet_peer_hub]
@@ -157,10 +191,10 @@ module "shared_integration_datafactory" {
     }
   }
 
-  linked_databricks = {
-    "${module.shared_integration_databricks.workspace_name}" = {
-      databricks_workspace_url = module.shared_integration_databricks.workspace_url
-      databricks_workspace_id  = module.shared_integration_databricks.workspace_id
+  linked_databricks = var.deploy_databricks ? {
+    "${module.shared_integration_databricks[0].workspace_name}" = {
+      databricks_workspace_url = module.shared_integration_databricks[0].workspace_url
+      databricks_workspace_id  = module.shared_integration_databricks[0].workspace_id
       integration_runtime_name = "AutoResolveIntegrationRuntime"
       new_cluster_config = {
         node_type             = "Standard_DS3_v2"
@@ -173,14 +207,14 @@ module "shared_integration_datafactory" {
         }
       }
     }
-  }
+  } : {}
 }
 
 resource "azurerm_key_vault_access_policy" "shared_integration_datafactory" {
-  for_each     = toset(local.metadata_vaults)
+  for_each     = var.deploy_data_factory ? toset(local.metadata_vaults) : toset([])
   key_vault_id = module.metadata_vault[each.key].key_vault_id
 
-  object_id = module.shared_integration_datafactory.identity.principal_id
+  object_id = module.shared_integration_datafactory[0].identity.principal_id
   tenant_id = data.azurerm_client_config.current.tenant_id
 
   secret_permissions = [
@@ -190,8 +224,9 @@ resource "azurerm_key_vault_access_policy" "shared_integration_datafactory" {
 }
 
 resource "azurerm_monitor_diagnostic_setting" "shared_integration_datafactory" {
+  count                      = var.deploy_data_factory ? 1 : 0
   name                       = "shared-integration-datafactory-diag"
-  target_resource_id         = module.shared_integration_datafactory.id
+  target_resource_id         = module.shared_integration_datafactory[0].id
   log_analytics_workspace_id = azurerm_log_analytics_workspace.this.id
 
   enabled_log {
@@ -203,14 +238,15 @@ resource "azurerm_monitor_diagnostic_setting" "shared_integration_datafactory" {
 }
 
 resource "azurerm_role_assignment" "shared_integration_datafactory_storage" {
-  for_each             = toset(["raw", "curated", "landing", "workspace", "external"])
+  for_each             = var.deploy_data_factory ? toset(["raw", "curated", "landing", "workspace", "external"]) : toset([])
   scope                = module.storage[each.key].storageaccount_id
   role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = module.shared_integration_datafactory.identity.principal_id
+  principal_id         = module.shared_integration_datafactory[0].identity.principal_id
 }
 
 resource "azurerm_role_assignment" "datafactory_databricks" {
-  scope                = module.shared_integration_databricks.workspace_id
+  count                = var.deploy_data_factory && var.deploy_databricks ? 1 : 0
+  scope                = module.shared_integration_databricks[0].workspace_id
   role_definition_name = "Contributor"
-  principal_id         = module.shared_integration_datafactory.identity.principal_id
+  principal_id         = module.shared_integration_datafactory[0].identity.principal_id
 }

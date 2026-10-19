@@ -55,6 +55,30 @@ variable "existing_purview_account" {
   default = null
 }
 
+variable "deploy_databricks" {
+  description = "Whether to deploy the shared integration and shared product Databricks workspaces."
+  type        = bool
+  default     = true
+}
+
+variable "deploy_data_factory" {
+  description = "Whether to deploy the runtimes and shared integration Data Factories (and self-hosted integration runtimes)."
+  type        = bool
+  default     = true
+}
+
+variable "deploy_synapse" {
+  description = "Whether to deploy the Synapse workspace and its private endpoints."
+  type        = bool
+  default     = true
+}
+
+variable "deploy_eventhub" {
+  description = "Whether to deploy the shared integration Event Hub namespace and its private endpoint."
+  type        = bool
+  default     = true
+}
+
 variable "enable_synapse_sql_pool" {
   description = "Whether to deploy a Synapse SQL pool. Defaults to false."
   type        = bool

@@ -1,4 +1,20 @@
+moved {
+  from = module.runtimes_datafactory
+  to   = module.runtimes_datafactory[0]
+}
+
+moved {
+  from = azurerm_monitor_diagnostic_setting.runtimes_datafactory
+  to   = azurerm_monitor_diagnostic_setting.runtimes_datafactory[0]
+}
+
+moved {
+  from = azurerm_data_factory_integration_runtime_self_hosted.this
+  to   = azurerm_data_factory_integration_runtime_self_hosted.this[0]
+}
+
 module "runtimes_datafactory" {
+  count  = var.deploy_data_factory ? 1 : 0
   source = "github.com/hmcts/terraform-module-azure-datafactory?ref=main"
 
   depends_on = [module.vnet_peer_hub]
@@ -49,10 +65,10 @@ module "runtimes_datafactory" {
 }
 
 resource "azurerm_key_vault_access_policy" "runtimes_datafactory" {
-  for_each     = toset(local.metadata_vaults)
+  for_each     = var.deploy_data_factory ? toset(local.metadata_vaults) : toset([])
   key_vault_id = module.metadata_vault[each.key].key_vault_id
 
-  object_id = module.runtimes_datafactory.identity.principal_id
+  object_id = module.runtimes_datafactory[0].identity.principal_id
   tenant_id = data.azurerm_client_config.current.tenant_id
 
   secret_permissions = [
@@ -62,8 +78,9 @@ resource "azurerm_key_vault_access_policy" "runtimes_datafactory" {
 }
 
 resource "azurerm_monitor_diagnostic_setting" "runtimes_datafactory" {
+  count                      = var.deploy_data_factory ? 1 : 0
   name                       = "runtimes-datafactory-diag"
-  target_resource_id         = module.runtimes_datafactory.id
+  target_resource_id         = module.runtimes_datafactory[0].id
   log_analytics_workspace_id = azurerm_log_analytics_workspace.this.id
 
   enabled_log {
@@ -75,22 +92,23 @@ resource "azurerm_monitor_diagnostic_setting" "runtimes_datafactory" {
 }
 
 resource "azurerm_data_factory_integration_runtime_self_hosted" "this" {
+  count           = var.deploy_data_factory ? 1 : 0
   name            = "${local.name}-runtimes-dataFactory001-shir001"
   description     = "Data Landing Zone - Self Hosted Integration Runtime running on ${local.name}-shir001"
-  data_factory_id = module.runtimes_datafactory.id
+  data_factory_id = module.runtimes_datafactory[0].id
 }
 
 resource "azurerm_role_assignment" "runtimes_datafactory_storage" {
-  for_each             = toset(["raw", "curated", "landing", "workspace", "external"])
+  for_each             = var.deploy_data_factory ? toset(["raw", "curated", "landing", "workspace", "external"]) : toset([])
   scope                = module.storage[each.key].storageaccount_id
   role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = module.runtimes_datafactory.identity.principal_id
+  principal_id         = module.runtimes_datafactory[0].identity.principal_id
 }
 
 module "shir001" {
   source = "./modules/self-hosted-integration-runtime"
 
-  count = var.deploy_shir == true ? 1 : 0
+  count = var.deploy_shir == true && var.deploy_data_factory ? 1 : 0
 
   depends_on = [module.vnet_peer_hub, module.metadata_vault, module.metadata_vault_pe]
 
@@ -107,12 +125,12 @@ module "shir001" {
   resource_group               = azurerm_resource_group.this[local.runtimes_resource_group].name
   subnet_id                    = module.networking.subnet_ids["vnet-services"]
   key_vault_id                 = module.metadata_vault["meta001"].key_vault_id
-  integration_runtime_auth_key = azurerm_data_factory_integration_runtime_self_hosted.this.primary_authorization_key
+  integration_runtime_auth_key = azurerm_data_factory_integration_runtime_self_hosted.this[0].primary_authorization_key
   common_tags                  = var.common_tags
 }
 
 module "shir002" {
-  count  = var.existing_purview_account == null ? 0 : var.existing_purview_account.self_hosted_integration_runtime_auth_key != null ? 1 : 0
+  count  = var.deploy_data_factory && var.existing_purview_account != null ? (var.existing_purview_account.self_hosted_integration_runtime_auth_key != null ? 1 : 0) : 0
   source = "./modules/self-hosted-integration-runtime"
 
   depends_on = [module.vnet_peer_hub, module.metadata_vault, module.metadata_vault_pe]
