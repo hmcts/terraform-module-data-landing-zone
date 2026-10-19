@@ -85,6 +85,7 @@ locals {
 
   privatelink_dns_zone_names = [
     "privatelink.database.windows.net",
+    "privatelink.postgres.database.azure.com",
     "privatelink.mysql.database.azure.com",
     "privatelink.blob.core.windows.net",
     "privatelink.dfs.core.windows.net",
@@ -188,7 +189,7 @@ locals {
     data-product-002 = {
       address_prefixes = var.data_product_002_subnet_address_space
     }
-    }, var.bastion_host_subnet_address_space == null ? {} : {
+    }, local.paas_database_subnets, var.bastion_host_subnet_address_space == null ? {} : {
     bastion = {
       address_prefixes = var.bastion_host_subnet_address_space
       name_override    = "AzureBastionSubnet"
@@ -204,6 +205,37 @@ locals {
   runtimes_resource_group           = var.use_microsoft_ip_kit_structure ? "main" : "runtimes"
   shared_integration_resource_group = var.use_microsoft_ip_kit_structure ? "main" : "shared-integration"
   shared_product_resource_group     = var.use_microsoft_ip_kit_structure ? "main" : "shared-product"
+
+  # PaaS Database - group databases by type
+  paas_db_postgresql = { for k, v in var.additional_paas_databases : k => v if v.type == "postgresql" }
+  paas_db_mysql      = { for k, v in var.additional_paas_databases : k => v if v.type == "mysql" }
+  paas_db_mssql      = { for k, v in var.additional_paas_databases : k => v if v.type == "mssql" }
+
+  # Types that need delegated subnets (postgresql and mysql flexible servers)
+  paas_db_delegated_types = sort(distinct([for k, v in var.additional_paas_databases : v.type if contains(["postgresql", "mysql"], v.type)]))
+  paas_db_type_count      = length(local.paas_db_delegated_types)
+  paas_db_newbits         = local.paas_db_type_count <= 1 ? 0 : 1
+  paas_db_type_index      = { for idx, type in local.paas_db_delegated_types : type => idx }
+
+  paas_db_delegation_service = {
+    postgresql = "Microsoft.DBforPostgreSQL/flexibleServers"
+    mysql      = "Microsoft.DBforMySQL/flexibleServers"
+  }
+
+  # Dynamically computed subnets for each flexible server type, split from the paas database address space
+  paas_database_subnets = length(var.services_paas_database_subnet_address_space) > 0 && local.paas_db_type_count > 0 ? {
+    for type in local.paas_db_delegated_types : "services-paasdb-${type}" => {
+      address_prefixes = local.paas_db_type_count > 1 ? [cidrsubnet(var.services_paas_database_subnet_address_space[0], local.paas_db_newbits, local.paas_db_type_index[type])] : var.services_paas_database_subnet_address_space
+      delegations = {
+        "${type}-delegation" = {
+          service_name = local.paas_db_delegation_service[type]
+          actions = [
+            "Microsoft.Network/virtualNetworks/subnets/join/action"
+          ]
+        }
+      }
+    }
+  } : {}
 
   long_environment_name = {
     "sbox" = "sandbox"

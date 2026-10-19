@@ -66,6 +66,30 @@ variable "existing_purview_account" {
   default = null
 }
 
+variable "deploy_databricks" {
+  description = "Whether to deploy the shared integration and shared product Databricks workspaces."
+  type        = bool
+  default     = true
+}
+
+variable "deploy_data_factory" {
+  description = "Whether to deploy the runtimes and shared integration Data Factories (and self-hosted integration runtimes)."
+  type        = bool
+  default     = true
+}
+
+variable "deploy_synapse" {
+  description = "Whether to deploy the Synapse workspace and its private endpoints."
+  type        = bool
+  default     = true
+}
+
+variable "deploy_eventhub" {
+  description = "Whether to deploy the shared integration Event Hub namespace and its private endpoint."
+  type        = bool
+  default     = true
+}
+
 variable "enable_synapse_sql_pool" {
   description = "Whether to deploy a Synapse SQL pool. Defaults to false."
   type        = bool
@@ -98,6 +122,7 @@ variable "legacy_databases" {
     size                = optional(string, "Standard_D4ds_v5")
     type                = optional(string, "windows")
     public_ip           = optional(bool, false)
+    subnet_key          = optional(string)
     computer_name       = optional(string)
     publisher_name      = optional(string)
     offer               = optional(string)
@@ -107,7 +132,8 @@ variable "legacy_databases" {
     os_disk_size_gb     = optional(number, 127)
     secure_boot_enabled = optional(bool, true)
     // Base 64 encoded script to be run on the VM after creation
-    bootstrap_script = optional(string)
+    bootstrap_script  = optional(string)
+    trigger_bootstrap = optional(string)
     // Additional data disks to attach to the VM
     data_disks = optional(list(object({
       name                 = string
@@ -116,6 +142,8 @@ variable "legacy_databases" {
       caching              = optional(string, "ReadWrite")
       storage_account_type = optional(string, "StandardSSD_LRS")
     })), [])
+    deploy_AADSSHLoginForLinux = optional(bool, false)
+    vm_admin_group_ids         = optional(list(string), [])
   }))
   default = {}
   validation {
@@ -207,6 +235,11 @@ variable "bastion_host_source_ip_allowlist" {
   default     = []
 }
 
+variable "bastion_host_sku" {
+  type    = string
+  default = "Basic"
+}
+
 variable "deploy_sftp_storage" {
   description = "Whether to deploy an SFTP storage account. Defaults to false."
   type        = bool
@@ -247,4 +280,38 @@ variable "eventhub_namespace_capacity" {
   description = "The capacity of the Event Hub Namespace."
   type        = number
   default     = 1
+}
+
+variable "services_paas_database_subnet_address_space" {
+  type        = list(string)
+  description = "The address space covered by the services-database subnet, must be included in vnet_address_space. This is optional."
+  default     = []
+}
+
+variable "additional_paas_databases" {
+  description = "Map of additional PaaS databases to create, keyed by the database name. Supported types: postgresql, mysql, mssql."
+  type = map(object({
+    sku_name                     = string
+    tier                         = optional(string)
+    capacity                     = optional(number)
+    family                       = optional(string)
+    version                      = string
+    storage_mb                   = optional(number, 32768)
+    type                         = string
+    collation                    = optional(string)
+    max_size_gb                  = optional(number)
+    geo_redundant_backup_enabled = optional(bool, false)
+  }))
+  default = {}
+
+  validation {
+    condition     = alltrue([for k, v in var.additional_paas_databases : contains(["postgresql", "mysql", "mssql"], v.type)])
+    error_message = "Each database type must be one of: postgresql, mysql, mssql."
+  }
+}
+
+variable "storage_account_ip_rules" {
+  description = "Map of storage account names to lists of IP address rules. Each rule should be in CIDR notation."
+  type        = map(list(string))
+  default     = {}
 }

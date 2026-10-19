@@ -14,6 +14,7 @@ resource "azurerm_bastion_host" "this" {
   location            = var.location
   resource_group_name = azurerm_resource_group.this["network"].name
   tags                = var.common_tags
+  sku                 = var.bastion_host_sku
   ip_configuration {
     name                 = "${local.name}-bastion-ip-config"
     subnet_id            = module.networking.subnet_ids["vnet-bastion"]
